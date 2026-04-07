@@ -4,7 +4,7 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
-import { PaginationDto } from '../../common/dto/pagination.dto';
+import { CustomersQueryDto } from './dto/customers-query.dto';
 export declare class CustomersService {
     private readonly prisma;
     private readonly auditLogsService;
@@ -40,7 +40,7 @@ export declare class CustomersService {
         isActive: boolean;
         notes: string | null;
     }>;
-    findAll(pagination: PaginationDto): Promise<{
+    findAll(query: CustomersQueryDto): Promise<{
         items: ({
             _count: {
                 orders: number;

@@ -3,7 +3,7 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
-import { PaginationDto } from '../../common/dto/pagination.dto';
+import { CustomersQueryDto } from './dto/customers-query.dto';
 export declare class CustomersController {
     private readonly customersService;
     constructor(customersService: CustomersService);
@@ -41,7 +41,7 @@ export declare class CustomersController {
             notes: string | null;
         };
     }>;
-    findAll(pagination: PaginationDto): Promise<{
+    findAll(query: CustomersQueryDto): Promise<{
         message: string;
         data: {
             items: ({

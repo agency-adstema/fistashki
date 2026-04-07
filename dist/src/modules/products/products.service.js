@@ -102,12 +102,24 @@ let ProductsService = class ProductsService {
         });
         return this.formatProduct(product);
     }
-    async findAll(pagination, status) {
-        const { page = 1, limit = 50 } = pagination;
+    async findAll(query) {
+        const { page = 1, limit = 50, search, status, isActive, lowStock } = query;
         const skip = (page - 1) * limit;
         const where = {};
         if (status)
             where.status = status;
+        if (isActive !== undefined)
+            where.isActive = isActive;
+        if (search) {
+            where.OR = [
+                { name: { contains: search, mode: 'insensitive' } },
+                { sku: { contains: search, mode: 'insensitive' } },
+            ];
+        }
+        if (lowStock) {
+            where.trackQuantity = true;
+            where.isActive = isActive !== undefined ? isActive : true;
+        }
         const [items, total] = await Promise.all([
             this.prisma.product.findMany({
                 where,

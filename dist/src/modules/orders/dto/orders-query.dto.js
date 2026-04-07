@@ -15,11 +15,21 @@ const swagger_1 = require("@nestjs/swagger");
 const client_1 = require("@prisma/client");
 const pagination_dto_1 = require("../../../common/dto/pagination.dto");
 class OrdersQueryDto extends pagination_dto_1.PaginationDto {
+    search;
     status;
     paymentStatus;
+    fulfillmentStatus;
     customerId;
+    dateFrom;
+    dateTo;
 }
 exports.OrdersQueryDto = OrdersQueryDto;
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Search by order number (partial match)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], OrdersQueryDto.prototype, "search", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ enum: client_1.OrderStatus, description: 'Filter by order status' }),
     (0, class_validator_1.IsOptional)(),
@@ -33,9 +43,27 @@ __decorate([
     __metadata("design:type", String)
 ], OrdersQueryDto.prototype, "paymentStatus", void 0);
 __decorate([
+    (0, swagger_1.ApiPropertyOptional)({ enum: client_1.FulfillmentStatus, description: 'Filter by fulfillment status' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(client_1.FulfillmentStatus),
+    __metadata("design:type", String)
+], OrdersQueryDto.prototype, "fulfillmentStatus", void 0);
+__decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'Filter by customer ID' }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], OrdersQueryDto.prototype, "customerId", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Filter orders created from this date (ISO 8601)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", String)
+], OrdersQueryDto.prototype, "dateFrom", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Filter orders created up to this date (ISO 8601)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", String)
+], OrdersQueryDto.prototype, "dateTo", void 0);
 //# sourceMappingURL=orders-query.dto.js.map

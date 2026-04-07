@@ -1,9 +1,8 @@
-import { ProductStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { PaginationDto } from '../../common/dto/pagination.dto';
+import { ProductsQueryDto } from './dto/products-query.dto';
 export declare class ProductsService {
     private readonly prisma;
     private readonly auditLogsService;
@@ -11,7 +10,7 @@ export declare class ProductsService {
     private computeInStock;
     private formatProduct;
     create(dto: CreateProductDto, actorUserId?: string): Promise<any>;
-    findAll(pagination: PaginationDto, status?: ProductStatus): Promise<{
+    findAll(query: ProductsQueryDto): Promise<{
         items: any[];
         total: number;
         page: number;

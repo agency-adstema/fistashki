@@ -49,11 +49,23 @@ let CustomersService = class CustomersService {
         });
         return customer;
     }
-    async findAll(pagination) {
-        const { page = 1, limit = 50 } = pagination;
+    async findAll(query) {
+        const { page = 1, limit = 50, search, isActive } = query;
         const skip = (page - 1) * limit;
+        const where = {};
+        if (isActive !== undefined)
+            where.isActive = isActive;
+        if (search) {
+            where.OR = [
+                { email: { contains: search, mode: 'insensitive' } },
+                { firstName: { contains: search, mode: 'insensitive' } },
+                { lastName: { contains: search, mode: 'insensitive' } },
+                { phone: { contains: search, mode: 'insensitive' } },
+            ];
+        }
         const [items, total] = await Promise.all([
             this.prisma.customer.findMany({
+                where,
                 skip,
                 take: limit,
                 orderBy: { createdAt: 'desc' },
@@ -62,7 +74,7 @@ let CustomersService = class CustomersService {
                     _count: { select: { orders: true } },
                 },
             }),
-            this.prisma.customer.count(),
+            this.prisma.customer.count({ where }),
         ]);
         return {
             items,

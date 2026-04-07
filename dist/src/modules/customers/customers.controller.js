@@ -20,7 +20,7 @@ const create_customer_dto_1 = require("./dto/create-customer.dto");
 const update_customer_dto_1 = require("./dto/update-customer.dto");
 const create_address_dto_1 = require("./dto/create-address.dto");
 const update_address_dto_1 = require("./dto/update-address.dto");
-const pagination_dto_1 = require("../../common/dto/pagination.dto");
+const customers_query_dto_1 = require("./dto/customers-query.dto");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const permissions_guard_1 = require("../../common/guards/permissions.guard");
 const permissions_decorator_1 = require("../../common/decorators/permissions.decorator");
@@ -34,8 +34,8 @@ let CustomersController = class CustomersController {
         const data = await this.customersService.create(dto, user?.id);
         return { message: 'Customer created successfully', data };
     }
-    async findAll(pagination) {
-        const data = await this.customersService.findAll(pagination);
+    async findAll(query) {
+        const data = await this.customersService.findAll(query);
         return { message: 'Customers fetched successfully', data };
     }
     async findOne(id) {
@@ -77,10 +77,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, permissions_decorator_1.Permissions)('customers.read'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get all customers (paginated)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all customers (paginated, searchable, filterable)' }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [pagination_dto_1.PaginationDto]),
+    __metadata("design:paramtypes", [customers_query_dto_1.CustomersQueryDto]),
     __metadata("design:returntype", Promise)
 ], CustomersController.prototype, "findAll", null);
 __decorate([

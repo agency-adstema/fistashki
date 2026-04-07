@@ -33,8 +33,7 @@ let ProductsController = class ProductsController {
         return { message: 'Product created successfully', data };
     }
     async findAll(query) {
-        const { status, ...pagination } = query;
-        const data = await this.productsService.findAll(pagination, status);
+        const data = await this.productsService.findAll(query);
         return { message: 'Products fetched successfully', data };
     }
     async findOne(id) {
@@ -64,7 +63,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, permissions_decorator_1.Permissions)('products.read'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get all products (paginated)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all products (paginated, searchable, filterable)' }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [products_query_dto_1.ProductsQueryDto]),

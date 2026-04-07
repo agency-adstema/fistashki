@@ -1,0 +1,157 @@
+import { PrismaService } from '../../prisma/prisma.service';
+import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
+export declare class CategoriesService {
+    private readonly prisma;
+    private readonly auditLogsService;
+    constructor(prisma: PrismaService, auditLogsService: AuditLogsService);
+    create(dto: CreateCategoryDto, actorUserId?: string): Promise<{
+        parent: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        } | null;
+        children: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        }[];
+    } & {
+        id: string;
+        name: string;
+        description: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        parentId: string | null;
+        sortOrder: number;
+    }>;
+    findAll(): Promise<({
+        _count: {
+            productCategories: number;
+        };
+        parent: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        } | null;
+        children: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        }[];
+    } & {
+        id: string;
+        name: string;
+        description: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        parentId: string | null;
+        sortOrder: number;
+    })[]>;
+    findOne(id: string): Promise<{
+        _count: {
+            productCategories: number;
+        };
+        parent: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        } | null;
+        children: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        }[];
+    } & {
+        id: string;
+        name: string;
+        description: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        parentId: string | null;
+        sortOrder: number;
+    }>;
+    update(id: string, dto: UpdateCategoryDto, actorUserId?: string): Promise<{
+        _count: {
+            productCategories: number;
+        };
+        parent: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        } | null;
+        children: {
+            id: string;
+            name: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            parentId: string | null;
+            sortOrder: number;
+        }[];
+    } & {
+        id: string;
+        name: string;
+        description: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        parentId: string | null;
+        sortOrder: number;
+    }>;
+    remove(id: string, actorUserId?: string): Promise<{
+        id: string;
+    }>;
+}

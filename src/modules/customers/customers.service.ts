@@ -4,14 +4,14 @@ import {
   ConflictException,
   BadRequestException,
 } from '@nestjs/common';
-import { AddressType } from '@prisma/client';
+import { AddressType, Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
-import { PaginationDto } from '../../common/dto/pagination.dto';
+import { CustomersQueryDto } from './dto/customers-query.dto';
 
 @Injectable()
 export class CustomersService {
@@ -52,12 +52,24 @@ export class CustomersService {
     return customer;
   }
 
-  async findAll(pagination: PaginationDto) {
-    const { page = 1, limit = 50 } = pagination;
+  async findAll(query: CustomersQueryDto) {
+    const { page = 1, limit = 50, search, isActive } = query;
     const skip = (page - 1) * limit;
+
+    const where: Prisma.CustomerWhereInput = {};
+    if (isActive !== undefined) where.isActive = isActive;
+    if (search) {
+      where.OR = [
+        { email: { contains: search, mode: 'insensitive' } },
+        { firstName: { contains: search, mode: 'insensitive' } },
+        { lastName: { contains: search, mode: 'insensitive' } },
+        { phone: { contains: search, mode: 'insensitive' } },
+      ];
+    }
 
     const [items, total] = await Promise.all([
       this.prisma.customer.findMany({
+        where,
         skip,
         take: limit,
         orderBy: { createdAt: 'desc' },
@@ -66,7 +78,7 @@ export class CustomersService {
           _count: { select: { orders: true } },
         },
       }),
-      this.prisma.customer.count(),
+      this.prisma.customer.count({ where }),
     ]);
 
     return {

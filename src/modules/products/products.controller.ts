@@ -36,10 +36,9 @@ export class ProductsController {
 
   @Get()
   @Permissions('products.read')
-  @ApiOperation({ summary: 'Get all products (paginated)' })
+  @ApiOperation({ summary: 'Get all products (paginated, searchable, filterable)' })
   async findAll(@Query() query: ProductsQueryDto) {
-    const { status, ...pagination } = query;
-    const data = await this.productsService.findAll(pagination, status);
+    const data = await this.productsService.findAll(query);
     return { message: 'Products fetched successfully', data };
   }
 

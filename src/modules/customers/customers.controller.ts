@@ -15,7 +15,7 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
-import { PaginationDto } from '../../common/dto/pagination.dto';
+import { CustomersQueryDto } from './dto/customers-query.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../../common/guards/permissions.guard';
 import { Permissions } from '../../common/decorators/permissions.decorator';
@@ -38,9 +38,9 @@ export class CustomersController {
 
   @Get()
   @Permissions('customers.read')
-  @ApiOperation({ summary: 'Get all customers (paginated)' })
-  async findAll(@Query() pagination: PaginationDto) {
-    const data = await this.customersService.findAll(pagination);
+  @ApiOperation({ summary: 'Get all customers (paginated, searchable, filterable)' })
+  async findAll(@Query() query: CustomersQueryDto) {
+    const data = await this.customersService.findAll(query);
     return { message: 'Customers fetched successfully', data };
   }
 

@@ -9,7 +9,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { PaginationDto } from '../../common/dto/pagination.dto';
+import { ProductsQueryDto } from './dto/products-query.dto';
 
 @Injectable()
 export class ProductsService {
@@ -106,12 +106,23 @@ export class ProductsService {
     return this.formatProduct(product);
   }
 
-  async findAll(pagination: PaginationDto, status?: ProductStatus) {
-    const { page = 1, limit = 50 } = pagination;
+  async findAll(query: ProductsQueryDto) {
+    const { page = 1, limit = 50, search, status, isActive, lowStock } = query;
     const skip = (page - 1) * limit;
 
     const where: Prisma.ProductWhereInput = {};
     if (status) where.status = status;
+    if (isActive !== undefined) where.isActive = isActive;
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { sku: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+    if (lowStock) {
+      where.trackQuantity = true;
+      where.isActive = isActive !== undefined ? isActive : true;
+    }
 
     const [items, total] = await Promise.all([
       this.prisma.product.findMany({

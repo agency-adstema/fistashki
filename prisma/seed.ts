@@ -33,6 +33,7 @@ const PERMISSIONS = [
   { key: 'orders.cancel',                name: 'Cancel Order',               description: 'Can cancel orders' },
   { key: 'orders.manage_payment',        name: 'Manage Order Payment',       description: 'Can update payment status' },
   { key: 'orders.manage_fulfillment',    name: 'Manage Order Fulfillment',   description: 'Can update fulfillment status' },
+  { key: 'dashboard.read',               name: 'Read Dashboard',             description: 'Can view admin dashboard stats' },
 ];
 
 async function main() {

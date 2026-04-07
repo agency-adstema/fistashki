@@ -251,13 +251,30 @@ export class OrdersService {
   }
 
   async findAll(query: OrdersQueryDto) {
-    const { page = 1, limit = 50, status, paymentStatus, customerId } = query;
+    const {
+      page = 1,
+      limit = 50,
+      search,
+      status,
+      paymentStatus,
+      fulfillmentStatus,
+      customerId,
+      dateFrom,
+      dateTo,
+    } = query;
     const skip = (page - 1) * limit;
 
     const where: Prisma.OrderWhereInput = {};
+    if (search) where.orderNumber = { contains: search, mode: 'insensitive' };
     if (status) where.status = status;
     if (paymentStatus) where.paymentStatus = paymentStatus;
+    if (fulfillmentStatus) where.fulfillmentStatus = fulfillmentStatus;
     if (customerId) where.customerId = customerId;
+    if (dateFrom || dateTo) {
+      where.createdAt = {};
+      if (dateFrom) where.createdAt.gte = new Date(dateFrom);
+      if (dateTo) where.createdAt.lte = new Date(dateTo);
+    }
 
     const [items, total] = await Promise.all([
       this.prisma.order.findMany({

@@ -80,6 +80,10 @@ const PERMISSIONS = [
     { key: 'shipments.create', name: 'Create Shipment', description: 'Can create shipments' },
     { key: 'shipments.update', name: 'Update Shipment', description: 'Can update shipment status and tracking' },
     { key: 'shipments.cancel', name: 'Cancel Shipment', description: 'Can cancel shipments' },
+    { key: 'carts.read', name: 'Read Carts', description: 'Can view all carts (admin)' },
+    { key: 'carts.create', name: 'Create Cart', description: 'Can create carts' },
+    { key: 'carts.update', name: 'Update Cart', description: 'Can modify carts' },
+    { key: 'carts.checkout', name: 'Checkout Cart', description: 'Can checkout a cart into an order' },
 ];
 async function main() {
     console.log('Starting seed...');

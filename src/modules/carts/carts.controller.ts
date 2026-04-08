@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { CartsService } from './carts.service';
+import { ApplyCouponDto } from '../coupons/dto/apply-coupon.dto';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
@@ -116,6 +117,20 @@ export class CartsController {
   async assignPaymentMethod(@Param('id') id: string, @Body() dto: AssignPaymentMethodDto) {
     const data = await this.cartsService.assignPaymentMethod(id, dto);
     return { message: 'Payment method assigned', data };
+  }
+
+  @Post(':id/apply-coupon')
+  @ApiOperation({ summary: 'Apply a coupon code to the cart (public)' })
+  async applyCoupon(@Param('id') id: string, @Body() dto: ApplyCouponDto) {
+    const data = await this.cartsService.applyCoupon(id, dto);
+    return { message: 'Coupon applied successfully', data };
+  }
+
+  @Post(':id/remove-coupon')
+  @ApiOperation({ summary: 'Remove the applied coupon from the cart (public)' })
+  async removeCoupon(@Param('id') id: string) {
+    const data = await this.cartsService.removeCoupon(id);
+    return { message: 'Coupon removed successfully', data };
   }
 
   @Post(':id/checkout')

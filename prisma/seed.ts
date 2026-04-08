@@ -51,6 +51,10 @@ const PERMISSIONS = [
   { key: 'carts.create',                 name: 'Create Cart',                description: 'Can create carts' },
   { key: 'carts.update',                 name: 'Update Cart',                description: 'Can modify carts' },
   { key: 'carts.checkout',               name: 'Checkout Cart',              description: 'Can checkout a cart into an order' },
+  { key: 'coupons.read',                 name: 'Read Coupons',               description: 'Can view coupons' },
+  { key: 'coupons.create',               name: 'Create Coupon',              description: 'Can create coupons' },
+  { key: 'coupons.update',               name: 'Update Coupon',              description: 'Can update coupons' },
+  { key: 'coupons.delete',               name: 'Delete Coupon',              description: 'Can delete coupons' },
 ];
 
 async function main() {

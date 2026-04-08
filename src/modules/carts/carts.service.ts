@@ -6,12 +6,14 @@ import {
 import { Prisma, CartStatus, ProductStatus, PaymentProvider } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { CouponsService } from '../coupons/coupons.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { AssignCustomerDto } from './dto/assign-customer.dto';
 import { AssignShippingMethodDto } from './dto/assign-shipping-method.dto';
 import { AssignPaymentMethodDto } from './dto/assign-payment-method.dto';
+import { ApplyCouponDto } from '../coupons/dto/apply-coupon.dto';
 import { CheckoutDto } from './dto/checkout.dto';
 import { CartsQueryDto } from './dto/carts-query.dto';
 import { recalculateCartTotals } from './carts.utils';
@@ -29,6 +31,7 @@ const CART_INCLUDE = {
   },
   customer: { select: { id: true, email: true, firstName: true, lastName: true } },
   shippingMethod: { select: { id: true, key: true, name: true, price: true } },
+  coupon: { select: { id: true, code: true, type: true, value: true } },
 } as const;
 
 @Injectable()
@@ -36,6 +39,7 @@ export class CartsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly auditLogsService: AuditLogsService,
+    private readonly couponsService: CouponsService,
   ) {}
 
   private formatCart(cart: any) {
@@ -369,6 +373,66 @@ export class CartsService {
     return this.formatCart(updatedCart);
   }
 
+  async applyCoupon(cartId: string, dto: ApplyCouponDto, actorUserId?: string) {
+    const cart = await this.findById(cartId);
+    this.assertCartEditable(cart);
+
+    const subtotal = new Prisma.Decimal(cart.subtotal);
+    const { coupon, discount } = await this.couponsService.validateForCart(
+      dto.code,
+      subtotal,
+      dto.customerId ?? cart.customerId ?? undefined,
+    );
+
+    const updatedCart = await this.prisma.$transaction(async (tx) => {
+      await tx.cart.update({
+        where: { id: cartId },
+        data: { couponId: coupon.id },
+      });
+      return this.recomputeAndSave(
+        tx,
+        cartId,
+        new Prisma.Decimal(cart.shippingTotal),
+        discount,
+      );
+    });
+
+    await this.auditLogsService.log({
+      actorUserId,
+      action: 'coupon.applied',
+      entityType: 'Cart',
+      entityId: cartId,
+      metadata: { couponCode: coupon.code, discount: Number(discount) },
+    });
+
+    return this.formatCart(updatedCart);
+  }
+
+  async removeCoupon(cartId: string, actorUserId?: string) {
+    const cart = await this.findById(cartId);
+    this.assertCartEditable(cart);
+
+    const updatedCart = await this.prisma.$transaction(async (tx) => {
+      await tx.cart.update({ where: { id: cartId }, data: { couponId: null } });
+      return this.recomputeAndSave(
+        tx,
+        cartId,
+        new Prisma.Decimal(cart.shippingTotal),
+        new Prisma.Decimal(0),
+      );
+    });
+
+    await this.auditLogsService.log({
+      actorUserId,
+      action: 'coupon.removed',
+      entityType: 'Cart',
+      entityId: cartId,
+      metadata: {},
+    });
+
+    return this.formatCart(updatedCart);
+  }
+
   async assignPaymentMethod(cartId: string, dto: AssignPaymentMethodDto, actorUserId?: string) {
     const cart = await this.findById(cartId);
     this.assertCartEditable(cart);
@@ -556,6 +620,23 @@ export class CartsService {
 
     if (!order) {
       throw new BadRequestException('Checkout failed after multiple attempts. Please try again.');
+    }
+
+    // Record coupon usage if a coupon was applied
+    if (cart.couponId) {
+      try {
+        await this.prisma.$transaction(async (tx) => {
+          await tx.couponUsage.create({
+            data: { couponId: cart.couponId!, orderId: order.id },
+          });
+          await tx.coupon.update({
+            where: { id: cart.couponId! },
+            data: { usedCount: { increment: 1 } },
+          });
+        });
+      } catch {
+        // Non-fatal: order already created
+      }
     }
 
     // Create payment record if paymentMethod is set on cart

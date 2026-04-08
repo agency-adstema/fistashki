@@ -290,6 +290,7 @@ model Order {
   items           OrderItem[]
   payments        Payment[]
   shipments       Shipment[]
+  couponUsages    CouponUsage[]
 
   @@index([customerId])
   @@index([status])
@@ -403,6 +404,51 @@ model Shipment {
   @@map("shipments")
 }
 
+enum CouponType {
+  PERCENTAGE
+  FIXED
+}
+
+model Coupon {
+  id                String     @id @default(cuid())
+  code              String     @unique
+  type              CouponType
+  value             Decimal    @db.Decimal(10, 2)
+  currency          String     @default("USD")
+  minOrderAmount    Decimal?   @db.Decimal(10, 2)
+  maxDiscountAmount Decimal?   @db.Decimal(10, 2)
+  usageLimit        Int?
+  usedCount         Int        @default(0)
+  perUserLimit      Int?
+  isActive          Boolean    @default(true)
+  validFrom         DateTime
+  validTo           DateTime
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  usages CouponUsage[]
+  carts  Cart[]
+
+  @@index([code])
+  @@index([isActive])
+  @@map("coupons")
+}
+
+model CouponUsage {
+  id        String   @id @default(cuid())
+  couponId  String
+  orderId   String
+  userId    String?
+  usedAt    DateTime @default(now())
+
+  coupon Coupon @relation(fields: [couponId], references: [id])
+  order  Order  @relation(fields: [orderId], references: [id])
+
+  @@index([couponId])
+  @@index([orderId])
+  @@map("coupon_usages")
+}
+
 enum CartStatus {
   ACTIVE
   CHECKED_OUT
@@ -427,8 +473,11 @@ model Cart {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
+  couponId       String?
+
   customer       Customer?       @relation(fields: [customerId], references: [id])
   shippingMethod ShippingMethod? @relation(fields: [shippingMethodId], references: [id])
+  coupon         Coupon?         @relation(fields: [couponId], references: [id])
   items          CartItem[]
 
   @@index([customerId])

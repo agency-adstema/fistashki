@@ -287,6 +287,7 @@ model Order {
   shippingAddress CustomerAddress? @relation(fields: [shippingAddressId], references: [id])
   items           OrderItem[]
   payments        Payment[]
+  shipments       Shipment[]
 
   @@index([customerId])
   @@index([status])
@@ -342,6 +343,61 @@ model Payment {
   @@index([orderId])
   @@index([status])
   @@map("payments")
+}
+
+enum ShipmentStatus {
+  PENDING
+  READY_TO_SHIP
+  SHIPPED
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+  LOST
+  CANCELLED
+}
+
+model ShippingMethod {
+  id               String   @id @default(cuid())
+  key              String   @unique
+  name             String
+  description      String?
+  price            Decimal  @db.Decimal(10, 2)
+  currency         String   @default("USD")
+  estimatedMinDays Int?
+  estimatedMaxDays Int?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  shipments Shipment[]
+
+  @@index([isActive])
+  @@map("shipping_methods")
+}
+
+model Shipment {
+  id               String         @id @default(cuid())
+  orderId          String
+  shippingMethodId String?
+  courier          String?
+  service          String?
+  trackingNumber   String?
+  trackingUrl      String?
+  status           ShipmentStatus @default(PENDING)
+  shippedAt        DateTime?
+  deliveredAt      DateTime?
+  notes            String?
+  metadata         Json?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  order          Order           @relation(fields: [orderId], references: [id])
+  shippingMethod ShippingMethod? @relation(fields: [shippingMethodId], references: [id])
+
+  @@index([orderId])
+  @@index([status])
+  @@index([trackingNumber])
+  @@map("shipments")
 }
 
 model OrderItem {

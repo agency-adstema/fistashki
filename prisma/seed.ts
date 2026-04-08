@@ -39,6 +39,14 @@ const PERMISSIONS = [
   { key: 'payments.mark_paid',           name: 'Mark Payment Paid',          description: 'Can mark a payment as paid' },
   { key: 'payments.mark_failed',         name: 'Mark Payment Failed',        description: 'Can mark a payment as failed' },
   { key: 'payments.refund',              name: 'Refund Payment',             description: 'Can refund a payment' },
+  { key: 'shipping_methods.read',        name: 'Read Shipping Methods',      description: 'Can view shipping methods' },
+  { key: 'shipping_methods.create',      name: 'Create Shipping Method',     description: 'Can create shipping methods' },
+  { key: 'shipping_methods.update',      name: 'Update Shipping Method',     description: 'Can update shipping methods' },
+  { key: 'shipping_methods.delete',      name: 'Delete Shipping Method',     description: 'Can delete shipping methods' },
+  { key: 'shipments.read',               name: 'Read Shipments',             description: 'Can view shipments' },
+  { key: 'shipments.create',             name: 'Create Shipment',            description: 'Can create shipments' },
+  { key: 'shipments.update',             name: 'Update Shipment',            description: 'Can update shipment status and tracking' },
+  { key: 'shipments.cancel',             name: 'Cancel Shipment',            description: 'Can cancel shipments' },
 ];
 
 async function main() {

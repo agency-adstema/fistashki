@@ -88,6 +88,14 @@ const PERMISSIONS = [
     { key: 'coupons.create', name: 'Create Coupon', description: 'Can create coupons' },
     { key: 'coupons.update', name: 'Update Coupon', description: 'Can update coupons' },
     { key: 'coupons.delete', name: 'Delete Coupon', description: 'Can delete coupons' },
+    { key: 'returns.read', name: 'Read Returns', description: 'Can view return requests' },
+    { key: 'returns.create', name: 'Create Return', description: 'Can create return requests' },
+    { key: 'returns.approve', name: 'Approve Return', description: 'Can approve return requests' },
+    { key: 'returns.reject', name: 'Reject Return', description: 'Can reject return requests' },
+    { key: 'returns.receive', name: 'Receive Return', description: 'Can mark return items as received' },
+    { key: 'returns.refund', name: 'Refund Return', description: 'Can process refunds for returns' },
+    { key: 'returns.complete', name: 'Complete Return', description: 'Can complete return requests' },
+    { key: 'returns.cancel', name: 'Cancel Return', description: 'Can cancel return requests' },
 ];
 async function main() {
     console.log('Starting seed...');

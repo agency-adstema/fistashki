@@ -150,7 +150,7 @@ let OrdersService = class OrdersService {
                         }
                     }
                     return createdOrder;
-                }, { isolationLevel: client_1.Prisma.TransactionIsolationLevel.Serializable });
+                });
                 await this.auditLogsService.log({
                     actorUserId,
                     action: 'order.created',
@@ -169,7 +169,7 @@ let OrdersService = class OrdersService {
                     err instanceof common_1.BadRequestException) {
                     throw err;
                 }
-                if (err?.code === 'P2002') {
+                if (err?.code === 'P2002' || err?.code === 'P2034') {
                     continue;
                 }
                 throw err;
@@ -355,7 +355,7 @@ let OrdersService = class OrdersService {
                 }
             }
             return cancelledOrder;
-        }, { isolationLevel: client_1.Prisma.TransactionIsolationLevel.Serializable });
+        });
         await this.auditLogsService.log({
             actorUserId,
             action: 'order.cancelled',

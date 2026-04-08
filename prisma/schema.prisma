@@ -18,8 +18,11 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  userRoles UserRole[]
-  auditLogs AuditLog[]
+  userRoles      UserRole[]
+  auditLogs      AuditLog[]
+  orderNotes     OrderNote[]
+  customerNotes  CustomerNote[]
+  assignedOrders Order[]        @relation("OrderAssignee")
 
   @@index([email])
   @@map("users")
@@ -199,6 +202,13 @@ enum AddressType {
   BILLING
 }
 
+enum OrderPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
 enum OrderStatus {
   PENDING
   CONFIRMED
@@ -240,6 +250,7 @@ model Customer {
   orders         Order[]
   carts          Cart[]
   returnRequests ReturnRequest[]
+  internalNotes  CustomerNote[]
 
   @@index([email])
   @@map("customers")
@@ -276,6 +287,9 @@ model Order {
   status            OrderStatus       @default(PENDING)
   paymentStatus     PaymentStatus     @default(UNPAID)
   fulfillmentStatus FulfillmentStatus @default(UNFULFILLED)
+  priority          OrderPriority     @default(NORMAL)
+  assignedToUserId  String?
+  assignedAt        DateTime?
   notes             String?
   subtotal          Decimal           @db.Decimal(10, 2)
   discountTotal     Decimal           @default(0) @db.Decimal(10, 2)
@@ -289,11 +303,14 @@ model Order {
 
   customer        Customer         @relation(fields: [customerId], references: [id])
   shippingAddress CustomerAddress? @relation(fields: [shippingAddressId], references: [id])
+  assignedTo      User?            @relation("OrderAssignee", fields: [assignedToUserId], references: [id], onDelete: SetNull)
   items           OrderItem[]
   payments        Payment[]
   shipments       Shipment[]
   couponUsages    CouponUsage[]
   returnRequests  ReturnRequest[]
+  orderNotes      OrderNote[]
+  tagAssignments  OrderTagAssignment[]
 
   @@index([customerId])
   @@index([status])
@@ -580,4 +597,66 @@ model ReturnItem {
   @@index([returnRequestId])
   @@index([orderItemId])
   @@map("return_items")
+}
+
+model OrderNote {
+  id           String   @id @default(cuid())
+  orderId      String
+  authorUserId String?
+  content      String
+  isPinned     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  order  Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  author User? @relation(fields: [authorUserId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([isPinned])
+  @@map("order_notes")
+}
+
+model CustomerNote {
+  id           String   @id @default(cuid())
+  customerId   String
+  authorUserId String?
+  content      String
+  isPinned     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  author   User?    @relation(fields: [authorUserId], references: [id], onDelete: SetNull)
+
+  @@index([customerId])
+  @@index([isPinned])
+  @@map("customer_notes")
+}
+
+model OrderTag {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  name      String
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  assignments OrderTagAssignment[]
+
+  @@index([key])
+  @@map("order_tags")
+}
+
+model OrderTagAssignment {
+  orderId   String
+  tagId     String
+  createdAt DateTime @default(now())
+
+  order Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  tag   OrderTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([orderId, tagId])
+  @@index([orderId])
+  @@index([tagId])
+  @@map("order_tag_assignments")
 }

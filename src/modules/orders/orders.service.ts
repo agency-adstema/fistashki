@@ -261,6 +261,9 @@ export class OrdersService {
       customerId,
       dateFrom,
       dateTo,
+      assignedToUserId,
+      priority,
+      tagId,
     } = query;
     const skip = (page - 1) * limit;
 
@@ -270,6 +273,9 @@ export class OrdersService {
     if (paymentStatus) where.paymentStatus = paymentStatus;
     if (fulfillmentStatus) where.fulfillmentStatus = fulfillmentStatus;
     if (customerId) where.customerId = customerId;
+    if (assignedToUserId) where.assignedToUserId = assignedToUserId;
+    if (priority) where.priority = priority;
+    if (tagId) where.tagAssignments = { some: { tagId } };
     if (dateFrom || dateTo) {
       where.createdAt = {};
       if (dateFrom) where.createdAt.gte = new Date(dateFrom);
@@ -286,8 +292,12 @@ export class OrdersService {
           customer: {
             select: { id: true, email: true, firstName: true, lastName: true },
           },
+          assignedTo: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
           shippingAddress: true,
           items: true,
+          tagAssignments: { include: { tag: true } },
         },
       }),
       this.prisma.order.count({ where }),
@@ -309,6 +319,9 @@ export class OrdersService {
         customer: {
           select: { id: true, email: true, firstName: true, lastName: true, phone: true },
         },
+        assignedTo: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
         shippingAddress: true,
         items: {
           include: {
@@ -317,6 +330,7 @@ export class OrdersService {
             },
           },
         },
+        tagAssignments: { include: { tag: true } },
       },
     });
     if (!order) throw new NotFoundException('Order not found');

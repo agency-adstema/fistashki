@@ -1,6 +1,6 @@
 import { IsEnum, IsOptional, IsString, IsDateString } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { OrderStatus, PaymentStatus, FulfillmentStatus } from '@prisma/client';
+import { OrderStatus, PaymentStatus, FulfillmentStatus, OrderPriority } from '@prisma/client';
 import { PaginationDto } from '../../../common/dto/pagination.dto';
 
 export class OrdersQueryDto extends PaginationDto {
@@ -38,4 +38,19 @@ export class OrdersQueryDto extends PaginationDto {
   @IsOptional()
   @IsDateString()
   dateTo?: string;
+
+  @ApiPropertyOptional({ description: 'Filter by assigned admin user ID' })
+  @IsOptional()
+  @IsString()
+  assignedToUserId?: string;
+
+  @ApiPropertyOptional({ enum: OrderPriority, description: 'Filter by priority' })
+  @IsOptional()
+  @IsEnum(OrderPriority)
+  priority?: OrderPriority;
+
+  @ApiPropertyOptional({ description: 'Filter orders that have this tag ID' })
+  @IsOptional()
+  @IsString()
+  tagId?: string;
 }

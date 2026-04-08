@@ -63,6 +63,21 @@ const PERMISSIONS = [
   { key: 'returns.refund',               name: 'Refund Return',              description: 'Can process refunds for returns' },
   { key: 'returns.complete',             name: 'Complete Return',            description: 'Can complete return requests' },
   { key: 'returns.cancel',               name: 'Cancel Return',              description: 'Can cancel return requests' },
+  { key: 'order_notes.read',             name: 'Read Order Notes',           description: 'Can view order internal notes' },
+  { key: 'order_notes.create',           name: 'Create Order Note',          description: 'Can create order internal notes' },
+  { key: 'order_notes.update',           name: 'Update Order Note',          description: 'Can update order internal notes' },
+  { key: 'order_notes.delete',           name: 'Delete Order Note',          description: 'Can delete order internal notes' },
+  { key: 'customer_notes.read',          name: 'Read Customer Notes',        description: 'Can view customer internal notes' },
+  { key: 'customer_notes.create',        name: 'Create Customer Note',       description: 'Can create customer internal notes' },
+  { key: 'customer_notes.update',        name: 'Update Customer Note',       description: 'Can update customer internal notes' },
+  { key: 'customer_notes.delete',        name: 'Delete Customer Note',       description: 'Can delete customer internal notes' },
+  { key: 'order_tags.read',              name: 'Read Order Tags',            description: 'Can view order tags' },
+  { key: 'order_tags.create',            name: 'Create Order Tag',           description: 'Can create and assign order tags' },
+  { key: 'order_tags.update',            name: 'Update Order Tag',           description: 'Can update order tags' },
+  { key: 'order_tags.delete',            name: 'Delete Order Tag',           description: 'Can delete order tags and remove assignments' },
+  { key: 'orders.assign',               name: 'Assign Order',               description: 'Can assign/unassign orders to admin users' },
+  { key: 'orders.set_priority',         name: 'Set Order Priority',         description: 'Can change order priority' },
+  { key: 'orders.timeline.read',        name: 'Read Order Timeline',        description: 'Can view order timeline' },
 ];
 
 async function main() {

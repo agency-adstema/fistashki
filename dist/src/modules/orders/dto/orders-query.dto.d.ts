@@ -1,4 +1,4 @@
-import { OrderStatus, PaymentStatus, FulfillmentStatus } from '@prisma/client';
+import { OrderStatus, PaymentStatus, FulfillmentStatus, OrderPriority } from '@prisma/client';
 import { PaginationDto } from '../../../common/dto/pagination.dto';
 export declare class OrdersQueryDto extends PaginationDto {
     search?: string;
@@ -8,4 +8,7 @@ export declare class OrdersQueryDto extends PaginationDto {
     customerId?: string;
     dateFrom?: string;
     dateTo?: string;
+    assignedToUserId?: string;
+    priority?: OrderPriority;
+    tagId?: string;
 }

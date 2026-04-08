@@ -178,7 +178,7 @@ let OrdersService = class OrdersService {
         throw new common_1.InternalServerErrorException('Failed to generate a unique order number after multiple attempts. Please try again.');
     }
     async findAll(query) {
-        const { page = 1, limit = 50, search, status, paymentStatus, fulfillmentStatus, customerId, dateFrom, dateTo, } = query;
+        const { page = 1, limit = 50, search, status, paymentStatus, fulfillmentStatus, customerId, dateFrom, dateTo, assignedToUserId, priority, tagId, } = query;
         const skip = (page - 1) * limit;
         const where = {};
         if (search)
@@ -191,6 +191,12 @@ let OrdersService = class OrdersService {
             where.fulfillmentStatus = fulfillmentStatus;
         if (customerId)
             where.customerId = customerId;
+        if (assignedToUserId)
+            where.assignedToUserId = assignedToUserId;
+        if (priority)
+            where.priority = priority;
+        if (tagId)
+            where.tagAssignments = { some: { tagId } };
         if (dateFrom || dateTo) {
             where.createdAt = {};
             if (dateFrom)
@@ -208,8 +214,12 @@ let OrdersService = class OrdersService {
                     customer: {
                         select: { id: true, email: true, firstName: true, lastName: true },
                     },
+                    assignedTo: {
+                        select: { id: true, firstName: true, lastName: true, email: true },
+                    },
                     shippingAddress: true,
                     items: true,
+                    tagAssignments: { include: { tag: true } },
                 },
             }),
             this.prisma.order.count({ where }),
@@ -229,6 +239,9 @@ let OrdersService = class OrdersService {
                 customer: {
                     select: { id: true, email: true, firstName: true, lastName: true, phone: true },
                 },
+                assignedTo: {
+                    select: { id: true, firstName: true, lastName: true, email: true },
+                },
                 shippingAddress: true,
                 items: {
                     include: {
@@ -237,6 +250,7 @@ let OrdersService = class OrdersService {
                         },
                     },
                 },
+                tagAssignments: { include: { tag: true } },
             },
         });
         if (!order)

@@ -22,6 +22,9 @@ class OrdersQueryDto extends pagination_dto_1.PaginationDto {
     customerId;
     dateFrom;
     dateTo;
+    assignedToUserId;
+    priority;
+    tagId;
 }
 exports.OrdersQueryDto = OrdersQueryDto;
 __decorate([
@@ -66,4 +69,22 @@ __decorate([
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
 ], OrdersQueryDto.prototype, "dateTo", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Filter by assigned admin user ID' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], OrdersQueryDto.prototype, "assignedToUserId", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ enum: client_1.OrderPriority, description: 'Filter by priority' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(client_1.OrderPriority),
+    __metadata("design:type", String)
+], OrdersQueryDto.prototype, "priority", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Filter orders that have this tag ID' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], OrdersQueryDto.prototype, "tagId", void 0);
 //# sourceMappingURL=orders-query.dto.js.map

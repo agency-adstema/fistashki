@@ -1,4 +1,5 @@
 import { CartsService } from './carts.service';
+import { ApplyCouponDto } from '../coupons/dto/apply-coupon.dto';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
@@ -57,6 +58,14 @@ export declare class CartsController {
         data: any;
     }>;
     assignPaymentMethod(id: string, dto: AssignPaymentMethodDto): Promise<{
+        message: string;
+        data: any;
+    }>;
+    applyCoupon(id: string, dto: ApplyCouponDto): Promise<{
+        message: string;
+        data: any;
+    }>;
+    removeCoupon(id: string): Promise<{
         message: string;
         data: any;
     }>;

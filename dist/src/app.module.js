@@ -23,6 +23,7 @@ const dashboard_module_1 = require("./modules/dashboard/dashboard.module");
 const payments_module_1 = require("./modules/payments/payments.module");
 const shipping_module_1 = require("./modules/shipping/shipping.module");
 const carts_module_1 = require("./modules/carts/carts.module");
+const coupons_module_1 = require("./modules/coupons/coupons.module");
 const health_module_1 = require("./health/health.module");
 let AppModule = class AppModule {
 };
@@ -49,6 +50,7 @@ exports.AppModule = AppModule = __decorate([
             payments_module_1.PaymentsModule,
             shipping_module_1.ShippingModule,
             carts_module_1.CartsModule,
+            coupons_module_1.CouponsModule,
         ],
     })
 ], AppModule);

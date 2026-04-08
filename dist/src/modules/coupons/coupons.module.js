@@ -6,21 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CartsModule = void 0;
+exports.CouponsModule = void 0;
 const common_1 = require("@nestjs/common");
-const carts_service_1 = require("./carts.service");
-const carts_controller_1 = require("./carts.controller");
+const coupons_service_1 = require("./coupons.service");
+const coupons_controller_1 = require("./coupons.controller");
 const audit_logs_module_1 = require("../audit-logs/audit-logs.module");
-const coupons_module_1 = require("../coupons/coupons.module");
-let CartsModule = class CartsModule {
+let CouponsModule = class CouponsModule {
 };
-exports.CartsModule = CartsModule;
-exports.CartsModule = CartsModule = __decorate([
+exports.CouponsModule = CouponsModule;
+exports.CouponsModule = CouponsModule = __decorate([
     (0, common_1.Module)({
-        imports: [audit_logs_module_1.AuditLogsModule, coupons_module_1.CouponsModule],
-        providers: [carts_service_1.CartsService],
-        controllers: [carts_controller_1.CartsController],
-        exports: [carts_service_1.CartsService],
+        imports: [audit_logs_module_1.AuditLogsModule],
+        providers: [coupons_service_1.CouponsService],
+        controllers: [coupons_controller_1.CouponsController],
+        exports: [coupons_service_1.CouponsService],
     })
-], CartsModule);
-//# sourceMappingURL=carts.module.js.map
+], CouponsModule);
+//# sourceMappingURL=coupons.module.js.map

@@ -1,17 +1,20 @@
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { CouponsService } from '../coupons/coupons.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { AssignCustomerDto } from './dto/assign-customer.dto';
 import { AssignShippingMethodDto } from './dto/assign-shipping-method.dto';
 import { AssignPaymentMethodDto } from './dto/assign-payment-method.dto';
+import { ApplyCouponDto } from '../coupons/dto/apply-coupon.dto';
 import { CheckoutDto } from './dto/checkout.dto';
 import { CartsQueryDto } from './dto/carts-query.dto';
 export declare class CartsService {
     private readonly prisma;
     private readonly auditLogsService;
-    constructor(prisma: PrismaService, auditLogsService: AuditLogsService);
+    private readonly couponsService;
+    constructor(prisma: PrismaService, auditLogsService: AuditLogsService, couponsService: CouponsService);
     private formatCart;
     private assertCartEditable;
     private recomputeAndSave;
@@ -31,6 +34,8 @@ export declare class CartsService {
     clearItems(cartId: string, actorUserId?: string): Promise<any>;
     assignCustomer(cartId: string, dto: AssignCustomerDto, actorUserId?: string): Promise<any>;
     assignShippingMethod(cartId: string, dto: AssignShippingMethodDto, actorUserId?: string): Promise<any>;
+    applyCoupon(cartId: string, dto: ApplyCouponDto, actorUserId?: string): Promise<any>;
+    removeCoupon(cartId: string, actorUserId?: string): Promise<any>;
     assignPaymentMethod(cartId: string, dto: AssignPaymentMethodDto, actorUserId?: string): Promise<any>;
     checkout(cartId: string, dto: CheckoutDto, actorUserId?: string): Promise<{
         order: any;

@@ -16,6 +16,7 @@ exports.CartsController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const carts_service_1 = require("./carts.service");
+const apply_coupon_dto_1 = require("../coupons/dto/apply-coupon.dto");
 const create_cart_dto_1 = require("./dto/create-cart.dto");
 const add_cart_item_dto_1 = require("./dto/add-cart-item.dto");
 const update_cart_item_dto_1 = require("./dto/update-cart-item.dto");
@@ -75,6 +76,14 @@ let CartsController = class CartsController {
     async assignPaymentMethod(id, dto) {
         const data = await this.cartsService.assignPaymentMethod(id, dto);
         return { message: 'Payment method assigned', data };
+    }
+    async applyCoupon(id, dto) {
+        const data = await this.cartsService.applyCoupon(id, dto);
+        return { message: 'Coupon applied successfully', data };
+    }
+    async removeCoupon(id) {
+        const data = await this.cartsService.removeCoupon(id);
+        return { message: 'Coupon removed successfully', data };
     }
     async checkout(id, dto) {
         const data = await this.cartsService.checkout(id, dto);
@@ -180,6 +189,23 @@ __decorate([
     __metadata("design:paramtypes", [String, assign_payment_method_dto_1.AssignPaymentMethodDto]),
     __metadata("design:returntype", Promise)
 ], CartsController.prototype, "assignPaymentMethod", null);
+__decorate([
+    (0, common_1.Post)(':id/apply-coupon'),
+    (0, swagger_1.ApiOperation)({ summary: 'Apply a coupon code to the cart (public)' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, apply_coupon_dto_1.ApplyCouponDto]),
+    __metadata("design:returntype", Promise)
+], CartsController.prototype, "applyCoupon", null);
+__decorate([
+    (0, common_1.Post)(':id/remove-coupon'),
+    (0, swagger_1.ApiOperation)({ summary: 'Remove the applied coupon from the cart (public)' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CartsController.prototype, "removeCoupon", null);
 __decorate([
     (0, common_1.Post)(':id/checkout'),
     (0, swagger_1.ApiOperation)({ summary: 'Checkout cart into order (public; supports guest and existing customer)' }),

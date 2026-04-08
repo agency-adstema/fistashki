@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../../prisma/prisma.service");
 const audit_logs_service_1 = require("../audit-logs/audit-logs.service");
+const coupons_service_1 = require("../coupons/coupons.service");
 const carts_utils_1 = require("./carts.utils");
 const orders_utils_1 = require("../orders/orders.utils");
 const CART_INCLUDE = {
@@ -25,13 +26,16 @@ const CART_INCLUDE = {
     },
     customer: { select: { id: true, email: true, firstName: true, lastName: true } },
     shippingMethod: { select: { id: true, key: true, name: true, price: true } },
+    coupon: { select: { id: true, code: true, type: true, value: true } },
 };
 let CartsService = class CartsService {
     prisma;
     auditLogsService;
-    constructor(prisma, auditLogsService) {
+    couponsService;
+    constructor(prisma, auditLogsService, couponsService) {
         this.prisma = prisma;
         this.auditLogsService = auditLogsService;
+        this.couponsService = couponsService;
     }
     formatCart(cart) {
         return {
@@ -288,6 +292,43 @@ let CartsService = class CartsService {
         });
         return this.formatCart(updatedCart);
     }
+    async applyCoupon(cartId, dto, actorUserId) {
+        const cart = await this.findById(cartId);
+        this.assertCartEditable(cart);
+        const subtotal = new client_1.Prisma.Decimal(cart.subtotal);
+        const { coupon, discount } = await this.couponsService.validateForCart(dto.code, subtotal, dto.customerId ?? cart.customerId ?? undefined);
+        const updatedCart = await this.prisma.$transaction(async (tx) => {
+            await tx.cart.update({
+                where: { id: cartId },
+                data: { couponId: coupon.id },
+            });
+            return this.recomputeAndSave(tx, cartId, new client_1.Prisma.Decimal(cart.shippingTotal), discount);
+        });
+        await this.auditLogsService.log({
+            actorUserId,
+            action: 'coupon.applied',
+            entityType: 'Cart',
+            entityId: cartId,
+            metadata: { couponCode: coupon.code, discount: Number(discount) },
+        });
+        return this.formatCart(updatedCart);
+    }
+    async removeCoupon(cartId, actorUserId) {
+        const cart = await this.findById(cartId);
+        this.assertCartEditable(cart);
+        const updatedCart = await this.prisma.$transaction(async (tx) => {
+            await tx.cart.update({ where: { id: cartId }, data: { couponId: null } });
+            return this.recomputeAndSave(tx, cartId, new client_1.Prisma.Decimal(cart.shippingTotal), new client_1.Prisma.Decimal(0));
+        });
+        await this.auditLogsService.log({
+            actorUserId,
+            action: 'coupon.removed',
+            entityType: 'Cart',
+            entityId: cartId,
+            metadata: {},
+        });
+        return this.formatCart(updatedCart);
+    }
     async assignPaymentMethod(cartId, dto, actorUserId) {
         const cart = await this.findById(cartId);
         this.assertCartEditable(cart);
@@ -438,6 +479,21 @@ let CartsService = class CartsService {
         if (!order) {
             throw new common_1.BadRequestException('Checkout failed after multiple attempts. Please try again.');
         }
+        if (cart.couponId) {
+            try {
+                await this.prisma.$transaction(async (tx) => {
+                    await tx.couponUsage.create({
+                        data: { couponId: cart.couponId, orderId: order.id },
+                    });
+                    await tx.coupon.update({
+                        where: { id: cart.couponId },
+                        data: { usedCount: { increment: 1 } },
+                    });
+                });
+            }
+            catch {
+            }
+        }
         let payment = null;
         if (cart.paymentMethod) {
             try {
@@ -491,6 +547,7 @@ exports.CartsService = CartsService;
 exports.CartsService = CartsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        audit_logs_service_1.AuditLogsService])
+        audit_logs_service_1.AuditLogsService,
+        coupons_service_1.CouponsService])
 ], CartsService);
 //# sourceMappingURL=carts.service.js.map

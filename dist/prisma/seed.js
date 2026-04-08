@@ -67,6 +67,11 @@ const PERMISSIONS = [
     { key: 'orders.manage_payment', name: 'Manage Order Payment', description: 'Can update payment status' },
     { key: 'orders.manage_fulfillment', name: 'Manage Order Fulfillment', description: 'Can update fulfillment status' },
     { key: 'dashboard.read', name: 'Read Dashboard', description: 'Can view admin dashboard stats' },
+    { key: 'payments.read', name: 'Read Payments', description: 'Can view payments' },
+    { key: 'payments.create', name: 'Create Payment', description: 'Can create payment records' },
+    { key: 'payments.mark_paid', name: 'Mark Payment Paid', description: 'Can mark a payment as paid' },
+    { key: 'payments.mark_failed', name: 'Mark Payment Failed', description: 'Can mark a payment as failed' },
+    { key: 'payments.refund', name: 'Refund Payment', description: 'Can refund a payment' },
 ];
 async function main() {
     console.log('Starting seed...');

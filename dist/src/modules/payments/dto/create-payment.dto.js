@@ -1,0 +1,68 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CreatePaymentDto = void 0;
+const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
+const client_1 = require("@prisma/client");
+class CreatePaymentDto {
+    orderId;
+    method;
+    provider;
+    amount;
+    currency;
+    providerTransactionId;
+    metadata;
+}
+exports.CreatePaymentDto = CreatePaymentDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Order ID to attach this payment to' }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "orderId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ enum: client_1.PaymentMethod }),
+    (0, class_validator_1.IsEnum)(client_1.PaymentMethod),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "method", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ enum: client_1.PaymentProvider }),
+    (0, class_validator_1.IsEnum)(client_1.PaymentProvider),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "provider", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Override amount (defaults to order grandTotal)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0.01),
+    __metadata("design:type", Number)
+], CreatePaymentDto.prototype, "amount", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ default: 'USD' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(10),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "currency", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(255),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "providerTransactionId", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Arbitrary provider metadata (JSON)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsObject)(),
+    __metadata("design:type", Object)
+], CreatePaymentDto.prototype, "metadata", void 0);
+//# sourceMappingURL=create-payment.dto.js.map

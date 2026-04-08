@@ -286,11 +286,62 @@ model Order {
   customer        Customer         @relation(fields: [customerId], references: [id])
   shippingAddress CustomerAddress? @relation(fields: [shippingAddressId], references: [id])
   items           OrderItem[]
+  payments        Payment[]
 
   @@index([customerId])
   @@index([status])
   @@index([orderNumber])
   @@map("orders")
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+  BANK_TRANSFER
+  CARD
+  MANUAL
+}
+
+enum PaymentProvider {
+  MANUAL
+  STRIPE
+  PAYPAL
+  COD
+  BANK
+}
+
+enum PaymentRecordStatus {
+  PENDING
+  AUTHORIZED
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+  CANCELLED
+}
+
+model Payment {
+  id                    String              @id @default(cuid())
+  orderId               String
+  method                PaymentMethod
+  provider              PaymentProvider
+  providerTransactionId String?
+  status                PaymentRecordStatus @default(PENDING)
+  amount                Decimal             @db.Decimal(10, 2)
+  currency              String              @default("USD")
+  refundedAmount        Decimal             @default(0) @db.Decimal(10, 2)
+  metadata              Json?
+  failureReason         String?
+  paidAt                DateTime?
+  failedAt              DateTime?
+  refundedAt            DateTime?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@index([status])
+  @@map("payments")
 }
 
 model OrderItem {

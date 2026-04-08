@@ -210,7 +210,7 @@ export class OrdersService {
           }
 
           return createdOrder;
-        }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+        });
 
         // 8. Audit log (outside transaction — failure here must not roll back the order)
         await this.auditLogsService.log({
@@ -235,8 +235,8 @@ export class OrdersService {
           throw err;
         }
 
-        // Prisma unique constraint violation (P2002) on orderNumber → retry
-        if (err?.code === 'P2002') {
+        // Prisma unique constraint (P2002) or serialization failure (P2034) → retry
+        if (err?.code === 'P2002' || err?.code === 'P2034') {
           continue;
         }
 
@@ -469,7 +469,7 @@ export class OrdersService {
       }
 
       return cancelledOrder;
-    }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    });
 
     await this.auditLogsService.log({
       actorUserId,

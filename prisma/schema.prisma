@@ -157,6 +157,7 @@ model Product {
   productCategories ProductCategory[]
   orderItems        OrderItem[]
   cartItems         CartItem[]
+  returnItems       ReturnItem[]
 
   @@index([slug])
   @@index([sku])
@@ -235,9 +236,10 @@ model Customer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  addresses CustomerAddress[]
-  orders    Order[]
-  carts     Cart[]
+  addresses      CustomerAddress[]
+  orders         Order[]
+  carts          Cart[]
+  returnRequests ReturnRequest[]
 
   @@index([email])
   @@map("customers")
@@ -291,6 +293,7 @@ model Order {
   payments        Payment[]
   shipments       Shipment[]
   couponUsages    CouponUsage[]
+  returnRequests  ReturnRequest[]
 
   @@index([customerId])
   @@index([status])
@@ -514,9 +517,67 @@ model OrderItem {
   unitPrice   Decimal @db.Decimal(10, 2)
   totalPrice  Decimal @db.Decimal(10, 2)
 
-  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  returnItems ReturnItem[]
 
   @@index([orderId])
   @@map("order_items")
+}
+
+enum ReturnStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+  RECEIVED
+  REFUND_PENDING
+  REFUNDED
+  COMPLETED
+  CANCELLED
+}
+
+model ReturnRequest {
+  id          String       @id @default(cuid())
+  orderId     String
+  customerId  String?
+  status      ReturnStatus @default(REQUESTED)
+  reason      String
+  notes       String?
+  requestedAt DateTime     @default(now())
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
+  receivedAt  DateTime?
+  completedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  order    Order         @relation(fields: [orderId], references: [id])
+  customer Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  items    ReturnItem[]
+
+  @@index([orderId])
+  @@index([customerId])
+  @@index([status])
+  @@map("return_requests")
+}
+
+model ReturnItem {
+  id                String  @id @default(cuid())
+  returnRequestId   String
+  orderItemId       String
+  productId         String?
+  quantity          Int
+  unitPriceSnapshot Decimal @db.Decimal(10, 2)
+  totalAmount       Decimal @db.Decimal(10, 2)
+  reason            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  returnRequest ReturnRequest @relation(fields: [returnRequestId], references: [id], onDelete: Cascade)
+  orderItem     OrderItem     @relation(fields: [orderItemId], references: [id])
+  product       Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([returnRequestId])
+  @@index([orderItemId])
+  @@map("return_items")
 }

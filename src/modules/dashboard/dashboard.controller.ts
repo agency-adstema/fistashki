@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, ParseIntPipe, DefaultValuePipe } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { DashboardService } from './dashboard.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -36,5 +36,39 @@ export class DashboardController {
     const cap = Math.min(Number(limit ?? 20), 50);
     const data = await this.dashboardService.getRecentActivity(cap);
     return { message: 'Recent activity fetched successfully', data };
+  }
+
+  @Get('revenue-trend')
+  @Permissions('dashboard.read')
+  @ApiOperation({ summary: 'Get daily revenue and order trend for a period' })
+  @ApiQuery({ name: 'period', required: false, enum: ['7d', '30d', '90d'] })
+  async getRevenueTrend(@Query('period') period?: '7d' | '30d' | '90d') {
+    const validPeriod = ['7d', '30d', '90d'].includes(period as string)
+      ? (period as '7d' | '30d' | '90d')
+      : '30d';
+    const data = await this.dashboardService.getRevenueTrend(validPeriod);
+    return { message: 'Revenue trend fetched successfully', data };
+  }
+
+  @Get('top-products')
+  @Permissions('dashboard.read')
+  @ApiOperation({ summary: 'Get top products by revenue from paid orders' })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  async getTopProducts(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    const data = await this.dashboardService.getTopProducts(Math.min(limit, 50));
+    return { message: 'Top products fetched successfully', data };
+  }
+
+  @Get('top-customers')
+  @Permissions('dashboard.read')
+  @ApiOperation({ summary: 'Get top customers by total spend on paid orders' })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  async getTopCustomers(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    const data = await this.dashboardService.getTopCustomers(Math.min(limit, 50));
+    return { message: 'Top customers fetched successfully', data };
   }
 }

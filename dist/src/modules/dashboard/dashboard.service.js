@@ -27,7 +27,10 @@ let DashboardService = class DashboardService {
     async getSummary() {
         const now = new Date();
         const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-        const [totalOrders, totalCustomers, totalProducts, revenueAggregate, totalPendingOrders, totalCancelledOrders, lowStockRaw, revenueTodayAggregate, ordersToday, customersToday,] = await Promise.all([
+        const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+        const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0, 0);
+        const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+        const [totalOrders, totalCustomers, totalProducts, revenueAggregate, totalPendingOrders, totalCancelledOrders, lowStockRaw, revenueTodayAggregate, ordersToday, customersToday, revenueThisMonthAgg, ordersThisMonth, paidOrdersThisMonth, customersThisMonth, revenueLastMonthAgg, ordersLastMonth, paidOrdersLastMonth, customersLastMonth,] = await Promise.all([
             this.prisma.order.count(),
             this.prisma.customer.count(),
             this.prisma.product.count(),
@@ -45,15 +48,53 @@ let DashboardService = class DashboardService {
           AND "stockQuantity" <= "lowStockThreshold"
       `,
             this.prisma.order.aggregate({
-                where: {
-                    paymentStatus: client_1.PaymentStatus.PAID,
-                    createdAt: { gte: startOfToday },
-                },
+                where: { paymentStatus: client_1.PaymentStatus.PAID, createdAt: { gte: startOfToday } },
                 _sum: { grandTotal: true },
             }),
             this.prisma.order.count({ where: { createdAt: { gte: startOfToday } } }),
             this.prisma.customer.count({ where: { createdAt: { gte: startOfToday } } }),
+            this.prisma.order.aggregate({
+                where: { paymentStatus: client_1.PaymentStatus.PAID, createdAt: { gte: startOfThisMonth } },
+                _sum: { grandTotal: true },
+            }),
+            this.prisma.order.count({ where: { createdAt: { gte: startOfThisMonth } } }),
+            this.prisma.order.count({
+                where: { paymentStatus: client_1.PaymentStatus.PAID, createdAt: { gte: startOfThisMonth } },
+            }),
+            this.prisma.customer.count({ where: { createdAt: { gte: startOfThisMonth } } }),
+            this.prisma.order.aggregate({
+                where: {
+                    paymentStatus: client_1.PaymentStatus.PAID,
+                    createdAt: { gte: startOfLastMonth, lte: endOfLastMonth },
+                },
+                _sum: { grandTotal: true },
+            }),
+            this.prisma.order.count({
+                where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+            }),
+            this.prisma.order.count({
+                where: {
+                    paymentStatus: client_1.PaymentStatus.PAID,
+                    createdAt: { gte: startOfLastMonth, lte: endOfLastMonth },
+                },
+            }),
+            this.prisma.customer.count({
+                where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+            }),
         ]);
+        const pct = (current, previous) => {
+            if (previous === 0)
+                return current > 0 ? 100 : 0;
+            return Math.round(((current - previous) / previous) * 1000) / 10;
+        };
+        const revenueThisMonth = Number(revenueThisMonthAgg._sum.grandTotal ?? 0);
+        const revenueLastMonthVal = Number(revenueLastMonthAgg._sum.grandTotal ?? 0);
+        const conversionRateThisMonth = ordersThisMonth > 0
+            ? Math.round((paidOrdersThisMonth / ordersThisMonth) * 10000) / 100
+            : 0;
+        const conversionRateLastMonth = ordersLastMonth > 0
+            ? Math.round((paidOrdersLastMonth / ordersLastMonth) * 10000) / 100
+            : 0;
         return {
             totalOrders,
             totalCustomers,
@@ -65,6 +106,11 @@ let DashboardService = class DashboardService {
             revenueToday: Number(revenueTodayAggregate._sum.grandTotal ?? 0),
             ordersToday,
             customersToday,
+            revenueChangePercent: pct(revenueThisMonth, revenueLastMonthVal),
+            ordersChangePercent: pct(ordersThisMonth, ordersLastMonth),
+            customersChangePercent: pct(customersThisMonth, customersLastMonth),
+            conversionRate: conversionRateThisMonth,
+            conversionRateChange: Math.round((conversionRateThisMonth - conversionRateLastMonth) * 10) / 10,
         };
     }
     async getLowStock() {

@@ -14,6 +14,11 @@ export declare class DashboardService {
         revenueToday: number;
         ordersToday: number;
         customersToday: number;
+        revenueChangePercent: number;
+        ordersChangePercent: number;
+        customersChangePercent: number;
+        conversionRate: number;
+        conversionRateChange: number;
     }>;
     getLowStock(): Promise<{
         price: number;

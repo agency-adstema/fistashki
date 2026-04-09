@@ -16,6 +16,9 @@ export class DashboardService {
   async getSummary() {
     const now = new Date();
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0, 0);
+    const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
 
     const [
       totalOrders,
@@ -28,6 +31,14 @@ export class DashboardService {
       revenueTodayAggregate,
       ordersToday,
       customersToday,
+      revenueThisMonthAgg,
+      ordersThisMonth,
+      paidOrdersThisMonth,
+      customersThisMonth,
+      revenueLastMonthAgg,
+      ordersLastMonth,
+      paidOrdersLastMonth,
+      customersLastMonth,
     ] = await Promise.all([
       this.prisma.order.count(),
       this.prisma.customer.count(),
@@ -38,7 +49,6 @@ export class DashboardService {
       }),
       this.prisma.order.count({ where: { status: OrderStatus.PENDING } }),
       this.prisma.order.count({ where: { status: OrderStatus.CANCELLED } }),
-      // Cross-column comparison (stockQuantity <= lowStockThreshold) requires raw SQL
       this.prisma.$queryRaw<[{ count: bigint }]>`
         SELECT COUNT(*)::bigint as count
         FROM products
@@ -47,15 +57,59 @@ export class DashboardService {
           AND "stockQuantity" <= "lowStockThreshold"
       `,
       this.prisma.order.aggregate({
-        where: {
-          paymentStatus: PaymentStatus.PAID,
-          createdAt: { gte: startOfToday },
-        },
+        where: { paymentStatus: PaymentStatus.PAID, createdAt: { gte: startOfToday } },
         _sum: { grandTotal: true },
       }),
       this.prisma.order.count({ where: { createdAt: { gte: startOfToday } } }),
       this.prisma.customer.count({ where: { createdAt: { gte: startOfToday } } }),
+      // This month
+      this.prisma.order.aggregate({
+        where: { paymentStatus: PaymentStatus.PAID, createdAt: { gte: startOfThisMonth } },
+        _sum: { grandTotal: true },
+      }),
+      this.prisma.order.count({ where: { createdAt: { gte: startOfThisMonth } } }),
+      this.prisma.order.count({
+        where: { paymentStatus: PaymentStatus.PAID, createdAt: { gte: startOfThisMonth } },
+      }),
+      this.prisma.customer.count({ where: { createdAt: { gte: startOfThisMonth } } }),
+      // Last month
+      this.prisma.order.aggregate({
+        where: {
+          paymentStatus: PaymentStatus.PAID,
+          createdAt: { gte: startOfLastMonth, lte: endOfLastMonth },
+        },
+        _sum: { grandTotal: true },
+      }),
+      this.prisma.order.count({
+        where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+      }),
+      this.prisma.order.count({
+        where: {
+          paymentStatus: PaymentStatus.PAID,
+          createdAt: { gte: startOfLastMonth, lte: endOfLastMonth },
+        },
+      }),
+      this.prisma.customer.count({
+        where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+      }),
     ]);
+
+    const pct = (current: number, previous: number): number => {
+      if (previous === 0) return current > 0 ? 100 : 0;
+      return Math.round(((current - previous) / previous) * 1000) / 10;
+    };
+
+    const revenueThisMonth = Number(revenueThisMonthAgg._sum.grandTotal ?? 0);
+    const revenueLastMonthVal = Number(revenueLastMonthAgg._sum.grandTotal ?? 0);
+
+    const conversionRateThisMonth =
+      ordersThisMonth > 0
+        ? Math.round((paidOrdersThisMonth / ordersThisMonth) * 10000) / 100
+        : 0;
+    const conversionRateLastMonth =
+      ordersLastMonth > 0
+        ? Math.round((paidOrdersLastMonth / ordersLastMonth) * 10000) / 100
+        : 0;
 
     return {
       totalOrders,
@@ -68,6 +122,11 @@ export class DashboardService {
       revenueToday: Number(revenueTodayAggregate._sum.grandTotal ?? 0),
       ordersToday,
       customersToday,
+      revenueChangePercent: pct(revenueThisMonth, revenueLastMonthVal),
+      ordersChangePercent: pct(ordersThisMonth, ordersLastMonth),
+      customersChangePercent: pct(customersThisMonth, customersLastMonth),
+      conversionRate: conversionRateThisMonth,
+      conversionRateChange: Math.round((conversionRateThisMonth - conversionRateLastMonth) * 10) / 10,
     };
   }
 

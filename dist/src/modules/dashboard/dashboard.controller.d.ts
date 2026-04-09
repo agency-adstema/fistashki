@@ -52,4 +52,34 @@ export declare class DashboardController {
             actorUserId: string | null;
         })[];
     }>;
+    getRevenueTrend(period?: '7d' | '30d' | '90d'): Promise<{
+        message: string;
+        data: {
+            date: string;
+            revenue: number;
+            orders: number;
+        }[];
+    }>;
+    getTopProducts(limit: number): Promise<{
+        message: string;
+        data: {
+            productId: string;
+            productName: string;
+            sku: string;
+            totalRevenue: number;
+            totalQuantity: number;
+            orderCount: number;
+        }[];
+    }>;
+    getTopCustomers(limit: number): Promise<{
+        message: string;
+        data: {
+            customerId: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            totalSpend: number;
+            orderCount: number;
+        }[];
+    }>;
 }

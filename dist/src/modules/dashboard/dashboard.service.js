@@ -13,6 +13,12 @@ exports.DashboardService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../../prisma/prisma.service");
+function subDaysFromNow(days) {
+    const d = new Date();
+    d.setDate(d.getDate() - days);
+    d.setHours(0, 0, 0, 0);
+    return d;
+}
 let DashboardService = class DashboardService {
     prisma;
     constructor(prisma) {
@@ -87,6 +93,87 @@ let DashboardService = class DashboardService {
             },
         });
         return items;
+    }
+    async getRevenueTrend(period = '30d') {
+        const days = period === '7d' ? 7 : period === '90d' ? 90 : 30;
+        const from = subDaysFromNow(days - 1);
+        const orders = await this.prisma.order.findMany({
+            where: {
+                paymentStatus: client_1.PaymentStatus.PAID,
+                createdAt: { gte: from },
+            },
+            select: { createdAt: true, grandTotal: true },
+            orderBy: { createdAt: 'asc' },
+        });
+        const map = new Map();
+        for (let i = 0; i < days; i++) {
+            const d = subDaysFromNow(days - 1 - i);
+            const key = d.toISOString().slice(0, 10);
+            map.set(key, { revenue: 0, orders: 0 });
+        }
+        for (const o of orders) {
+            const key = o.createdAt.toISOString().slice(0, 10);
+            if (map.has(key)) {
+                const entry = map.get(key);
+                entry.revenue += Number(o.grandTotal);
+                entry.orders += 1;
+            }
+        }
+        return Array.from(map.entries()).map(([date, val]) => ({
+            date,
+            revenue: Math.round(val.revenue * 100) / 100,
+            orders: val.orders,
+        }));
+    }
+    async getTopProducts(limit = 10) {
+        const rows = await this.prisma.$queryRaw `
+      SELECT
+        oi."productId",
+        oi."productName",
+        oi."sku",
+        SUM(oi."totalPrice")::numeric      AS "totalRevenue",
+        SUM(oi."quantity")::bigint         AS "totalQuantity",
+        COUNT(DISTINCT oi."orderId")::bigint AS "orderCount"
+      FROM order_items oi
+      INNER JOIN orders o ON o.id = oi."orderId"
+      WHERE o."paymentStatus" = 'PAID'
+      GROUP BY oi."productId", oi."productName", oi."sku"
+      ORDER BY "totalRevenue" DESC
+      LIMIT ${limit}
+    `;
+        return rows.map((r) => ({
+            productId: r.productId,
+            productName: r.productName,
+            sku: r.sku,
+            totalRevenue: Number(r.totalRevenue),
+            totalQuantity: Number(r.totalQuantity),
+            orderCount: Number(r.orderCount),
+        }));
+    }
+    async getTopCustomers(limit = 10) {
+        const rows = await this.prisma.$queryRaw `
+      SELECT
+        c.id          AS "customerId",
+        c."firstName",
+        c."lastName",
+        c.email,
+        SUM(o."grandTotal")::numeric   AS "totalSpend",
+        COUNT(o.id)::bigint            AS "orderCount"
+      FROM customers c
+      INNER JOIN orders o ON o."customerId" = c.id
+      WHERE o."paymentStatus" = 'PAID'
+      GROUP BY c.id, c."firstName", c."lastName", c.email
+      ORDER BY "totalSpend" DESC
+      LIMIT ${limit}
+    `;
+        return rows.map((r) => ({
+            customerId: r.customerId,
+            firstName: r.firstName,
+            lastName: r.lastName,
+            email: r.email,
+            totalSpend: Number(r.totalSpend),
+            orderCount: Number(r.orderCount),
+        }));
     }
 };
 exports.DashboardService = DashboardService;

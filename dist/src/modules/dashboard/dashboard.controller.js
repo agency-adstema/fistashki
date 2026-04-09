@@ -37,6 +37,21 @@ let DashboardController = class DashboardController {
         const data = await this.dashboardService.getRecentActivity(cap);
         return { message: 'Recent activity fetched successfully', data };
     }
+    async getRevenueTrend(period) {
+        const validPeriod = ['7d', '30d', '90d'].includes(period)
+            ? period
+            : '30d';
+        const data = await this.dashboardService.getRevenueTrend(validPeriod);
+        return { message: 'Revenue trend fetched successfully', data };
+    }
+    async getTopProducts(limit) {
+        const data = await this.dashboardService.getTopProducts(Math.min(limit, 50));
+        return { message: 'Top products fetched successfully', data };
+    }
+    async getTopCustomers(limit) {
+        const data = await this.dashboardService.getTopCustomers(Math.min(limit, 50));
+        return { message: 'Top customers fetched successfully', data };
+    }
 };
 exports.DashboardController = DashboardController;
 __decorate([
@@ -65,6 +80,36 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], DashboardController.prototype, "getRecentActivity", null);
+__decorate([
+    (0, common_1.Get)('revenue-trend'),
+    (0, permissions_decorator_1.Permissions)('dashboard.read'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get daily revenue and order trend for a period' }),
+    (0, swagger_1.ApiQuery)({ name: 'period', required: false, enum: ['7d', '30d', '90d'] }),
+    __param(0, (0, common_1.Query)('period')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], DashboardController.prototype, "getRevenueTrend", null);
+__decorate([
+    (0, common_1.Get)('top-products'),
+    (0, permissions_decorator_1.Permissions)('dashboard.read'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get top products by revenue from paid orders' }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number }),
+    __param(0, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(10), common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], DashboardController.prototype, "getTopProducts", null);
+__decorate([
+    (0, common_1.Get)('top-customers'),
+    (0, permissions_decorator_1.Permissions)('dashboard.read'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get top customers by total spend on paid orders' }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number }),
+    __param(0, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(10), common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], DashboardController.prototype, "getTopCustomers", null);
 exports.DashboardController = DashboardController = __decorate([
     (0, swagger_1.ApiTags)('dashboard'),
     (0, swagger_1.ApiBearerAuth)('access-token'),

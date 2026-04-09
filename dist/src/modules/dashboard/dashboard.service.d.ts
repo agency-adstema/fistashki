@@ -44,4 +44,25 @@ export declare class DashboardService {
         userAgent: string | null;
         actorUserId: string | null;
     })[]>;
+    getRevenueTrend(period?: '7d' | '30d' | '90d'): Promise<{
+        date: string;
+        revenue: number;
+        orders: number;
+    }[]>;
+    getTopProducts(limit?: number): Promise<{
+        productId: string;
+        productName: string;
+        sku: string;
+        totalRevenue: number;
+        totalQuantity: number;
+        orderCount: number;
+    }[]>;
+    getTopCustomers(limit?: number): Promise<{
+        customerId: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        totalSpend: number;
+        orderCount: number;
+    }[]>;
 }

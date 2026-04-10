@@ -495,4 +495,23 @@ export class OrdersService {
 
     return this.formatOrder(updated);
   }
+
+  async deleteOrder(id: string, actorUserId?: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { id },
+      select: { id: true, orderNumber: true },
+    });
+
+    if (!order) throw new NotFoundException(`Order ${id} not found`);
+
+    await this.prisma.order.delete({ where: { id } });
+
+    await this.auditLogsService.log({
+      actorUserId,
+      action: 'order.deleted',
+      entityType: 'Order',
+      entityId: id,
+      metadata: { orderNumber: order.orderNumber },
+    });
+  }
 }

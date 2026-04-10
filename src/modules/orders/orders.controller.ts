@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Patch,
+  Delete,
   Body,
   Param,
   Query,
@@ -98,5 +99,16 @@ export class OrdersController {
   ) {
     const data = await this.ordersService.cancelOrder(id, dto, user?.id);
     return { message: 'Order cancelled successfully', data };
+  }
+
+  @Delete(':id')
+  @Permissions('orders.delete')
+  @ApiOperation({ summary: 'Permanently delete an order (admin only)' })
+  async deleteOrder(
+    @Param('id') id: string,
+    @CurrentUser() user: any,
+  ) {
+    await this.ordersService.deleteOrder(id, user?.id);
+    return { message: 'Order deleted successfully', data: { id } };
   }
 }

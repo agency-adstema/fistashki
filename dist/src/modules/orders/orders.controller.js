@@ -59,6 +59,10 @@ let OrdersController = class OrdersController {
         const data = await this.ordersService.cancelOrder(id, dto, user?.id);
         return { message: 'Order cancelled successfully', data };
     }
+    async deleteOrder(id, user) {
+        await this.ordersService.deleteOrder(id, user?.id);
+        return { message: 'Order deleted successfully', data: { id } };
+    }
 };
 exports.OrdersController = OrdersController;
 __decorate([
@@ -133,6 +137,16 @@ __decorate([
     __metadata("design:paramtypes", [String, cancel_order_dto_1.CancelOrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], OrdersController.prototype, "cancelOrder", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, permissions_decorator_1.Permissions)('orders.delete'),
+    (0, swagger_1.ApiOperation)({ summary: 'Permanently delete an order (admin only)' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], OrdersController.prototype, "deleteOrder", null);
 exports.OrdersController = OrdersController = __decorate([
     (0, swagger_1.ApiTags)('orders'),
     (0, swagger_1.ApiBearerAuth)('access-token'),

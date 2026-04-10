@@ -379,6 +379,22 @@ let OrdersService = class OrdersService {
         });
         return this.formatOrder(updated);
     }
+    async deleteOrder(id, actorUserId) {
+        const order = await this.prisma.order.findUnique({
+            where: { id },
+            select: { id: true, orderNumber: true },
+        });
+        if (!order)
+            throw new common_1.NotFoundException(`Order ${id} not found`);
+        await this.prisma.order.delete({ where: { id } });
+        await this.auditLogsService.log({
+            actorUserId,
+            action: 'order.deleted',
+            entityType: 'Order',
+            entityId: id,
+            metadata: { orderNumber: order.orderNumber },
+        });
+    }
 };
 exports.OrdersService = OrdersService;
 exports.OrdersService = OrdersService = __decorate([

@@ -25,4 +25,5 @@ export declare class OrdersService {
     updatePaymentStatus(id: string, dto: UpdatePaymentStatusDto, actorUserId?: string): Promise<any>;
     updateFulfillmentStatus(id: string, dto: UpdateFulfillmentStatusDto, actorUserId?: string): Promise<any>;
     cancelOrder(id: string, dto: CancelOrderDto, actorUserId?: string): Promise<any>;
+    deleteOrder(id: string, actorUserId?: string): Promise<void>;
 }

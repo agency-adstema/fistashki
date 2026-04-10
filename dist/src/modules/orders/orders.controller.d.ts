@@ -42,4 +42,10 @@ export declare class OrdersController {
         message: string;
         data: any;
     }>;
+    deleteOrder(id: string, user: any): Promise<{
+        message: string;
+        data: {
+            id: string;
+        };
+    }>;
 }

@@ -41,13 +41,13 @@ export declare class DashboardService {
     } & {
         id: string;
         createdAt: Date;
+        actorUserId: string | null;
         action: string;
         entityType: string;
         entityId: string | null;
         metadata: Prisma.JsonValue | null;
         ipAddress: string | null;
         userAgent: string | null;
-        actorUserId: string | null;
     })[]>;
     getRevenueTrend(opts?: {
         period?: '7d' | '30d' | '90d';

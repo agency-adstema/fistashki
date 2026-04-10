@@ -54,7 +54,20 @@ export declare class UsersService {
         phone: string | null;
         isActive: boolean;
     } | null>;
-    findByEmailWithPassword(email: string): Promise<{
+    findByEmailWithPassword(email: string): Promise<({
+        userRoles: ({
+            role: {
+                id: string;
+                key: string;
+                name: string;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            roleId: string;
+            userId: string;
+        })[];
+    } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -64,7 +77,7 @@ export declare class UsersService {
         lastName: string;
         phone: string | null;
         isActive: boolean;
-    } | null>;
+    }) | null>;
     findAll(): Promise<{
         id: string;
         createdAt: Date;

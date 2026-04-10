@@ -8,6 +8,15 @@ export declare class AuthController {
         data: {
             accessToken: string;
             user: {
+                role: {
+                    id: string;
+                    key: string;
+                    name: string;
+                } & {
+                    id: string;
+                    name: string;
+                    key: string;
+                };
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;

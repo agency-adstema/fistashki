@@ -27,6 +27,7 @@ const coupons_module_1 = require("./modules/coupons/coupons.module");
 const returns_module_1 = require("./modules/returns/returns.module");
 const admin_ops_module_1 = require("./modules/admin-ops/admin-ops.module");
 const health_module_1 = require("./health/health.module");
+const upload_module_1 = require("./modules/upload/upload.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -55,6 +56,7 @@ exports.AppModule = AppModule = __decorate([
             coupons_module_1.CouponsModule,
             returns_module_1.ReturnsModule,
             admin_ops_module_1.AdminOpsModule,
+            upload_module_1.UploadModule,
         ],
     })
 ], AppModule);

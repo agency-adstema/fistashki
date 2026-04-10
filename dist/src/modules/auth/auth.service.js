@@ -67,8 +67,9 @@ let AuthService = class AuthService {
             sub: user.id,
             email: user.email,
         });
-        const { passwordHash: _, ...safeUser } = user;
-        return { accessToken, user: safeUser };
+        const { passwordHash: _, userRoles, ...safeUser } = user;
+        const role = userRoles?.[0]?.role ?? null;
+        return { accessToken, user: { ...safeUser, role } };
     }
 };
 exports.AuthService = AuthService;

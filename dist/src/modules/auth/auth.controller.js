@@ -29,7 +29,11 @@ let AuthController = class AuthController {
         return { message: 'Login successful', data };
     }
     async me(user) {
-        return { message: 'User fetched successfully', data: user };
+        const { userRoles, passwordHash, ...safe } = user ?? {};
+        const role = userRoles?.[0]?.role
+            ? { id: userRoles[0].role.id, name: userRoles[0].role.name, key: userRoles[0].role.key }
+            : null;
+        return { message: 'User fetched successfully', data: { ...safe, role } };
     }
 };
 exports.AuthController = AuthController;

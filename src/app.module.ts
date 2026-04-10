@@ -18,6 +18,7 @@ import { CouponsModule } from './modules/coupons/coupons.module';
 import { ReturnsModule } from './modules/returns/returns.module';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module';
 import { HealthModule } from './health/health.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { HealthModule } from './health/health.module';
     CouponsModule,
     ReturnsModule,
     AdminOpsModule,
+    UploadModule,
   ],
 })
 export class AppModule {}

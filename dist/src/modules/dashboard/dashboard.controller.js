@@ -37,11 +37,22 @@ let DashboardController = class DashboardController {
         const data = await this.dashboardService.getRecentActivity(cap);
         return { message: 'Recent activity fetched successfully', data };
     }
-    async getRevenueTrend(period) {
+    async getSalesOverview() {
+        const data = await this.dashboardService.getSalesOverviewComparison();
+        return { message: 'Sales overview fetched successfully', data };
+    }
+    async getRevenueTrend(period, dateFrom, dateTo) {
+        if (dateFrom && dateTo) {
+            const data = await this.dashboardService.getRevenueTrend({
+                dateFrom: new Date(dateFrom),
+                dateTo: new Date(dateTo),
+            });
+            return { message: 'Revenue trend fetched successfully', data };
+        }
         const validPeriod = ['7d', '30d', '90d'].includes(period)
             ? period
             : '30d';
-        const data = await this.dashboardService.getRevenueTrend(validPeriod);
+        const data = await this.dashboardService.getRevenueTrend({ period: validPeriod });
         return { message: 'Revenue trend fetched successfully', data };
     }
     async getTopProducts(limit) {
@@ -81,13 +92,27 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DashboardController.prototype, "getRecentActivity", null);
 __decorate([
+    (0, common_1.Get)('sales-overview'),
+    (0, permissions_decorator_1.Permissions)('dashboard.read'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Sales overview: this month vs last month daily paid revenue (aligned by day of month)',
+    }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], DashboardController.prototype, "getSalesOverview", null);
+__decorate([
     (0, common_1.Get)('revenue-trend'),
     (0, permissions_decorator_1.Permissions)('dashboard.read'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get daily revenue and order trend for a period' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Get daily revenue and order trend for a period or date range' }),
     (0, swagger_1.ApiQuery)({ name: 'period', required: false, enum: ['7d', '30d', '90d'] }),
+    (0, swagger_1.ApiQuery)({ name: 'dateFrom', required: false, type: String, description: 'YYYY-MM-DD' }),
+    (0, swagger_1.ApiQuery)({ name: 'dateTo', required: false, type: String, description: 'YYYY-MM-DD' }),
     __param(0, (0, common_1.Query)('period')),
+    __param(1, (0, common_1.Query)('dateFrom')),
+    __param(2, (0, common_1.Query)('dateTo')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], DashboardController.prototype, "getRevenueTrend", null);
 __decorate([

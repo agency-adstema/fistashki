@@ -57,7 +57,20 @@ export declare class DashboardController {
             actorUserId: string | null;
         })[];
     }>;
-    getRevenueTrend(period?: '7d' | '30d' | '90d'): Promise<{
+    getSalesOverview(): Promise<{
+        message: string;
+        data: {
+            thisMonthLabel: string;
+            lastMonthLabel: string;
+            points: {
+                day: number;
+                label: string;
+                thisMonth: number;
+                lastMonth: number;
+            }[];
+        };
+    }>;
+    getRevenueTrend(period?: '7d' | '30d' | '90d', dateFrom?: string, dateTo?: string): Promise<{
         message: string;
         data: {
             date: string;

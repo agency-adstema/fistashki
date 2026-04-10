@@ -49,11 +49,25 @@ export declare class DashboardService {
         userAgent: string | null;
         actorUserId: string | null;
     })[]>;
-    getRevenueTrend(period?: '7d' | '30d' | '90d'): Promise<{
+    getRevenueTrend(opts?: {
+        period?: '7d' | '30d' | '90d';
+        dateFrom?: Date;
+        dateTo?: Date;
+    }): Promise<{
         date: string;
         revenue: number;
         orders: number;
     }[]>;
+    getSalesOverviewComparison(): Promise<{
+        thisMonthLabel: string;
+        lastMonthLabel: string;
+        points: {
+            day: number;
+            label: string;
+            thisMonth: number;
+            lastMonth: number;
+        }[];
+    }>;
     getTopProducts(limit?: number): Promise<{
         productId: string;
         productName: string;

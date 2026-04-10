@@ -171,25 +171,42 @@ export class DashboardService {
     return items;
   }
 
-  async getRevenueTrend(period: '7d' | '30d' | '90d' = '30d') {
-    const days = period === '7d' ? 7 : period === '90d' ? 90 : 30;
-    const from = subDaysFromNow(days - 1);
+  async getRevenueTrend(opts: {
+    period?: '7d' | '30d' | '90d';
+    dateFrom?: Date;
+    dateTo?: Date;
+  } = {}) {
+    let from: Date;
+    let to: Date;
+
+    if (opts.dateFrom && opts.dateTo) {
+      from = new Date(opts.dateFrom);
+      from.setHours(0, 0, 0, 0);
+      to = new Date(opts.dateTo);
+      to.setHours(23, 59, 59, 999);
+    } else {
+      const days = opts.period === '7d' ? 7 : opts.period === '90d' ? 90 : 30;
+      from = subDaysFromNow(days - 1);
+      to = new Date();
+    }
 
     const orders = await this.prisma.order.findMany({
       where: {
         paymentStatus: PaymentStatus.PAID,
-        createdAt: { gte: from },
+        createdAt: { gte: from, lte: to },
       },
       select: { createdAt: true, grandTotal: true },
       orderBy: { createdAt: 'asc' },
     });
 
-    // Build a map: date string => { revenue, orders }
     const map = new Map<string, { revenue: number; orders: number }>();
-    for (let i = 0; i < days; i++) {
-      const d = subDaysFromNow(days - 1 - i);
-      const key = d.toISOString().slice(0, 10);
-      map.set(key, { revenue: 0, orders: 0 });
+    const cursor = new Date(from);
+    cursor.setHours(0, 0, 0, 0);
+    const end = new Date(to);
+    end.setHours(0, 0, 0, 0);
+    while (cursor <= end) {
+      map.set(cursor.toISOString().slice(0, 10), { revenue: 0, orders: 0 });
+      cursor.setDate(cursor.getDate() + 1);
     }
 
     for (const o of orders) {
@@ -206,6 +223,84 @@ export class DashboardService {
       revenue: Math.round(val.revenue * 100) / 100,
       orders: val.orders,
     }));
+  }
+
+  /**
+   * Daily paid revenue by calendar day for the current month vs the same calendar day
+   * in the previous month (for Sales Overview chart).
+   */
+  async getSalesOverviewComparison() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = now.getMonth();
+
+    const startThisMonth = new Date(y, m, 1, 0, 0, 0, 0);
+    const endThisMonth = new Date(y, m + 1, 0, 23, 59, 59, 999);
+    const startLastMonth = new Date(y, m - 1, 1, 0, 0, 0, 0);
+    const endLastMonth = new Date(y, m, 0, 23, 59, 59, 999);
+
+    const daysInThisMonth = endThisMonth.getDate();
+    const daysInLastMonth = endLastMonth.getDate();
+
+    const [ordersThis, ordersLast] = await Promise.all([
+      this.prisma.order.findMany({
+        where: {
+          paymentStatus: PaymentStatus.PAID,
+          createdAt: { gte: startThisMonth, lte: now },
+        },
+        select: { createdAt: true, grandTotal: true },
+      }),
+      this.prisma.order.findMany({
+        where: {
+          paymentStatus: PaymentStatus.PAID,
+          createdAt: { gte: startLastMonth, lte: endLastMonth },
+        },
+        select: { createdAt: true, grandTotal: true },
+      }),
+    ]);
+
+    const thisByDay = new Map<number, number>();
+    const lastByDay = new Map<number, number>();
+    for (let d = 1; d <= daysInThisMonth; d++) thisByDay.set(d, 0);
+    for (let d = 1; d <= daysInLastMonth; d++) lastByDay.set(d, 0);
+
+    for (const o of ordersThis) {
+      const dom = o.createdAt.getDate();
+      thisByDay.set(dom, (thisByDay.get(dom) ?? 0) + Number(o.grandTotal));
+    }
+    for (const o of ordersLast) {
+      const dom = o.createdAt.getDate();
+      lastByDay.set(dom, (lastByDay.get(dom) ?? 0) + Number(o.grandTotal));
+    }
+
+    const monthShort = now.toLocaleString('en-US', { month: 'short' });
+    const lastMonthDate = new Date(y, m - 1, 15);
+    const lastMonthShort = lastMonthDate.toLocaleString('en-US', { month: 'short' });
+
+    const points: Array<{
+      day: number;
+      label: string;
+      thisMonth: number;
+      lastMonth: number;
+    }> = [];
+
+    for (let day = 1; day <= daysInThisMonth; day++) {
+      const pad = day < 10 ? `0${day}` : String(day);
+      const label = `${pad} ${monthShort}`;
+      const thisMonth = Math.round((thisByDay.get(day) ?? 0) * 100) / 100;
+      const lastMonth =
+        day <= daysInLastMonth
+          ? Math.round((lastByDay.get(day) ?? 0) * 100) / 100
+          : 0;
+
+      points.push({ day, label, thisMonth, lastMonth });
+    }
+
+    return {
+      thisMonthLabel: `${monthShort} ${y}`,
+      lastMonthLabel: `${lastMonthShort} ${lastMonthDate.getFullYear()}`,
+      points,
+    };
   }
 
   async getTopProducts(limit = 10) {

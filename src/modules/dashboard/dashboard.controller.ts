@@ -38,15 +38,38 @@ export class DashboardController {
     return { message: 'Recent activity fetched successfully', data };
   }
 
+  @Get('sales-overview')
+  @Permissions('dashboard.read')
+  @ApiOperation({
+    summary: 'Sales overview: this month vs last month daily paid revenue (aligned by day of month)',
+  })
+  async getSalesOverview() {
+    const data = await this.dashboardService.getSalesOverviewComparison();
+    return { message: 'Sales overview fetched successfully', data };
+  }
+
   @Get('revenue-trend')
   @Permissions('dashboard.read')
-  @ApiOperation({ summary: 'Get daily revenue and order trend for a period' })
+  @ApiOperation({ summary: 'Get daily revenue and order trend for a period or date range' })
   @ApiQuery({ name: 'period', required: false, enum: ['7d', '30d', '90d'] })
-  async getRevenueTrend(@Query('period') period?: '7d' | '30d' | '90d') {
+  @ApiQuery({ name: 'dateFrom', required: false, type: String, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'dateTo', required: false, type: String, description: 'YYYY-MM-DD' })
+  async getRevenueTrend(
+    @Query('period') period?: '7d' | '30d' | '90d',
+    @Query('dateFrom') dateFrom?: string,
+    @Query('dateTo') dateTo?: string,
+  ) {
+    if (dateFrom && dateTo) {
+      const data = await this.dashboardService.getRevenueTrend({
+        dateFrom: new Date(dateFrom),
+        dateTo: new Date(dateTo),
+      });
+      return { message: 'Revenue trend fetched successfully', data };
+    }
     const validPeriod = ['7d', '30d', '90d'].includes(period as string)
       ? (period as '7d' | '30d' | '90d')
       : '30d';
-    const data = await this.dashboardService.getRevenueTrend(validPeriod);
+    const data = await this.dashboardService.getRevenueTrend({ period: validPeriod });
     return { message: 'Revenue trend fetched successfully', data };
   }
 

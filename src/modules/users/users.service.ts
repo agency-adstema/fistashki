@@ -62,6 +62,11 @@ export class UsersService {
   async findByEmailWithPassword(email: string) {
     return this.prisma.user.findUnique({
       where: { email: email.toLowerCase().trim() },
+      include: {
+        userRoles: {
+          include: { role: { select: { id: true, name: true, key: true } } },
+        },
+      },
     });
   }
 

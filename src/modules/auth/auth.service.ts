@@ -28,8 +28,9 @@ export class AuthService {
       email: user.email,
     });
 
-    const { passwordHash: _, ...safeUser } = user;
+    const { passwordHash: _, userRoles, ...safeUser } = user as typeof user & { userRoles?: Array<{ role: { id: string; name: string; key: string } }> };
+    const role = userRoles?.[0]?.role ?? null;
 
-    return { accessToken, user: safeUser };
+    return { accessToken, user: { ...safeUser, role } };
   }
 }

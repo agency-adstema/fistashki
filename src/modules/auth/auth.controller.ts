@@ -31,6 +31,10 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get current authenticated user' })
   async me(@CurrentUser() user: any) {
-    return { message: 'User fetched successfully', data: user };
+    const { userRoles, passwordHash, ...safe } = user ?? {};
+    const role = userRoles?.[0]?.role
+      ? { id: userRoles[0].role.id, name: userRoles[0].role.name, key: userRoles[0].role.key }
+      : null;
+    return { message: 'User fetched successfully', data: { ...safe, role } };
   }
 }

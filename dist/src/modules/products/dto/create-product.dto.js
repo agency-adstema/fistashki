@@ -23,7 +23,7 @@ class ProductImageDto {
 exports.ProductImageDto = ProductImageDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'https://example.com/image.jpg' }),
-    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsUrl)({ require_tld: false }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], ProductImageDto.prototype, "url", void 0);
@@ -112,7 +112,7 @@ __decorate([
 ], CreateProductDto.prototype, "isActive", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 'https://example.com/featured.jpg' }),
-    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsUrl)({ require_tld: false }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "featuredImage", void 0);

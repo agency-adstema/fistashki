@@ -5,9 +5,6 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
-  Get,
-  Param,
-  Res,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiConsumes, ApiBody } from '@nestjs/swagger';
@@ -15,8 +12,6 @@ import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import type { Response } from 'express';
-import * as fs from 'fs';
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
 const MAX_SIZE_MB = 5;

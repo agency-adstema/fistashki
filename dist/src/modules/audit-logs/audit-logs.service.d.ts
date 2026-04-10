@@ -16,13 +16,13 @@ export declare class AuditLogsService {
         } & {
             id: string;
             createdAt: Date;
-            actorUserId: string | null;
             action: string;
             entityType: string;
             entityId: string | null;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
             ipAddress: string | null;
             userAgent: string | null;
+            actorUserId: string | null;
         })[];
         total: number;
         page: number;
@@ -39,12 +39,12 @@ export declare class AuditLogsService {
     } & {
         id: string;
         createdAt: Date;
-        actorUserId: string | null;
         action: string;
         entityType: string;
         entityId: string | null;
         metadata: import("@prisma/client/runtime/library").JsonValue | null;
         ipAddress: string | null;
         userAgent: string | null;
+        actorUserId: string | null;
     })[]>;
 }

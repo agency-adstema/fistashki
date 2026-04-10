@@ -48,13 +48,13 @@ export declare class DashboardController {
         } & {
             id: string;
             createdAt: Date;
-            actorUserId: string | null;
             action: string;
             entityType: string;
             entityId: string | null;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
             ipAddress: string | null;
             userAgent: string | null;
+            actorUserId: string | null;
         })[];
     }>;
     getSalesOverview(): Promise<{

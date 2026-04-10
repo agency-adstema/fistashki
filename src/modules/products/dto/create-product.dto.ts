@@ -18,7 +18,7 @@ import { ProductStatus } from '@prisma/client';
 
 export class ProductImageDto {
   @ApiProperty({ example: 'https://example.com/image.jpg' })
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   @IsNotEmpty()
   url: string;
 
@@ -76,7 +76,7 @@ export class CreateProductDto {
   isActive?: boolean;
 
   @ApiPropertyOptional({ example: 'https://example.com/featured.jpg' })
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   @IsOptional()
   featuredImage?: string;
 

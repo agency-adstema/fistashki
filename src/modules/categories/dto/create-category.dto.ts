@@ -24,6 +24,11 @@ export class CreateCategoryDto {
   @IsOptional()
   description?: string;
 
+  @ApiPropertyOptional({ example: 'https://example.com/images/electronics.jpg' })
+  @IsString()
+  @IsOptional()
+  image?: string;
+
   @ApiPropertyOptional({ example: null, description: 'Parent category ID' })
   @IsString()
   @IsOptional()

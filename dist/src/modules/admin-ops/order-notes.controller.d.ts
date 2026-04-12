@@ -16,8 +16,8 @@ export declare class OrderNotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            orderId: string;
             content: string;
+            orderId: string;
             isPinned: boolean;
             authorUserId: string | null;
         };
@@ -34,8 +34,8 @@ export declare class OrderNotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            orderId: string;
             content: string;
+            orderId: string;
             isPinned: boolean;
             authorUserId: string | null;
         })[];
@@ -52,8 +52,8 @@ export declare class OrderNotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            orderId: string;
             content: string;
+            orderId: string;
             isPinned: boolean;
             authorUserId: string | null;
         };
@@ -75,8 +75,8 @@ export declare class OrderNotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            orderId: string;
             content: string;
+            orderId: string;
             isPinned: boolean;
             authorUserId: string | null;
         };
@@ -93,8 +93,8 @@ export declare class OrderNotesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            orderId: string;
             content: string;
+            orderId: string;
             isPinned: boolean;
             authorUserId: string | null;
         };

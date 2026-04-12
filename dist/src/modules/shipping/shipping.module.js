@@ -10,6 +10,7 @@ exports.ShippingModule = void 0;
 const common_1 = require("@nestjs/common");
 const shipping_methods_service_1 = require("./shipping-methods.service");
 const shipping_methods_controller_1 = require("./shipping-methods.controller");
+const public_shipping_controller_1 = require("./public-shipping.controller");
 const shipments_service_1 = require("./shipments.service");
 const shipments_controller_1 = require("./shipments.controller");
 const audit_logs_module_1 = require("../audit-logs/audit-logs.module");
@@ -20,7 +21,7 @@ exports.ShippingModule = ShippingModule = __decorate([
     (0, common_1.Module)({
         imports: [audit_logs_module_1.AuditLogsModule],
         providers: [shipping_methods_service_1.ShippingMethodsService, shipments_service_1.ShipmentsService],
-        controllers: [shipping_methods_controller_1.ShippingMethodsController, shipments_controller_1.ShipmentsController],
+        controllers: [shipping_methods_controller_1.ShippingMethodsController, public_shipping_controller_1.PublicShippingController, shipments_controller_1.ShipmentsController],
         exports: [shipping_methods_service_1.ShippingMethodsService, shipments_service_1.ShipmentsService],
     })
 ], ShippingModule);

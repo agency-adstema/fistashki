@@ -32,6 +32,64 @@ export class ProductsService {
     };
   }
 
+  private formatPublicProduct(product: any) {
+    return {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      description: product.description,
+      shortDescription: product.shortDescription,
+      price: product.price != null ? Number(product.price) : product.price,
+      compareAtPrice: product.compareAtPrice != null ? Number(product.compareAtPrice) : null,
+      currency: product.currency,
+      images: product.images?.map((img: any) => ({
+        url: img.url,
+        altText: img.altText,
+      })) || [],
+      inStock: this.computeInStock(product.trackQuantity, product.stockQuantity),
+      availableQuantity: product.trackQuantity ? product.stockQuantity : 0,
+      category:
+        product.productCategories && product.productCategories.length > 0
+          ? {
+              id: product.productCategories[0].category.id,
+              name: product.productCategories[0].category.name,
+              slug: product.productCategories[0].category.slug,
+            }
+          : null,
+      featuredImage: product.featuredImage,
+    };
+  }
+
+  private formatPublicProductDetail(product: any) {
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      shortDescription: product.shortDescription,
+      sku: product.sku,
+      price: product.price != null ? Number(product.price) : product.price,
+      compareAtPrice: product.compareAtPrice != null ? Number(product.compareAtPrice) : product.compareAtPrice,
+      currency: product.currency,
+      images: product.images?.map((img: any) => ({
+        url: img.url,
+        altText: img.altText,
+      })) || [],
+      inStock: this.computeInStock(product.trackQuantity, product.stockQuantity),
+      availableQuantity: product.trackQuantity ? product.stockQuantity : 0,
+      categories:
+        product.productCategories?.map((pc: any) => ({
+          id: pc.category.id,
+          name: pc.category.name,
+          slug: pc.category.slug,
+        })) || [],
+      featuredImage: product.featuredImage,
+      seoTitle: product.seoTitle,
+      seoDescription: product.seoDescription,
+      createdAt: product.createdAt.toISOString(),
+      updatedAt: product.updatedAt.toISOString(),
+    };
+  }
+
   async create(dto: CreateProductDto, actorUserId?: string) {
     const [slugExists, skuExists] = await Promise.all([
       this.prisma.product.findUnique({ where: { slug: dto.slug } }),
@@ -265,5 +323,75 @@ export class ProductsService {
     });
 
     return { id };
+  }
+
+  async findPublicProducts(query: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    categoryId?: string;
+  }) {
+    const { page = 1, limit = 20, search, categoryId } = query;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.ProductWhereInput = {
+      isActive: true,
+      status: ProductStatus.ACTIVE,
+    };
+
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { sku: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    if (categoryId) {
+      where.productCategories = {
+        some: {
+          categoryId,
+        },
+      };
+    }
+
+    const [items, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          images: { orderBy: { sortOrder: 'asc' } },
+          productCategories: { include: { category: true } },
+        },
+      }),
+      this.prisma.product.count({ where }),
+    ]);
+
+    return {
+      items: items.map((p) => this.formatPublicProduct(p)),
+      total,
+      page,
+      limit,
+      pages: Math.ceil(total / limit),
+    };
+  }
+
+  async findPublicProduct(idOrSlug: string) {
+    const product = await this.prisma.product.findFirst({
+      where: {
+        OR: [{ id: idOrSlug }, { slug: idOrSlug }],
+        isActive: true,
+        status: ProductStatus.ACTIVE,
+      },
+      include: {
+        images: { orderBy: { sortOrder: 'asc' } },
+        productCategories: { include: { category: true } },
+      },
+    });
+
+    if (!product) throw new NotFoundException('Product not found');
+    return this.formatPublicProductDetail(product);
   }
 }

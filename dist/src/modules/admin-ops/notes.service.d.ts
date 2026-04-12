@@ -17,8 +17,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        orderId: string;
         content: string;
+        orderId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;
@@ -33,8 +33,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        orderId: string;
         content: string;
+        orderId: string;
         isPinned: boolean;
         authorUserId: string | null;
     })[]>;
@@ -49,8 +49,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        orderId: string;
         content: string;
+        orderId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;
@@ -68,8 +68,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        orderId: string;
         content: string;
+        orderId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;
@@ -84,8 +84,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        orderId: string;
         content: string;
+        orderId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;
@@ -100,8 +100,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        customerId: string;
         content: string;
+        customerId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;
@@ -116,8 +116,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        customerId: string;
         content: string;
+        customerId: string;
         isPinned: boolean;
         authorUserId: string | null;
     })[]>;
@@ -132,8 +132,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        customerId: string;
         content: string;
+        customerId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;
@@ -151,8 +151,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        customerId: string;
         content: string;
+        customerId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;
@@ -167,8 +167,8 @@ export declare class NotesService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        customerId: string;
         content: string;
+        customerId: string;
         isPinned: boolean;
         authorUserId: string | null;
     }>;

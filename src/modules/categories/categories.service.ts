@@ -34,6 +34,7 @@ export class CategoriesService {
         name: dto.name,
         slug: dto.slug,
         description: dto.description,
+        image: dto.image,
         parentId: dto.parentId,
         isActive: dto.isActive ?? true,
         sortOrder: dto.sortOrder ?? 0,
@@ -111,6 +112,7 @@ export class CategoriesService {
         ...(dto.name !== undefined && { name: dto.name }),
         ...(dto.slug !== undefined && { slug: dto.slug }),
         ...(dto.description !== undefined && { description: dto.description }),
+        ...(dto.image !== undefined && { image: dto.image }),
         ...(dto.parentId !== undefined && { parentId: dto.parentId }),
         ...(dto.isActive !== undefined && { isActive: dto.isActive }),
         ...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
@@ -155,5 +157,67 @@ export class CategoriesService {
     });
 
     return { id };
+  }
+
+  async findPublicCategories() {
+    const categories = await this.prisma.category.findMany({
+      where: {
+        isActive: true,
+        parentId: null,
+      },
+      include: {
+        children: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+          include: {
+            _count: { select: { productCategories: true } },
+          },
+        },
+        _count: { select: { productCategories: true } },
+      },
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+    });
+
+    return {
+      items: categories.map((c) => this.formatPublicCategory(c)),
+    };
+  }
+
+  async findPublicCategory(idOrSlug: string) {
+    const category = await this.prisma.category.findFirst({
+      where: {
+        OR: [{ id: idOrSlug }, { slug: idOrSlug }],
+        isActive: true,
+      },
+      include: {
+        children: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+          include: {
+            _count: { select: { productCategories: true } },
+          },
+        },
+        _count: { select: { productCategories: true } },
+      },
+    });
+
+    if (!category) throw new NotFoundException('Category not found');
+    return this.formatPublicCategory(category);
+  }
+
+  private formatPublicCategory(category: any): any {
+    return {
+      id: category.id,
+      name: category.name,
+      slug: category.slug,
+      description: category.description,
+      parentId: category.parentId,
+      sortOrder: category.sortOrder,
+      productCount: category._count?.productCategories ?? 0,
+      children:
+        category.children && category.children.length > 0
+          ? category.children.map((child: any) => this.formatPublicCategory(child))
+          : [],
+    };
   }
 }

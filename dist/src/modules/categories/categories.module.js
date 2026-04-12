@@ -10,6 +10,7 @@ exports.CategoriesModule = void 0;
 const common_1 = require("@nestjs/common");
 const categories_service_1 = require("./categories.service");
 const categories_controller_1 = require("./categories.controller");
+const public_categories_controller_1 = require("./controllers/public-categories.controller");
 const audit_logs_module_1 = require("../audit-logs/audit-logs.module");
 let CategoriesModule = class CategoriesModule {
 };
@@ -18,7 +19,7 @@ exports.CategoriesModule = CategoriesModule = __decorate([
     (0, common_1.Module)({
         imports: [audit_logs_module_1.AuditLogsModule],
         providers: [categories_service_1.CategoriesService],
-        controllers: [categories_controller_1.CategoriesController],
+        controllers: [categories_controller_1.CategoriesController, public_categories_controller_1.PublicCategoriesController],
         exports: [categories_service_1.CategoriesService],
     })
 ], CategoriesModule);

@@ -20,6 +20,8 @@ class CreateCategoryDto {
     parentId;
     isActive;
     sortOrder;
+    seoTitle;
+    seoDescription;
 }
 exports.CreateCategoryDto = CreateCategoryDto;
 __decorate([
@@ -65,4 +67,16 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateCategoryDto.prototype, "sortOrder", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Electronics - Shop Now | Store' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateCategoryDto.prototype, "seoTitle", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Browse our wide selection of electronics' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateCategoryDto.prototype, "seoDescription", void 0);
 //# sourceMappingURL=create-category.dto.js.map

@@ -44,4 +44,14 @@ export class CreateCategoryDto {
   @Min(0)
   @IsOptional()
   sortOrder?: number;
+
+  @ApiPropertyOptional({ example: 'Electronics - Shop Now | Store' })
+  @IsString()
+  @IsOptional()
+  seoTitle?: string;
+
+  @ApiPropertyOptional({ example: 'Browse our wide selection of electronics' })
+  @IsString()
+  @IsOptional()
+  seoDescription?: string;
 }

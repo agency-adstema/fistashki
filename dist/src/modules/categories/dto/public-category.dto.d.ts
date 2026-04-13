@@ -4,6 +4,8 @@ export declare class PublicCategoryDto {
     description?: string;
     parentId?: string;
     sortOrder?: number;
+    seoTitle?: string;
+    seoDescription?: string;
     children?: PublicCategoryDto[];
     productCount: number;
 }

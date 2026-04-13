@@ -16,6 +16,12 @@ export class PublicCategoryDto {
   @ApiPropertyOptional({ example: 0 })
   sortOrder?: number;
 
+  @ApiPropertyOptional({ example: 'Electronics - Shop Now | Store' })
+  seoTitle?: string;
+
+  @ApiPropertyOptional({ example: 'Browse our wide selection of electronics' })
+  seoDescription?: string;
+
   @ApiPropertyOptional({ type: [PublicCategoryDto] })
   children?: PublicCategoryDto[];
 

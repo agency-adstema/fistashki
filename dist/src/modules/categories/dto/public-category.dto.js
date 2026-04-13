@@ -17,6 +17,8 @@ class PublicCategoryDto {
     description;
     parentId;
     sortOrder;
+    seoTitle;
+    seoDescription;
     children;
     productCount;
 }
@@ -41,6 +43,14 @@ __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 0 }),
     __metadata("design:type", Number)
 ], PublicCategoryDto.prototype, "sortOrder", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Electronics - Shop Now | Store' }),
+    __metadata("design:type", String)
+], PublicCategoryDto.prototype, "seoTitle", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Browse our wide selection of electronics' }),
+    __metadata("design:type", String)
+], PublicCategoryDto.prototype, "seoDescription", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ type: [PublicCategoryDto] }),
     __metadata("design:type", Array)

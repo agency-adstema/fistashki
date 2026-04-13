@@ -6,4 +6,6 @@ export declare class CreateCategoryDto {
     parentId?: string;
     isActive?: boolean;
     sortOrder?: number;
+    seoTitle?: string;
+    seoDescription?: string;
 }

@@ -112,16 +112,18 @@ enum ProductStatus {
 }
 
 model Category {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  description String?
-  image       String?
-  parentId    String?
-  isActive    Boolean  @default(true)
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  description      String?
+  image            String?
+  parentId         String?
+  isActive         Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  seoTitle         String?
+  seoDescription   String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   parent            Category?         @relation("CategoryChildren", fields: [parentId], references: [id])
   children          Category[]        @relation("CategoryChildren")

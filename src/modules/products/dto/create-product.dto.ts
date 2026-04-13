@@ -65,6 +65,31 @@ export class CreateProductDto {
   @IsOptional()
   description?: string;
 
+  @ApiPropertyOptional({ example: 'Product benefits and advantages' })
+  @IsString()
+  @IsOptional()
+  benefits?: string;
+
+  @ApiPropertyOptional({ example: 'How to use instructions' })
+  @IsString()
+  @IsOptional()
+  howToUse?: string;
+
+  @ApiPropertyOptional({ example: 'Product composition and ingredients' })
+  @IsString()
+  @IsOptional()
+  composition?: string;
+
+  @ApiPropertyOptional({ example: 'Spring, Summer' })
+  @IsString()
+  @IsOptional()
+  bestSeason?: string;
+
+  @ApiPropertyOptional({ example: 'Vegetables, Fruits' })
+  @IsString()
+  @IsOptional()
+  suitablePlants?: string;
+
   @ApiPropertyOptional({ enum: ProductStatus, default: ProductStatus.DRAFT })
   @IsEnum(ProductStatus)
   @IsOptional()

@@ -11,6 +11,11 @@ export declare class CreateProductDto {
     sku: string;
     shortDescription?: string;
     description?: string;
+    benefits?: string;
+    howToUse?: string;
+    composition?: string;
+    bestSeason?: string;
+    suitablePlants?: string;
     status?: ProductStatus;
     isActive?: boolean;
     featuredImage?: string;

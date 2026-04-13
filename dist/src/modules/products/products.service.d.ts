@@ -59,6 +59,11 @@ export declare class ProductsService {
         name: any;
         description: any;
         shortDescription: any;
+        benefits: any;
+        howToUse: any;
+        composition: any;
+        bestSeason: any;
+        suitablePlants: any;
         sku: any;
         price: any;
         compareAtPrice: any;

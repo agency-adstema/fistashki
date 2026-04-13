@@ -52,6 +52,11 @@ class CreateProductDto {
     sku;
     shortDescription;
     description;
+    benefits;
+    howToUse;
+    composition;
+    bestSeason;
+    suitablePlants;
     status;
     isActive;
     featuredImage;
@@ -98,6 +103,36 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "description", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Product benefits and advantages' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "benefits", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'How to use instructions' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "howToUse", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Product composition and ingredients' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "composition", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Spring, Summer' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "bestSeason", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Vegetables, Fruits' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "suitablePlants", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ enum: client_1.ProductStatus, default: client_1.ProductStatus.DRAFT }),
     (0, class_validator_1.IsEnum)(client_1.ProductStatus),

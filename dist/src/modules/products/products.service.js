@@ -65,6 +65,11 @@ let ProductsService = class ProductsService {
             name: product.name,
             description: product.description,
             shortDescription: product.shortDescription,
+            benefits: product.benefits,
+            howToUse: product.howToUse,
+            composition: product.composition,
+            bestSeason: product.bestSeason,
+            suitablePlants: product.suitablePlants,
             sku: product.sku,
             price: product.price != null ? Number(product.price) : product.price,
             compareAtPrice: product.compareAtPrice != null ? Number(product.compareAtPrice) : product.compareAtPrice,
@@ -114,6 +119,11 @@ let ProductsService = class ProductsService {
                 sku: dto.sku,
                 shortDescription: dto.shortDescription,
                 description: dto.description,
+                benefits: dto.benefits,
+                howToUse: dto.howToUse,
+                composition: dto.composition,
+                bestSeason: dto.bestSeason,
+                suitablePlants: dto.suitablePlants,
                 status: dto.status ?? client_1.ProductStatus.DRAFT,
                 isActive: dto.isActive ?? true,
                 featuredImage: dto.featuredImage,
@@ -243,6 +253,16 @@ let ProductsService = class ProductsService {
             updateData.shortDescription = dto.shortDescription;
         if (dto.description !== undefined)
             updateData.description = dto.description;
+        if (dto.benefits !== undefined)
+            updateData.benefits = dto.benefits;
+        if (dto.howToUse !== undefined)
+            updateData.howToUse = dto.howToUse;
+        if (dto.composition !== undefined)
+            updateData.composition = dto.composition;
+        if (dto.bestSeason !== undefined)
+            updateData.bestSeason = dto.bestSeason;
+        if (dto.suitablePlants !== undefined)
+            updateData.suitablePlants = dto.suitablePlants;
         if (dto.status !== undefined)
             updateData.status = dto.status;
         if (dto.isActive !== undefined)

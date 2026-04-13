@@ -10,158 +10,158 @@ export declare class CategoriesService {
         parent: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         } | null;
         children: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         }[];
     } & {
         id: string;
         name: string;
-        slug: string;
         description: string | null;
-        image: string | null;
-        isActive: boolean;
-        sortOrder: number;
         createdAt: Date;
         updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        image: string | null;
         parentId: string | null;
+        sortOrder: number;
     }>;
     findAll(): Promise<({
+        _count: {
+            productCategories: number;
+        };
         parent: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         } | null;
         children: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         }[];
-        _count: {
-            productCategories: number;
-        };
     } & {
         id: string;
         name: string;
-        slug: string;
         description: string | null;
-        image: string | null;
-        isActive: boolean;
-        sortOrder: number;
         createdAt: Date;
         updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        image: string | null;
         parentId: string | null;
+        sortOrder: number;
     })[]>;
     findOne(id: string): Promise<{
+        _count: {
+            productCategories: number;
+        };
         parent: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         } | null;
         children: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         }[];
-        _count: {
-            productCategories: number;
-        };
     } & {
         id: string;
         name: string;
-        slug: string;
         description: string | null;
-        image: string | null;
-        isActive: boolean;
-        sortOrder: number;
         createdAt: Date;
         updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        image: string | null;
         parentId: string | null;
+        sortOrder: number;
     }>;
     update(id: string, dto: UpdateCategoryDto, actorUserId?: string): Promise<{
+        _count: {
+            productCategories: number;
+        };
         parent: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         } | null;
         children: {
             id: string;
             name: string;
-            slug: string;
             description: string | null;
-            image: string | null;
-            isActive: boolean;
-            sortOrder: number;
             createdAt: Date;
             updatedAt: Date;
+            isActive: boolean;
+            slug: string;
+            image: string | null;
             parentId: string | null;
+            sortOrder: number;
         }[];
-        _count: {
-            productCategories: number;
-        };
     } & {
         id: string;
         name: string;
-        slug: string;
         description: string | null;
-        image: string | null;
-        isActive: boolean;
-        sortOrder: number;
         createdAt: Date;
         updatedAt: Date;
+        isActive: boolean;
+        slug: string;
+        image: string | null;
         parentId: string | null;
+        sortOrder: number;
     }>;
     remove(id: string, actorUserId?: string): Promise<{
         id: string;

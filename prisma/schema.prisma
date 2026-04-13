@@ -139,6 +139,11 @@ model Product {
   sku              String        @unique
   shortDescription String?
   description      String?
+  benefits         String?
+  howToUse         String?
+  composition      String?
+  bestSeason       String?
+  suitablePlants   String?
   status           ProductStatus @default(DRAFT)
   isActive         Boolean       @default(true)
   featuredImage    String?

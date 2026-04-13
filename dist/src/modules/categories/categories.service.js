@@ -42,6 +42,8 @@ let CategoriesService = class CategoriesService {
                 parentId: dto.parentId,
                 isActive: dto.isActive ?? true,
                 sortOrder: dto.sortOrder ?? 0,
+                seoTitle: dto.seoTitle,
+                seoDescription: dto.seoDescription,
             },
             include: {
                 parent: true,
@@ -114,6 +116,8 @@ let CategoriesService = class CategoriesService {
                 ...(dto.parentId !== undefined && { parentId: dto.parentId }),
                 ...(dto.isActive !== undefined && { isActive: dto.isActive }),
                 ...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
+                ...(dto.seoTitle !== undefined && { seoTitle: dto.seoTitle }),
+                ...(dto.seoDescription !== undefined && { seoDescription: dto.seoDescription }),
             },
             include: {
                 parent: true,
@@ -198,6 +202,8 @@ let CategoriesService = class CategoriesService {
             description: category.description,
             parentId: category.parentId,
             sortOrder: category.sortOrder,
+            seoTitle: category.seoTitle ?? null,
+            seoDescription: category.seoDescription ?? null,
             productCount: category._count?.productCategories ?? 0,
             children: category.children && category.children.length > 0
                 ? category.children.map((child) => this.formatPublicCategory(child))

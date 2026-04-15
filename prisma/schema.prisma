@@ -306,12 +306,14 @@ model Order {
   currency          String            @default("USD")
   cancelledAt       DateTime?
   cancelReason      String?
+  networkOrderId    String?           @unique
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 
   customer        Customer         @relation(fields: [customerId], references: [id])
   shippingAddress CustomerAddress? @relation(fields: [shippingAddressId], references: [id])
   assignedTo      User?            @relation("OrderAssignee", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  networkOrder    NetworkOrder?    @relation(fields: [networkOrderId], references: [id])
   items           OrderItem[]
   payments        Payment[]
   shipments       Shipment[]
@@ -323,7 +325,43 @@ model Order {
   @@index([customerId])
   @@index([status])
   @@index([orderNumber])
+  @@index([networkOrderId])
   @@map("orders")
+}
+
+model NetworkOrder {
+  id             String   @id @default(cuid())
+  networkKey     String   @unique
+  networkName    String
+  externalId     String   @unique
+  status         NetworkOrderStatus @default(PENDING)
+  confirmationUrl String?
+  webhookUrl     String?
+  customerEmail  String
+  customerPhone  String
+  customerName   String
+  productsSku    String[] @default([])
+  items          String   @db.Text
+  totalAmount    Decimal  @db.Decimal(10, 2)
+  currency       String   @default("RSD")
+  notes          String?
+  confirmedAt    DateTime?
+  order          Order?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([networkKey])
+  @@index([status])
+  @@index([externalId])
+  @@map("network_orders")
+}
+
+enum NetworkOrderStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  COMPLETED
+  FAILED
 }
 
 enum PaymentMethod {

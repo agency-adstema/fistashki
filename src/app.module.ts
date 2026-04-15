@@ -19,6 +19,7 @@ import { ReturnsModule } from './modules/returns/returns.module';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module';
 import { HealthModule } from './health/health.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { NetworkOrdersModule } from './modules/network-orders/network-orders.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { UploadModule } from './modules/upload/upload.module';
     ReturnsModule,
     AdminOpsModule,
     UploadModule,
+    NetworkOrdersModule,
   ],
 })
 export class AppModule {}

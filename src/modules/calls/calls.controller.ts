@@ -58,10 +58,15 @@ export class CallsController {
   @Permissions('calls.manage')
   @ApiOperation({ summary: 'Retry a failed call' })
   async retryCall(
-    @Param('id') id: string,
+    @Param('id') callLogId: string,
     @CurrentUser() user: any,
   ) {
-    const data = await this.callsService.retryCall(id, user?.id);
+    // Get callJobId from callLogId
+    const callLog = await this.callsService.getCallLog(callLogId);
+    if (!callLog) {
+      return { message: 'Call not found', data: null };
+    }
+    const data = await this.callsService.retryCall(callLog.callJobId, user?.id);
     return { message: 'Call retry scheduled', data };
   }
 }

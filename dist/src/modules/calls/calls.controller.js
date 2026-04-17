@@ -40,8 +40,12 @@ let CallsController = class CallsController {
         }
         return { message: 'Call fetched successfully', data };
     }
-    async retryCall(id, user) {
-        const data = await this.callsService.retryCall(id, user?.id);
+    async retryCall(callLogId, user) {
+        const callLog = await this.callsService.getCallLog(callLogId);
+        if (!callLog) {
+            return { message: 'Call not found', data: null };
+        }
+        const data = await this.callsService.retryCall(callLog.callJobId, user?.id);
         return { message: 'Call retry scheduled', data };
     }
 };

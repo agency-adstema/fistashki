@@ -62,13 +62,28 @@ export class CallsService {
     }
   }
 
-  async getCallLog(callJobId: string) {
+  async getCallLog(id: string) {
     return this.prisma.callLog.findUnique({
-      where: { callJobId },
+      where: { id },
       include: {
         callJob: true,
-        order: true,
-        customer: true,
+        order: {
+          select: {
+            id: true,
+            orderNumber: true,
+            grandTotal: true,
+            currency: true,
+          },
+        },
+        customer: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            phone: true,
+          },
+        },
       },
     });
   }

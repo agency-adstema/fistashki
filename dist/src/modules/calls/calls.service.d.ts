@@ -20,40 +20,19 @@ export declare class CallsService {
         startedAt: Date | null;
         endedAt: Date | null;
     } | undefined>;
-    getCallLog(callJobId: string): Promise<({
+    getCallLog(id: string): Promise<({
         customer: {
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             email: string;
             firstName: string;
             lastName: string;
             phone: string | null;
-            isActive: boolean;
-            notes: string | null;
         };
         order: {
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
-            notes: string | null;
-            customerId: string;
             orderNumber: string;
-            shippingAddressId: string | null;
-            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
-            fulfillmentStatus: import(".prisma/client").$Enums.FulfillmentStatus;
-            priority: import(".prisma/client").$Enums.OrderPriority;
-            assignedToUserId: string | null;
-            assignedAt: Date | null;
-            subtotal: import("@prisma/client/runtime/library").Decimal;
-            discountTotal: import("@prisma/client/runtime/library").Decimal;
-            shippingTotal: import("@prisma/client/runtime/library").Decimal;
             grandTotal: import("@prisma/client/runtime/library").Decimal;
-            cancelledAt: Date | null;
-            cancelReason: string | null;
-            networkOrderId: string | null;
         };
         callJob: {
             error: string | null;

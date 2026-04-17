@@ -8,19 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var OrdersService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../../prisma/prisma.service");
 const audit_logs_service_1 = require("../audit-logs/audit-logs.service");
+const calls_service_1 = require("../calls/calls.service");
 const orders_utils_1 = require("./orders.utils");
-let OrdersService = class OrdersService {
+let OrdersService = OrdersService_1 = class OrdersService {
     prisma;
     auditLogsService;
-    constructor(prisma, auditLogsService) {
+    callsService;
+    logger = new common_1.Logger(OrdersService_1.name);
+    constructor(prisma, auditLogsService, callsService) {
         this.prisma = prisma;
         this.auditLogsService = auditLogsService;
+        this.callsService = callsService;
     }
     formatOrder(order) {
         return {
@@ -162,6 +170,12 @@ let OrdersService = class OrdersService {
                         grandTotal: Number(order.grandTotal),
                     },
                 });
+                try {
+                    await this.callsService.scheduleCall(order.id, 30);
+                }
+                catch (callError) {
+                    this.logger.error('Error scheduling call:', callError);
+                }
                 return this.formatOrder(order);
             }
             catch (err) {
@@ -397,9 +411,11 @@ let OrdersService = class OrdersService {
     }
 };
 exports.OrdersService = OrdersService;
-exports.OrdersService = OrdersService = __decorate([
+exports.OrdersService = OrdersService = OrdersService_1 = __decorate([
     (0, common_1.Injectable)(),
+    __param(2, (0, common_1.Inject)((0, common_1.forwardRef)(() => calls_service_1.CallsService))),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        audit_logs_service_1.AuditLogsService])
+        audit_logs_service_1.AuditLogsService,
+        calls_service_1.CallsService])
 ], OrdersService);
 //# sourceMappingURL=orders.service.js.map

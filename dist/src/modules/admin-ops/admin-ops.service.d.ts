@@ -35,6 +35,7 @@ export declare class AdminOpsService {
         grandTotal: import("@prisma/client/runtime/library").Decimal;
         cancelledAt: Date | null;
         cancelReason: string | null;
+        networkOrderId: string | null;
     }>;
     unassignOrder(orderId: string, actorUserId?: string): Promise<{
         id: string;
@@ -57,6 +58,7 @@ export declare class AdminOpsService {
         grandTotal: import("@prisma/client/runtime/library").Decimal;
         cancelledAt: Date | null;
         cancelReason: string | null;
+        networkOrderId: string | null;
     }>;
     setPriority(orderId: string, dto: SetPriorityDto, actorUserId?: string): Promise<{
         id: string;
@@ -79,6 +81,7 @@ export declare class AdminOpsService {
         grandTotal: import("@prisma/client/runtime/library").Decimal;
         cancelledAt: Date | null;
         cancelReason: string | null;
+        networkOrderId: string | null;
     }>;
     getTimeline(orderId: string, query: TimelineQueryDto): Promise<{
         type: string;

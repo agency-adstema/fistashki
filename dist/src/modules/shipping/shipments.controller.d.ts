@@ -27,13 +27,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
     findAll(query: ShipmentsQueryDto): Promise<{
@@ -58,13 +58,13 @@ export declare class ShipmentsController {
                 status: import(".prisma/client").$Enums.ShipmentStatus;
                 orderId: string;
                 notes: string | null;
+                shippingMethodId: string | null;
                 courier: string | null;
-                trackingNumber: string | null;
                 service: string | null;
+                trackingNumber: string | null;
                 trackingUrl: string | null;
                 shippedAt: Date | null;
                 deliveredAt: Date | null;
-                shippingMethodId: string | null;
             })[];
             total: number;
             page: number;
@@ -93,13 +93,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
     updateStatus(id: string, dto: UpdateShipmentStatusDto, user: any): Promise<{
@@ -123,13 +123,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
     updateTracking(id: string, dto: UpdateTrackingDto, user: any): Promise<{
@@ -153,13 +153,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
     markShipped(id: string, user: any): Promise<{
@@ -183,13 +183,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
     markDelivered(id: string, user: any): Promise<{
@@ -213,13 +213,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
     markReturned(id: string, user: any): Promise<{
@@ -243,13 +243,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
     cancel(id: string, user: any): Promise<{
@@ -273,13 +273,13 @@ export declare class ShipmentsController {
             status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
+            shippingMethodId: string | null;
             courier: string | null;
-            trackingNumber: string | null;
             service: string | null;
+            trackingNumber: string | null;
             trackingUrl: string | null;
             shippedAt: Date | null;
             deliveredAt: Date | null;
-            shippingMethodId: string | null;
         };
     }>;
 }

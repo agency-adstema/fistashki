@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const bullmq_1 = require("@nestjs/bullmq");
 const prisma_module_1 = require("./prisma/prisma.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const users_module_1 = require("./modules/users/users.module");
@@ -28,6 +29,8 @@ const returns_module_1 = require("./modules/returns/returns.module");
 const admin_ops_module_1 = require("./modules/admin-ops/admin-ops.module");
 const health_module_1 = require("./health/health.module");
 const upload_module_1 = require("./modules/upload/upload.module");
+const network_orders_module_1 = require("./modules/network-orders/network-orders.module");
+const calls_module_1 = require("./modules/calls/calls.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,6 +40,12 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 envFilePath: '.env',
+            }),
+            bullmq_1.BullModule.forRoot({
+                connection: {
+                    host: process.env.REDIS_HOST || 'localhost',
+                    port: parseInt(process.env.REDIS_PORT || '6379', 10),
+                },
             }),
             prisma_module_1.PrismaModule,
             health_module_1.HealthModule,
@@ -57,6 +66,8 @@ exports.AppModule = AppModule = __decorate([
             returns_module_1.ReturnsModule,
             admin_ops_module_1.AdminOpsModule,
             upload_module_1.UploadModule,
+            network_orders_module_1.NetworkOrdersModule,
+            calls_module_1.CallsModule,
         ],
     })
 ], AppModule);

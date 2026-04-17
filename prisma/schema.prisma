@@ -259,6 +259,7 @@ model Customer {
   carts          Cart[]
   returnRequests ReturnRequest[]
   internalNotes  CustomerNote[]
+  callLogs       CallLog[]
 
   @@index([email])
   @@map("customers")
@@ -321,6 +322,8 @@ model Order {
   returnRequests  ReturnRequest[]
   orderNotes      OrderNote[]
   tagAssignments  OrderTagAssignment[]
+  callJobs        CallJob[]
+  callLogs        CallLog[]
 
   @@index([customerId])
   @@index([status])
@@ -705,4 +708,68 @@ model OrderTagAssignment {
   @@index([orderId])
   @@index([tagId])
   @@map("order_tag_assignments")
+}
+
+enum CallStatus {
+  SCHEDULED
+  DIALING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+enum CallOutcome {
+  CONFIRMED
+  CANCELLED
+  CALLBACK
+  UPSELL
+  NO_ANSWER
+  FAILED
+}
+
+model CallJob {
+  id          String     @id @default(cuid())
+  orderId     String
+  status      CallStatus @default(SCHEDULED)
+  attempt     Int        @default(0)
+  maxAttempts Int        @default(3)
+  scheduledAt DateTime
+  startedAt   DateTime?
+  endedAt     DateTime?
+  error       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  callLog CallLog?
+
+  @@index([orderId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("call_jobs")
+}
+
+model CallLog {
+  id          String       @id @default(cuid())
+  callJobId   String       @unique
+  orderId     String
+  customerId  String
+  duration    Int?
+  outcome     CallOutcome?
+  transcript  Json?
+  summary     String?
+  audioUrl    String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  callJob  CallJob  @relation(fields: [callJobId], references: [id], onDelete: Cascade)
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([callJobId])
+  @@index([orderId])
+  @@index([customerId])
+  @@index([outcome])
+  @@index([createdAt])
+  @@map("call_logs")
 }

@@ -3,6 +3,9 @@ import {
   NotFoundException,
   BadRequestException,
   InternalServerErrorException,
+  Logger,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import {
   Prisma,
@@ -13,6 +16,7 @@ import {
 } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { CallsService } from '../calls/calls.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { UpdatePaymentStatusDto } from './dto/update-payment-status.dto';
@@ -26,9 +30,13 @@ import {
 
 @Injectable()
 export class OrdersService {
+  private readonly logger = new Logger(OrdersService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly auditLogsService: AuditLogsService,
+    @Inject(forwardRef(() => CallsService))
+    private readonly callsService: CallsService,
   ) {}
 
   private formatOrder(order: any) {
@@ -224,6 +232,13 @@ export class OrdersService {
             grandTotal: Number(order.grandTotal),
           },
         });
+
+        // 9. Schedule AI call (fire-and-forget)
+        try {
+          await this.callsService.scheduleCall(order.id, 30);
+        } catch (callError) {
+          this.logger.error('Error scheduling call:', callError);
+        }
 
         return this.formatOrder(order);
       } catch (err: any) {

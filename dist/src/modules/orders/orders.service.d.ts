@@ -1,5 +1,6 @@
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { CallsService } from '../calls/calls.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { UpdatePaymentStatusDto } from './dto/update-payment-status.dto';
@@ -9,7 +10,9 @@ import { OrdersQueryDto } from './dto/orders-query.dto';
 export declare class OrdersService {
     private readonly prisma;
     private readonly auditLogsService;
-    constructor(prisma: PrismaService, auditLogsService: AuditLogsService);
+    private readonly callsService;
+    private readonly logger;
+    constructor(prisma: PrismaService, auditLogsService: AuditLogsService, callsService: CallsService);
     private formatOrder;
     private assertOrderStatusTransition;
     create(dto: CreateOrderDto, actorUserId?: string): Promise<any>;

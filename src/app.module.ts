@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { BullModule } from '@nestjs/bullmq';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
@@ -20,12 +21,19 @@ import { AdminOpsModule } from './modules/admin-ops/admin-ops.module';
 import { HealthModule } from './health/health.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { NetworkOrdersModule } from './modules/network-orders/network-orders.module';
+import { CallsModule } from './modules/calls/calls.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    BullModule.forRoot({
+      connection: {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: parseInt(process.env.REDIS_PORT || '6379', 10),
+      },
     }),
     PrismaModule,
     HealthModule,
@@ -47,6 +55,7 @@ import { NetworkOrdersModule } from './modules/network-orders/network-orders.mod
     AdminOpsModule,
     UploadModule,
     NetworkOrdersModule,
+    CallsModule,
   ],
 })
 export class AppModule {}

@@ -5,6 +5,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Prisma, ProductStatus } from '@prisma/client';
+import {
+  expandPublicCategorySlugVariants,
+  isUuidLike,
+} from '../../common/utils/category-slug.util';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -389,13 +393,20 @@ export class ProductsService {
       ];
     }
 
-    if (categoryId) {
-      // Shop šalje UUID ili slug iz URL-a (/category/djubriva). Samo UUID u where ne radi za slug.
+    if (categoryId && categoryId.trim()) {
+      const key = categoryId.trim();
+      const slugVariants = expandPublicCategorySlugVariants(key);
+      const whereClause = isUuidLike(key)
+        ? { id: key, isActive: true }
+        : {
+            isActive: true,
+            OR: slugVariants.map((slug) => ({
+              slug: { equals: slug, mode: 'insensitive' as const },
+            })),
+          };
+
       const category = await this.prisma.category.findFirst({
-        where: {
-          OR: [{ id: categoryId }, { slug: categoryId }],
-          isActive: true,
-        },
+        where: whereClause,
         select: { id: true },
       });
       if (category) {

@@ -4,6 +4,10 @@ import {
   ConflictException,
   BadRequestException,
 } from '@nestjs/common';
+import {
+  expandPublicCategorySlugVariants,
+  isUuidLike,
+} from '../../common/utils/category-slug.util';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -163,6 +167,16 @@ export class CategoriesService {
     return { id };
   }
 
+  /** Samo glavne kategorije za meni/footer — bez slika/dece, mali JSON. */
+  async findPublicCategoriesNav() {
+    const categories = await this.prisma.category.findMany({
+      where: { isActive: true, parentId: null },
+      select: { name: true, slug: true },
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+    });
+    return { items: categories };
+  }
+
   async findPublicCategories() {
     const categories = await this.prisma.category.findMany({
       where: {
@@ -188,11 +202,21 @@ export class CategoriesService {
   }
 
   async findPublicCategory(idOrSlug: string) {
+    const key = (idOrSlug || '').trim();
+    if (!key) throw new NotFoundException('Category not found');
+
+    const slugVariants = expandPublicCategorySlugVariants(key);
+    const whereClause = isUuidLike(key)
+      ? { id: key, isActive: true }
+      : {
+          isActive: true,
+          OR: slugVariants.map((slug) => ({
+            slug: { equals: slug, mode: 'insensitive' as const },
+          })),
+        };
+
     const category = await this.prisma.category.findFirst({
-      where: {
-        OR: [{ id: idOrSlug }, { slug: idOrSlug }],
-        isActive: true,
-      },
+      where: whereClause,
       include: {
         children: {
           where: { isActive: true },

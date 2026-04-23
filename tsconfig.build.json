@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "green-roots-emporium"]
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "green-roots-emporium", "src/pages/**", "src/components/**", "src/lib/**"]
 }

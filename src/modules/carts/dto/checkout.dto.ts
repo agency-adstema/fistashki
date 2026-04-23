@@ -4,13 +4,15 @@ import {
   IsEmail,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class GuestInfoDto {
   @ApiPropertyOptional()
+  @IsOptional()
   @IsEmail()
-  email: string;
+  @Transform(({ value }) => value || undefined)
+  email?: string;
 
   @ApiPropertyOptional()
   @IsString()

@@ -22,6 +22,26 @@ export class ProductsService {
     return !trackQuantity || stockQuantity > 0;
   }
 
+  /** Public URLs for uploads (DB may store http://localhost:4000/uploads/... from admin). */
+  private resolvePublicAssetUrl(url: string | null | undefined): string | null | undefined {
+    if (url == null || url === '') return url;
+    if (url.startsWith('data:')) return url;
+    const base = (process.env.PUBLIC_ASSET_BASE_URL || '').replace(/\/$/, '');
+    if (!base) return url;
+    if (url.startsWith('/uploads/')) {
+      return `${base}${url}`;
+    }
+    if (url.includes('localhost') || url.includes('127.0.0.1')) {
+      try {
+        const u = new URL(url);
+        return `${base}${u.pathname}${u.search}${u.hash}`;
+      } catch {
+        return url;
+      }
+    }
+    return url;
+  }
+
   private formatProduct(product: any) {
     return {
       ...product,
@@ -29,6 +49,11 @@ export class ProductsService {
       compareAtPrice: product.compareAtPrice != null ? Number(product.compareAtPrice) : product.compareAtPrice,
       costPrice: product.costPrice != null ? Number(product.costPrice) : product.costPrice,
       inStock: this.computeInStock(product.trackQuantity, product.stockQuantity),
+      featuredImage: this.resolvePublicAssetUrl(product.featuredImage) ?? product.featuredImage,
+      images: product.images?.map((img: any) => ({
+        ...img,
+        url: this.resolvePublicAssetUrl(img.url) ?? img.url,
+      })),
     };
   }
 
@@ -43,7 +68,7 @@ export class ProductsService {
       compareAtPrice: product.compareAtPrice != null ? Number(product.compareAtPrice) : null,
       currency: product.currency,
       images: product.images?.map((img: any) => ({
-        url: img.url,
+        url: this.resolvePublicAssetUrl(img.url) ?? img.url,
         altText: img.altText,
       })) || [],
       inStock: this.computeInStock(product.trackQuantity, product.stockQuantity),
@@ -56,7 +81,7 @@ export class ProductsService {
               slug: product.productCategories[0].category.slug,
             }
           : null,
-      featuredImage: product.featuredImage,
+      featuredImage: this.resolvePublicAssetUrl(product.featuredImage) ?? product.featuredImage,
     };
   }
 
@@ -71,12 +96,13 @@ export class ProductsService {
       composition: product.composition,
       bestSeason: product.bestSeason,
       suitablePlants: product.suitablePlants,
+      aiCallScript: product.aiCallScript,
       sku: product.sku,
       price: product.price != null ? Number(product.price) : product.price,
       compareAtPrice: product.compareAtPrice != null ? Number(product.compareAtPrice) : product.compareAtPrice,
       currency: product.currency,
       images: product.images?.map((img: any) => ({
-        url: img.url,
+        url: this.resolvePublicAssetUrl(img.url) ?? img.url,
         altText: img.altText,
       })) || [],
       inStock: this.computeInStock(product.trackQuantity, product.stockQuantity),
@@ -87,7 +113,7 @@ export class ProductsService {
           name: pc.category.name,
           slug: pc.category.slug,
         })) || [],
-      featuredImage: product.featuredImage,
+      featuredImage: this.resolvePublicAssetUrl(product.featuredImage) ?? product.featuredImage,
       seoTitle: product.seoTitle,
       seoDescription: product.seoDescription,
       createdAt: product.createdAt.toISOString(),
@@ -267,6 +293,7 @@ export class ProductsService {
     if (dto.composition !== undefined) updateData.composition = dto.composition;
     if (dto.bestSeason !== undefined) updateData.bestSeason = dto.bestSeason;
     if (dto.suitablePlants !== undefined) updateData.suitablePlants = dto.suitablePlants;
+    if ((dto as any).aiCallScript !== undefined) (updateData as any).aiCallScript = (dto as any).aiCallScript;
     if (dto.status !== undefined) updateData.status = dto.status;
     if (dto.isActive !== undefined) updateData.isActive = dto.isActive;
     if (dto.featuredImage !== undefined) updateData.featuredImage = dto.featuredImage;
@@ -363,11 +390,27 @@ export class ProductsService {
     }
 
     if (categoryId) {
-      where.productCategories = {
-        some: {
-          categoryId,
+      // Shop šalje UUID ili slug iz URL-a (/category/djubriva). Samo UUID u where ne radi za slug.
+      const category = await this.prisma.category.findFirst({
+        where: {
+          OR: [{ id: categoryId }, { slug: categoryId }],
+          isActive: true,
         },
-      };
+        select: { id: true },
+      });
+      if (category) {
+        where.productCategories = {
+          some: { categoryId: category.id },
+        };
+      } else {
+        return {
+          items: [],
+          total: 0,
+          page,
+          limit,
+          pages: 0,
+        };
+      }
     }
 
     const [items, total] = await Promise.all([

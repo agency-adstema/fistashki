@@ -45,7 +45,7 @@ export class PublicProductsController {
   @ApiQuery({
     name: 'category',
     required: false,
-    description: 'Filter by category ID',
+    description: 'Filter by category ID (UUID) or slug (npr. djubriva)',
   })
   @ApiResponse({
     status: 200,

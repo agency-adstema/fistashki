@@ -79,6 +79,10 @@ const PERMISSIONS = [
   { key: 'orders.assign',               name: 'Assign Order',               description: 'Can assign/unassign orders to admin users' },
   { key: 'orders.set_priority',         name: 'Set Order Priority',         description: 'Can change order priority' },
   { key: 'orders.timeline.read',        name: 'Read Order Timeline',        description: 'Can view order timeline' },
+  { key: 'settings.read',               name: 'Read Settings',              description: 'Can view store settings' },
+  { key: 'settings.manage',             name: 'Manage Settings',            description: 'Can create, update, delete store settings' },
+  { key: 'network_orders.read',         name: 'Read Network Orders',        description: 'Can view network orders' },
+  { key: 'network_orders.manage',       name: 'Manage Network Orders',      description: 'Can confirm/reject network orders' },
 ];
 
 async function main() {

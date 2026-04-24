@@ -161,6 +161,8 @@ model Product {
   stockQuantity     Int     @default(0)
   lowStockThreshold Int     @default(5)
 
+  aiCallScript String? // Custom AI call script for this product
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -410,7 +412,7 @@ model Payment {
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
 
-  order Order @relation(fields: [orderId], references: [id])
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
   @@index([status])
@@ -751,20 +753,21 @@ model CallJob {
 
 model CallLog {
   id          String       @id @default(cuid())
-  callJobId   String       @unique
-  orderId     String
+  callJobId   String?      @unique  // optional za realtime pozive
+  orderId     String?               // optional za pozive sa Customer stranice
   customerId  String
   duration    Int?
   outcome     CallOutcome?
   transcript  Json?
   summary     String?
   audioUrl    String?
+  latencyMs   Int?                  // latency snimljeno tokom realtime poziva
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  callJob  CallJob  @relation(fields: [callJobId], references: [id], onDelete: Cascade)
-  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  callJob  CallJob?  @relation(fields: [callJobId], references: [id], onDelete: Cascade)
+  order    Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  customer Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@index([callJobId])
   @@index([orderId])
@@ -772,4 +775,14 @@ model CallLog {
   @@index([outcome])
   @@index([createdAt])
   @@map("call_logs")
+}
+
+model Setting {
+  key         String   @id
+  value       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("settings")
 }

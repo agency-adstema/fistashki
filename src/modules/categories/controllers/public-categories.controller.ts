@@ -27,6 +27,16 @@ export class PublicCategoriesController {
     return data;
   }
 
+  @Get('nav')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Lightweight category list for shop navigation',
+    description: 'Top-level categories with name and slug only (CRM source of truth for URLs).',
+  })
+  async nav() {
+    return this.categoriesService.findPublicCategoriesNav();
+  }
+
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({

@@ -6,25 +6,6 @@ export declare class CallsController {
         message: string;
         data: {
             items: ({
-                callJob: {
-                    error: string | null;
-                    id: string;
-                    orderId: string;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    status: import(".prisma/client").$Enums.CallStatus;
-                    attempt: number;
-                    maxAttempts: number;
-                    scheduledAt: Date;
-                    startedAt: Date | null;
-                    endedAt: Date | null;
-                };
-                order: {
-                    id: string;
-                    orderNumber: string;
-                    grandTotal: import("@prisma/client/runtime/library").Decimal;
-                    currency: string;
-                };
                 customer: {
                     id: string;
                     email: string;
@@ -32,18 +13,38 @@ export declare class CallsController {
                     lastName: string;
                     phone: string | null;
                 };
+                order: {
+                    id: string;
+                    currency: string;
+                    orderNumber: string;
+                    grandTotal: import("@prisma/client/runtime/library").Decimal;
+                } | null;
+                callJob: {
+                    error: string | null;
+                    status: import(".prisma/client").$Enums.CallStatus;
+                    id: string;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    orderId: string;
+                    attempt: number;
+                    maxAttempts: number;
+                    scheduledAt: Date;
+                    startedAt: Date | null;
+                    endedAt: Date | null;
+                } | null;
             } & {
                 id: string;
-                callJobId: string;
-                orderId: string;
+                summary: string | null;
+                createdAt: Date;
+                updatedAt: Date;
+                orderId: string | null;
                 customerId: string;
+                callJobId: string | null;
                 duration: number | null;
                 outcome: import(".prisma/client").$Enums.CallOutcome | null;
                 transcript: import("@prisma/client/runtime/library").JsonValue | null;
-                summary: string | null;
                 audioUrl: string | null;
-                createdAt: Date;
-                updatedAt: Date;
+                latencyMs: number | null;
             })[];
             total: number;
             page: number;
@@ -79,25 +80,6 @@ export declare class CallsController {
     } | {
         message: string;
         data: {
-            callJob: {
-                error: string | null;
-                id: string;
-                orderId: string;
-                createdAt: Date;
-                updatedAt: Date;
-                status: import(".prisma/client").$Enums.CallStatus;
-                attempt: number;
-                maxAttempts: number;
-                scheduledAt: Date;
-                startedAt: Date | null;
-                endedAt: Date | null;
-            };
-            order: {
-                id: string;
-                orderNumber: string;
-                grandTotal: import("@prisma/client/runtime/library").Decimal;
-                currency: string;
-            };
             customer: {
                 id: string;
                 email: string;
@@ -105,19 +87,55 @@ export declare class CallsController {
                 lastName: string;
                 phone: string | null;
             };
+            order: {
+                id: string;
+                currency: string;
+                orderNumber: string;
+                grandTotal: import("@prisma/client/runtime/library").Decimal;
+            } | null;
+            callJob: {
+                error: string | null;
+                status: import(".prisma/client").$Enums.CallStatus;
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                orderId: string;
+                attempt: number;
+                maxAttempts: number;
+                scheduledAt: Date;
+                startedAt: Date | null;
+                endedAt: Date | null;
+            } | null;
         } & {
             id: string;
-            callJobId: string;
-            orderId: string;
+            summary: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            orderId: string | null;
             customerId: string;
+            callJobId: string | null;
             duration: number | null;
             outcome: import(".prisma/client").$Enums.CallOutcome | null;
             transcript: import("@prisma/client/runtime/library").JsonValue | null;
-            summary: string | null;
             audioUrl: string | null;
+            latencyMs: number | null;
+        };
+    }>;
+    scheduleCall(orderId: string, delaySeconds?: number): Promise<{
+        message: string;
+        data: {
+            error: string | null;
+            status: import(".prisma/client").$Enums.CallStatus;
+            id: string;
             createdAt: Date;
             updatedAt: Date;
-        };
+            orderId: string;
+            attempt: number;
+            maxAttempts: number;
+            scheduledAt: Date;
+            startedAt: Date | null;
+            endedAt: Date | null;
+        } | undefined;
     }>;
     retryCall(callLogId: string, user: any): Promise<{
         message: string;
@@ -126,11 +144,11 @@ export declare class CallsController {
         message: string;
         data: {
             error: string | null;
+            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
-            orderId: string;
             createdAt: Date;
             updatedAt: Date;
-            status: import(".prisma/client").$Enums.CallStatus;
+            orderId: string;
             attempt: number;
             maxAttempts: number;
             scheduledAt: Date;

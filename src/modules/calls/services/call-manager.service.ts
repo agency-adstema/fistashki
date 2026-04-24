@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { CallStatus } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { PbxService } from './pbx.service';
+import { OpenAIService } from './openai.service';
 
 @Injectable()
 export class CallManagerService {
@@ -10,6 +11,7 @@ export class CallManagerService {
   constructor(
     private prisma: PrismaService,
     private pbxService: PbxService,
+    private openaiService: OpenAIService,
   ) {}
 
   async processCall(callJobId: string, orderId: string) {
@@ -41,37 +43,29 @@ export class CallManagerService {
         `Starting call for order ${orderId}, customer: ${order.customer.phone}`,
       );
 
-      // TODO: Pozovi PBX da inicira poziv
-      // const callId = await this.pbxService.initiateCall(
-      //   order.customer.phone,
-      //   callJobId,
-      // );
+      // Koristi OpenAI za AI razgovor
+      const callResult = await this.openaiService.simulateCall({
+        orderNumber: order.orderNumber,
+        customerName: `${order.customer.firstName} ${order.customer.lastName}`,
+        total: parseFloat(String(order.grandTotal)),
+        currency: order.currency,
+        items: order.items.map((item) => ({
+          name: item.productName,
+          quantity: item.quantity,
+          price: parseFloat(String(item.unitPrice)),
+        })),
+      });
 
-      // Za sada, simuliraj uspešan poziv nakon 5 sekundi
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-
-      // Kreiraj call log sa mock-om
+      // Kreiraj call log sa OpenAI rezultatima
       const callLog = await this.prisma.callLog.create({
         data: {
           callJobId,
           orderId,
           customerId: order.customerId,
-          duration: 300,
-          outcome: 'CONFIRMED',
-          transcript: [
-            {
-              role: 'ai',
-              text: 'Hello, this is a test call',
-              timestamp: 0,
-            },
-            {
-              role: 'customer',
-              text: 'Hi there',
-              timestamp: 2,
-            },
-          ],
-          summary:
-            'Customer confirmed the order. Order #' + order.orderNumber,
+          duration: callResult.duration,
+          outcome: callResult.outcome,
+          transcript: callResult.transcript as any, // JSON type
+          summary: callResult.summary,
         },
       });
 

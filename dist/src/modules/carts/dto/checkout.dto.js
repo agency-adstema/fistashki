@@ -22,7 +22,9 @@ class GuestInfoDto {
 exports.GuestInfoDto = GuestInfoDto;
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEmail)(),
+    (0, class_transformer_1.Transform)(({ value }) => value || undefined),
     __metadata("design:type", String)
 ], GuestInfoDto.prototype, "email", void 0);
 __decorate([

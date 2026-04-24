@@ -26,6 +26,9 @@ let PublicCategoriesController = class PublicCategoriesController {
         const data = await this.categoriesService.findPublicCategories();
         return data;
     }
+    async nav() {
+        return this.categoriesService.findPublicCategoriesNav();
+    }
     async findOne(id) {
         const data = await this.categoriesService.findPublicCategory(id);
         return data;
@@ -48,6 +51,17 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublicCategoriesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('nav'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Lightweight category list for shop navigation',
+        description: 'Top-level categories with name and slug only (CRM source of truth for URLs).',
+    }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PublicCategoriesController.prototype, "nav", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),

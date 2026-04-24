@@ -8,33 +8,33 @@ export declare class TagsService {
     constructor(prisma: PrismaService, auditLogsService: AuditLogsService);
     createTag(dto: CreateTagDto, actorUserId?: string): Promise<{
         id: string;
-        key: string;
-        name: string;
         createdAt: Date;
+        name: string;
+        key: string;
         updatedAt: Date;
         color: string | null;
     }>;
     findAllTags(): Promise<{
         id: string;
-        key: string;
-        name: string;
         createdAt: Date;
+        name: string;
+        key: string;
         updatedAt: Date;
         color: string | null;
     }[]>;
     findOneTag(id: string): Promise<{
         id: string;
-        key: string;
-        name: string;
         createdAt: Date;
+        name: string;
+        key: string;
         updatedAt: Date;
         color: string | null;
     }>;
     updateTag(id: string, dto: UpdateTagDto, actorUserId?: string): Promise<{
         id: string;
-        key: string;
-        name: string;
         createdAt: Date;
+        name: string;
+        key: string;
         updatedAt: Date;
         color: string | null;
     }>;
@@ -43,17 +43,17 @@ export declare class TagsService {
     }>;
     getOrderTags(orderId: string): Promise<{
         id: string;
-        key: string;
-        name: string;
         createdAt: Date;
+        name: string;
+        key: string;
         updatedAt: Date;
         color: string | null;
     }[]>;
     assignTag(orderId: string, tagId: string, actorUserId?: string): Promise<{
         id: string;
-        key: string;
-        name: string;
         createdAt: Date;
+        name: string;
+        key: string;
         updatedAt: Date;
         color: string | null;
     }>;

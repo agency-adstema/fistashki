@@ -15,6 +15,8 @@ export declare class CartsService {
     private readonly auditLogsService;
     private readonly couponsService;
     constructor(prisma: PrismaService, auditLogsService: AuditLogsService, couponsService: CouponsService);
+    private resolvePublicAssetUrl;
+    private formatProductForCart;
     private formatCart;
     private assertCartEditable;
     private recomputeAndSave;

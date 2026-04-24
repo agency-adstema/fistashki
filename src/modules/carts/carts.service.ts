@@ -25,7 +25,21 @@ import {
 const CART_INCLUDE = {
   items: {
     include: {
-      product: { select: { id: true, name: true, sku: true, slug: true, status: true, isActive: true } },
+      product: {
+        select: {
+          id: true,
+          name: true,
+          sku: true,
+          slug: true,
+          status: true,
+          isActive: true,
+          featuredImage: true,
+          images: {
+            select: { url: true, altText: true, sortOrder: true, isPrimary: true },
+            orderBy: { sortOrder: 'asc' as const },
+          },
+        },
+      },
     },
     orderBy: { createdAt: 'asc' as const },
   },
@@ -42,6 +56,59 @@ export class CartsService {
     private readonly couponsService: CouponsService,
   ) {}
 
+  /** Iste pravila kao u ProductsService — shop/korpa moraju dobiti apsolutan URL za /uploads. */
+  private resolvePublicAssetUrl(url: string | null | undefined): string | null | undefined {
+    if (url == null || url === '') return url;
+    if (url.startsWith('data:')) return url;
+    const base = (process.env.PUBLIC_ASSET_BASE_URL || '').replace(/\/$/, '');
+    if (!base) return url;
+    if (url.startsWith('/uploads/')) {
+      return `${base}${url}`;
+    }
+    if (url.includes('localhost') || url.includes('127.0.0.1')) {
+      try {
+        const u = new URL(url);
+        return `${base}${u.pathname}${u.search}${u.hash}`;
+      } catch {
+        return url;
+      }
+    }
+    return url;
+  }
+
+  private formatProductForCart(product: any) {
+    if (!product) return product;
+    const featured =
+      this.resolvePublicAssetUrl(product.featuredImage) ?? product.featuredImage ?? null;
+    let images = (product.images ?? []).map((img: any) => ({
+      ...img,
+      url: this.resolvePublicAssetUrl(img.url) ?? img.url,
+    }));
+    // Shop često koristi images[0].url; u bazi može biti samo featuredImage sa praznim images[].
+    if (images.length === 0 && featured) {
+      images = [
+        {
+          url: featured,
+          altText: product.name ?? null,
+          sortOrder: 0,
+          isPrimary: true,
+        },
+      ];
+    }
+    const primary = images.find((i: any) => i.isPrimary) ?? images[0];
+    const thumbnailUrl = featured || primary?.url || null;
+    return {
+      ...product,
+      featuredImage: featured,
+      images,
+      thumbnailUrl,
+      image: thumbnailUrl,
+      thumbnail: thumbnailUrl,
+      primaryImage: thumbnailUrl,
+      imageUrl: thumbnailUrl,
+    };
+  }
+
   private formatCart(cart: any) {
     return {
       ...cart,
@@ -53,6 +120,7 @@ export class CartsService {
         ...item,
         unitPrice: Number(item.unitPrice),
         totalPrice: Number(item.totalPrice),
+        product: this.formatProductForCart(item.product),
       })),
     };
   }

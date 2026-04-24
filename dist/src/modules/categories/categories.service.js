@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoriesService = void 0;
 const common_1 = require("@nestjs/common");
+const category_slug_util_1 = require("../../common/utils/category-slug.util");
 const prisma_service_1 = require("../../prisma/prisma.service");
 const audit_logs_service_1 = require("../audit-logs/audit-logs.service");
 let CategoriesService = class CategoriesService {
@@ -151,6 +152,14 @@ let CategoriesService = class CategoriesService {
         });
         return { id };
     }
+    async findPublicCategoriesNav() {
+        const categories = await this.prisma.category.findMany({
+            where: { isActive: true, parentId: null },
+            select: { name: true, slug: true },
+            orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+        });
+        return { items: categories };
+    }
     async findPublicCategories() {
         const categories = await this.prisma.category.findMany({
             where: {
@@ -174,11 +183,20 @@ let CategoriesService = class CategoriesService {
         };
     }
     async findPublicCategory(idOrSlug) {
-        const category = await this.prisma.category.findFirst({
-            where: {
-                OR: [{ id: idOrSlug }, { slug: idOrSlug }],
+        const key = (idOrSlug || '').trim();
+        if (!key)
+            throw new common_1.NotFoundException('Category not found');
+        const slugVariants = (0, category_slug_util_1.expandPublicCategorySlugVariants)(key);
+        const whereClause = (0, category_slug_util_1.isUuidLike)(key)
+            ? { id: key, isActive: true }
+            : {
                 isActive: true,
-            },
+                OR: slugVariants.map((slug) => ({
+                    slug: { equals: slug, mode: 'insensitive' },
+                })),
+            };
+        const category = await this.prisma.category.findFirst({
+            where: whereClause,
             include: {
                 children: {
                     where: { isActive: true },

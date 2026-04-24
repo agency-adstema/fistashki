@@ -6,10 +6,10 @@ export declare class PermissionsController {
         message: string;
         data: {
             id: string;
-            key: string;
-            name: string;
             description: string | null;
             createdAt: Date;
+            name: string;
+            key: string;
             updatedAt: Date;
         }[];
     }>;
@@ -17,10 +17,10 @@ export declare class PermissionsController {
         message: string;
         data: {
             id: string;
-            key: string;
-            name: string;
             description: string | null;
             createdAt: Date;
+            name: string;
+            key: string;
             updatedAt: Date;
         };
     }>;

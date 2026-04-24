@@ -54,6 +54,17 @@ export class CallsController {
     return { message: 'Call fetched successfully', data };
   }
 
+  @Post('schedule/:orderId')
+  @Permissions('calls.manage')
+  @ApiOperation({ summary: 'Schedule an auto-call for an order' })
+  async scheduleCall(
+    @Param('orderId') orderId: string,
+    @Body('delaySeconds') delaySeconds: number = 60,
+  ) {
+    const data = await this.callsService.scheduleCall(orderId, delaySeconds);
+    return { message: `Poziv zakazan za ${delaySeconds} sekundi`, data };
+  }
+
   @Post(':id/retry')
   @Permissions('calls.manage')
   @ApiOperation({ summary: 'Retry a failed call' })
@@ -66,7 +77,7 @@ export class CallsController {
     if (!callLog) {
       return { message: 'Call not found', data: null };
     }
-    const data = await this.callsService.retryCall(callLog.callJobId, user?.id);
+    const data = await this.callsService.retryCall(callLog.callJobId!, user?.id);
     return { message: 'Call retry scheduled', data };
   }
 }

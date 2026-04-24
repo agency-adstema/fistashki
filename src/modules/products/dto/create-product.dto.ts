@@ -12,9 +12,14 @@ import {
   IsUrl,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ProductStatus } from '@prisma/client';
+
+/** @IsOptional ne preskače ""; prazan string ruši @IsUrl / @IsNumber / @IsInt / @IsBoolean na PATCH-u. */
+function EmptyStringToUndefined() {
+  return Transform(({ value }) => (value === '' ? undefined : value));
+}
 
 export class ProductImageDto {
   @ApiProperty({ example: 'https://example.com/image.jpg' })
@@ -90,17 +95,25 @@ export class CreateProductDto {
   @IsOptional()
   suitablePlants?: string;
 
+  @ApiPropertyOptional({ example: 'Ovaj preparat se koristi za prostatu...' })
+  @IsString()
+  @IsOptional()
+  aiCallScript?: string;
+
   @ApiPropertyOptional({ enum: ProductStatus, default: ProductStatus.DRAFT })
+  @EmptyStringToUndefined()
   @IsEnum(ProductStatus)
   @IsOptional()
   status?: ProductStatus;
 
   @ApiPropertyOptional({ example: true, default: true })
+  @EmptyStringToUndefined()
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
 
   @ApiPropertyOptional({ example: 'https://example.com/featured.jpg' })
+  @EmptyStringToUndefined()
   @IsUrl({ require_tld: false })
   @IsOptional()
   featuredImage?: string;
@@ -116,17 +129,20 @@ export class CreateProductDto {
   seoDescription?: string;
 
   @ApiProperty({ example: 299.99, description: 'Selling price' })
+  @EmptyStringToUndefined()
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()
   price: number;
 
   @ApiPropertyOptional({ example: 349.99, description: 'Original price for comparison' })
+  @EmptyStringToUndefined()
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()
   @IsOptional()
   compareAtPrice?: number;
 
   @ApiPropertyOptional({ example: 150.0, description: 'Cost price (admin only)' })
+  @EmptyStringToUndefined()
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()
   @IsOptional()
@@ -138,17 +154,20 @@ export class CreateProductDto {
   currency?: string;
 
   @ApiPropertyOptional({ example: true, default: false })
+  @EmptyStringToUndefined()
   @IsBoolean()
   @IsOptional()
   trackQuantity?: boolean;
 
   @ApiPropertyOptional({ example: 100, default: 0 })
+  @EmptyStringToUndefined()
   @IsInt()
   @Min(0)
   @IsOptional()
   stockQuantity?: number;
 
   @ApiPropertyOptional({ example: 5, default: 5 })
+  @EmptyStringToUndefined()
   @IsInt()
   @Min(0)
   @IsOptional()

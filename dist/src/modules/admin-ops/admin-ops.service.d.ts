@@ -15,10 +15,10 @@ export declare class AdminOpsService {
             lastName: string;
         } | null;
     } & {
+        status: import(".prisma/client").$Enums.OrderStatus;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import(".prisma/client").$Enums.OrderStatus;
         currency: string;
         notes: string | null;
         customerId: string;
@@ -38,10 +38,10 @@ export declare class AdminOpsService {
         networkOrderId: string | null;
     }>;
     unassignOrder(orderId: string, actorUserId?: string): Promise<{
+        status: import(".prisma/client").$Enums.OrderStatus;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import(".prisma/client").$Enums.OrderStatus;
         currency: string;
         notes: string | null;
         customerId: string;
@@ -61,10 +61,10 @@ export declare class AdminOpsService {
         networkOrderId: string | null;
     }>;
     setPriority(orderId: string, dto: SetPriorityDto, actorUserId?: string): Promise<{
+        status: import(".prisma/client").$Enums.OrderStatus;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import(".prisma/client").$Enums.OrderStatus;
         currency: string;
         notes: string | null;
         customerId: string;

@@ -6,6 +6,8 @@ import { CallQueueProcessor } from './call-queue.processor';
 import { CallManagerService } from './services/call-manager.service';
 import { PbxService } from './services/pbx.service';
 import { AudioConverterService } from './services/audio-converter.service';
+import { OpenAIService } from './services/openai.service';
+import { RealtimeCallGateway } from './realtime-call.gateway';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { AuditLogsModule } from '../audit-logs/audit-logs.module';
 import { OrdersModule } from '../orders/orders.module';
@@ -32,6 +34,8 @@ import { OrdersModule } from '../orders/orders.module';
     CallManagerService,
     PbxService,
     AudioConverterService,
+    OpenAIService,
+    RealtimeCallGateway,
   ],
   controllers: [CallsController],
   exports: [CallsService],

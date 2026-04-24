@@ -17,10 +17,10 @@ export declare class JwtStrategy extends JwtStrategy_base {
                 rolePermissions: ({
                     permission: {
                         id: string;
-                        key: string;
-                        name: string;
                         description: string | null;
                         createdAt: Date;
+                        name: string;
+                        key: string;
                         updatedAt: Date;
                     };
                 } & {
@@ -31,10 +31,10 @@ export declare class JwtStrategy extends JwtStrategy_base {
                 })[];
             } & {
                 id: string;
-                key: string;
-                name: string;
                 description: string | null;
                 createdAt: Date;
+                name: string;
+                key: string;
                 updatedAt: Date;
             };
         } & {

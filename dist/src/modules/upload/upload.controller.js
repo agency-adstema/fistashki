@@ -26,7 +26,9 @@ let UploadController = class UploadController {
     uploadImage(file) {
         if (!file)
             throw new common_1.BadRequestException('No file uploaded');
-        const url = `http://localhost:4000/uploads/products/${file.filename}`;
+        const base = (process.env.PUBLIC_ASSET_BASE_URL ||
+            `http://localhost:${process.env.PORT || 4000}`).replace(/\/$/, '');
+        const url = `${base}/uploads/products/${file.filename}`;
         return { url, filename: file.filename, size: file.size, mimetype: file.mimetype };
     }
 };

@@ -29,7 +29,7 @@ const returns_module_1 = require("./modules/returns/returns.module");
 const admin_ops_module_1 = require("./modules/admin-ops/admin-ops.module");
 const health_module_1 = require("./health/health.module");
 const upload_module_1 = require("./modules/upload/upload.module");
-const network_orders_module_1 = require("./modules/network-orders/network-orders.module");
+const settings_module_1 = require("./modules/settings/settings.module");
 const calls_module_1 = require("./modules/calls/calls.module");
 let AppModule = class AppModule {
 };
@@ -66,7 +66,7 @@ exports.AppModule = AppModule = __decorate([
             returns_module_1.ReturnsModule,
             admin_ops_module_1.AdminOpsModule,
             upload_module_1.UploadModule,
-            network_orders_module_1.NetworkOrdersModule,
+            settings_module_1.SettingsModule,
             calls_module_1.CallsModule,
         ],
     })

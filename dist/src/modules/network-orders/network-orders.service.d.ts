@@ -8,10 +8,10 @@ export declare class NetworkOrdersService {
     getOrderByExternalId(externalId: string): Promise<NetworkOrderResponseDto>;
     listOrders(status?: string, networkKey?: string): Promise<({
         order: {
+            status: import(".prisma/client").$Enums.OrderStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
             notes: string | null;
             customerId: string;
@@ -31,11 +31,11 @@ export declare class NetworkOrdersService {
             networkOrderId: string | null;
         } | null;
     } & {
+        status: import(".prisma/client").$Enums.NetworkOrderStatus;
         id: string;
         createdAt: Date;
-        updatedAt: Date;
         items: string;
-        status: import(".prisma/client").$Enums.NetworkOrderStatus;
+        updatedAt: Date;
         currency: string;
         totalAmount: import("@prisma/client/runtime/library").Decimal;
         notes: string | null;

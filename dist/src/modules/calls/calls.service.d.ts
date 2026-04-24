@@ -9,10 +9,10 @@ export declare class CallsService {
     constructor(callsQueue: Queue, prisma: PrismaService, auditLogsService: AuditLogsService);
     scheduleCall(orderId: string, delaySeconds?: number): Promise<{
         error: string | null;
+        status: import(".prisma/client").$Enums.CallStatus;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import(".prisma/client").$Enums.CallStatus;
         orderId: string;
         attempt: number;
         maxAttempts: number;
@@ -33,39 +33,40 @@ export declare class CallsService {
             currency: string;
             orderNumber: string;
             grandTotal: import("@prisma/client/runtime/library").Decimal;
-        };
+        } | null;
         callJob: {
             error: string | null;
+            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;
             scheduledAt: Date;
             startedAt: Date | null;
             endedAt: Date | null;
-        };
+        } | null;
     } & {
         id: string;
+        summary: string | null;
         createdAt: Date;
         updatedAt: Date;
-        summary: string | null;
-        orderId: string;
+        orderId: string | null;
         customerId: string;
-        callJobId: string;
+        callJobId: string | null;
         duration: number | null;
         outcome: import(".prisma/client").$Enums.CallOutcome | null;
         transcript: import("@prisma/client/runtime/library").JsonValue | null;
         audioUrl: string | null;
+        latencyMs: number | null;
     }) | null>;
     getCallsByCustomer(customerId: string): Promise<({
         order: {
+            status: import(".prisma/client").$Enums.OrderStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
             notes: string | null;
             customerId: string;
@@ -83,32 +84,33 @@ export declare class CallsService {
             cancelledAt: Date | null;
             cancelReason: string | null;
             networkOrderId: string | null;
-        };
+        } | null;
         callJob: {
             error: string | null;
+            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;
             scheduledAt: Date;
             startedAt: Date | null;
             endedAt: Date | null;
-        };
+        } | null;
     } & {
         id: string;
+        summary: string | null;
         createdAt: Date;
         updatedAt: Date;
-        summary: string | null;
-        orderId: string;
+        orderId: string | null;
         customerId: string;
-        callJobId: string;
+        callJobId: string | null;
         duration: number | null;
         outcome: import(".prisma/client").$Enums.CallOutcome | null;
         transcript: import("@prisma/client/runtime/library").JsonValue | null;
         audioUrl: string | null;
+        latencyMs: number | null;
     })[]>;
     getCallsByOrder(orderId: string): Promise<({
         customer: {
@@ -124,29 +126,30 @@ export declare class CallsService {
         };
         callJob: {
             error: string | null;
+            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;
             scheduledAt: Date;
             startedAt: Date | null;
             endedAt: Date | null;
-        };
+        } | null;
     } & {
         id: string;
+        summary: string | null;
         createdAt: Date;
         updatedAt: Date;
-        summary: string | null;
-        orderId: string;
+        orderId: string | null;
         customerId: string;
-        callJobId: string;
+        callJobId: string | null;
         duration: number | null;
         outcome: import(".prisma/client").$Enums.CallOutcome | null;
         transcript: import("@prisma/client/runtime/library").JsonValue | null;
         audioUrl: string | null;
+        latencyMs: number | null;
     })[]>;
     getAllCalls(page?: number, limit?: number): Promise<{
         items: ({
@@ -162,32 +165,33 @@ export declare class CallsService {
                 currency: string;
                 orderNumber: string;
                 grandTotal: import("@prisma/client/runtime/library").Decimal;
-            };
+            } | null;
             callJob: {
                 error: string | null;
+                status: import(".prisma/client").$Enums.CallStatus;
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                status: import(".prisma/client").$Enums.CallStatus;
                 orderId: string;
                 attempt: number;
                 maxAttempts: number;
                 scheduledAt: Date;
                 startedAt: Date | null;
                 endedAt: Date | null;
-            };
+            } | null;
         } & {
             id: string;
+            summary: string | null;
             createdAt: Date;
             updatedAt: Date;
-            summary: string | null;
-            orderId: string;
+            orderId: string | null;
             customerId: string;
-            callJobId: string;
+            callJobId: string | null;
             duration: number | null;
             outcome: import(".prisma/client").$Enums.CallOutcome | null;
             transcript: import("@prisma/client/runtime/library").JsonValue | null;
             audioUrl: string | null;
+            latencyMs: number | null;
         })[];
         total: number;
         page: number;
@@ -215,10 +219,10 @@ export declare class CallsService {
     }>;
     retryCall(callJobId: string, actorUserId?: string): Promise<{
         error: string | null;
+        status: import(".prisma/client").$Enums.CallStatus;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import(".prisma/client").$Enums.CallStatus;
         orderId: string;
         attempt: number;
         maxAttempts: number;

@@ -10,10 +10,10 @@ export declare class RolesController {
             rolePermissions: ({
                 permission: {
                     id: string;
-                    key: string;
-                    name: string;
                     description: string | null;
                     createdAt: Date;
+                    name: string;
+                    key: string;
                     updatedAt: Date;
                 };
             } & {
@@ -27,10 +27,10 @@ export declare class RolesController {
             };
         } & {
             id: string;
-            key: string;
-            name: string;
             description: string | null;
             createdAt: Date;
+            name: string;
+            key: string;
             updatedAt: Date;
         })[];
     }>;
@@ -40,10 +40,10 @@ export declare class RolesController {
             rolePermissions: ({
                 permission: {
                     id: string;
-                    key: string;
-                    name: string;
                     description: string | null;
                     createdAt: Date;
+                    name: string;
+                    key: string;
                     updatedAt: Date;
                 };
             } & {
@@ -54,10 +54,10 @@ export declare class RolesController {
             })[];
         } & {
             id: string;
-            key: string;
-            name: string;
             description: string | null;
             createdAt: Date;
+            name: string;
+            key: string;
             updatedAt: Date;
         };
     }>;
@@ -65,10 +65,10 @@ export declare class RolesController {
         message: string;
         data: {
             id: string;
-            key: string;
-            name: string;
             description: string | null;
             createdAt: Date;
+            name: string;
+            key: string;
             updatedAt: Date;
         };
     }>;
@@ -78,10 +78,10 @@ export declare class RolesController {
             rolePermissions: ({
                 permission: {
                     id: string;
-                    key: string;
-                    name: string;
                     description: string | null;
                     createdAt: Date;
+                    name: string;
+                    key: string;
                     updatedAt: Date;
                 };
             } & {
@@ -92,10 +92,10 @@ export declare class RolesController {
             })[];
         } & {
             id: string;
-            key: string;
-            name: string;
             description: string | null;
             createdAt: Date;
+            name: string;
+            key: string;
             updatedAt: Date;
         };
     }>;

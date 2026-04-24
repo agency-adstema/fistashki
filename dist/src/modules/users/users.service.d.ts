@@ -19,10 +19,10 @@ export declare class UsersService {
                 rolePermissions: ({
                     permission: {
                         id: string;
-                        key: string;
-                        name: string;
                         description: string | null;
                         createdAt: Date;
+                        name: string;
+                        key: string;
                         updatedAt: Date;
                     };
                 } & {
@@ -33,10 +33,10 @@ export declare class UsersService {
                 })[];
             } & {
                 id: string;
-                key: string;
-                name: string;
                 description: string | null;
                 createdAt: Date;
+                name: string;
+                key: string;
                 updatedAt: Date;
             };
         } & {
@@ -58,8 +58,8 @@ export declare class UsersService {
         userRoles: ({
             role: {
                 id: string;
-                key: string;
                 name: string;
+                key: string;
             };
         } & {
             id: string;
@@ -85,10 +85,10 @@ export declare class UsersService {
         userRoles: ({
             role: {
                 id: string;
-                key: string;
-                name: string;
                 description: string | null;
                 createdAt: Date;
+                name: string;
+                key: string;
                 updatedAt: Date;
             };
         } & {
@@ -109,10 +109,10 @@ export declare class UsersService {
                 rolePermissions: ({
                     permission: {
                         id: string;
-                        key: string;
-                        name: string;
                         description: string | null;
                         createdAt: Date;
+                        name: string;
+                        key: string;
                         updatedAt: Date;
                     };
                 } & {
@@ -123,10 +123,10 @@ export declare class UsersService {
                 })[];
             } & {
                 id: string;
-                key: string;
-                name: string;
                 description: string | null;
                 createdAt: Date;
+                name: string;
+                key: string;
                 updatedAt: Date;
             };
         } & {

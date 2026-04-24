@@ -25,10 +25,10 @@ export declare class UsersController {
             userRoles: ({
                 role: {
                     id: string;
-                    key: string;
-                    name: string;
                     description: string | null;
                     createdAt: Date;
+                    name: string;
+                    key: string;
                     updatedAt: Date;
                 };
             } & {
@@ -52,10 +52,10 @@ export declare class UsersController {
                     rolePermissions: ({
                         permission: {
                             id: string;
-                            key: string;
-                            name: string;
                             description: string | null;
                             createdAt: Date;
+                            name: string;
+                            key: string;
                             updatedAt: Date;
                         };
                     } & {
@@ -66,10 +66,10 @@ export declare class UsersController {
                     })[];
                 } & {
                     id: string;
-                    key: string;
-                    name: string;
                     description: string | null;
                     createdAt: Date;
+                    name: string;
+                    key: string;
                     updatedAt: Date;
                 };
             } & {

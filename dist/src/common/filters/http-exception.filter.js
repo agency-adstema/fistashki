@@ -27,8 +27,9 @@ let GlobalExceptionFilter = GlobalExceptionFilter_1 = class GlobalExceptionFilte
             else if (typeof body === 'object' && body !== null) {
                 const resp = body;
                 if (Array.isArray(resp.message)) {
-                    errors = resp.message;
-                    message = 'Validation failed';
+                    errors = resp.message.map((m) => String(m));
+                    message =
+                        errors.length > 0 ? errors.join('; ') : 'Validation failed';
                 }
                 else {
                     message = resp.message ?? message;

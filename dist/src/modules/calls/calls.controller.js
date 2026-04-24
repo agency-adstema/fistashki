@@ -40,6 +40,10 @@ let CallsController = class CallsController {
         }
         return { message: 'Call fetched successfully', data };
     }
+    async scheduleCall(orderId, delaySeconds = 60) {
+        const data = await this.callsService.scheduleCall(orderId, delaySeconds);
+        return { message: `Poziv zakazan za ${delaySeconds} sekundi`, data };
+    }
     async retryCall(callLogId, user) {
         const callLog = await this.callsService.getCallLog(callLogId);
         if (!callLog) {
@@ -77,6 +81,16 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CallsController.prototype, "getCall", null);
+__decorate([
+    (0, common_1.Post)('schedule/:orderId'),
+    (0, permissions_decorator_1.Permissions)('calls.manage'),
+    (0, swagger_1.ApiOperation)({ summary: 'Schedule an auto-call for an order' }),
+    __param(0, (0, common_1.Param)('orderId')),
+    __param(1, (0, common_1.Body)('delaySeconds')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:returntype", Promise)
+], CallsController.prototype, "scheduleCall", null);
 __decorate([
     (0, common_1.Post)(':id/retry'),
     (0, permissions_decorator_1.Permissions)('calls.manage'),

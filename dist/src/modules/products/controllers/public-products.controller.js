@@ -72,7 +72,7 @@ __decorate([
     (0, swagger_1.ApiQuery)({
         name: 'category',
         required: false,
-        description: 'Filter by category ID',
+        description: 'Filter by category ID (UUID) or slug (npr. djubriva)',
     }),
     (0, swagger_1.ApiResponse)({
         status: 200,

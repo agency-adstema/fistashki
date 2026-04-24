@@ -10,8 +10,8 @@ export declare class AuthController {
             user: {
                 role: {
                     id: string;
-                    key: string;
                     name: string;
+                    key: string;
                 } & {
                     id: string;
                     name: string;

@@ -14,6 +14,9 @@ const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const swagger_1 = require("@nestjs/swagger");
 const client_1 = require("@prisma/client");
+function EmptyStringToUndefined() {
+    return (0, class_transformer_1.Transform)(({ value }) => (value === '' ? undefined : value));
+}
 class ProductImageDto {
     url;
     altText;
@@ -57,6 +60,7 @@ class CreateProductDto {
     composition;
     bestSeason;
     suitablePlants;
+    aiCallScript;
     status;
     isActive;
     featuredImage;
@@ -134,19 +138,28 @@ __decorate([
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "suitablePlants", void 0);
 __decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Ovaj preparat se koristi za prostatu...' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "aiCallScript", void 0);
+__decorate([
     (0, swagger_1.ApiPropertyOptional)({ enum: client_1.ProductStatus, default: client_1.ProductStatus.DRAFT }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsEnum)(client_1.ProductStatus),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "status", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: true, default: true }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsBoolean)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)
 ], CreateProductDto.prototype, "isActive", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 'https://example.com/featured.jpg' }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsUrl)({ require_tld: false }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
@@ -165,12 +178,14 @@ __decorate([
 ], CreateProductDto.prototype, "seoDescription", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 299.99, description: 'Selling price' }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsNumber)({ maxDecimalPlaces: 2 }),
     (0, class_validator_1.IsPositive)(),
     __metadata("design:type", Number)
 ], CreateProductDto.prototype, "price", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 349.99, description: 'Original price for comparison' }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsNumber)({ maxDecimalPlaces: 2 }),
     (0, class_validator_1.IsPositive)(),
     (0, class_validator_1.IsOptional)(),
@@ -178,6 +193,7 @@ __decorate([
 ], CreateProductDto.prototype, "compareAtPrice", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 150.0, description: 'Cost price (admin only)' }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsNumber)({ maxDecimalPlaces: 2 }),
     (0, class_validator_1.IsPositive)(),
     (0, class_validator_1.IsOptional)(),
@@ -191,12 +207,14 @@ __decorate([
 ], CreateProductDto.prototype, "currency", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: true, default: false }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsBoolean)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)
 ], CreateProductDto.prototype, "trackQuantity", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 100, default: 0 }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsOptional)(),
@@ -204,6 +222,7 @@ __decorate([
 ], CreateProductDto.prototype, "stockQuantity", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ example: 5, default: 5 }),
+    EmptyStringToUndefined(),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsOptional)(),

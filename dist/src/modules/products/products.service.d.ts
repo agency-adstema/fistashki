@@ -8,6 +8,7 @@ export declare class ProductsService {
     private readonly auditLogsService;
     constructor(prisma: PrismaService, auditLogsService: AuditLogsService);
     private computeInStock;
+    private resolvePublicAssetUrl;
     private formatProduct;
     private formatPublicProduct;
     private formatPublicProductDetail;
@@ -64,6 +65,7 @@ export declare class ProductsService {
         composition: any;
         bestSeason: any;
         suitablePlants: any;
+        aiCallScript: any;
         sku: any;
         price: any;
         compareAtPrice: any;

@@ -4,5 +4,11 @@ export declare class PublicCategoriesController {
     private readonly categoriesService;
     constructor(categoriesService: CategoriesService);
     findAll(): Promise<PublicCategoriesListResponseDto>;
+    nav(): Promise<{
+        items: {
+            slug: string;
+            name: string;
+        }[];
+    }>;
     findOne(id: string): Promise<PublicCategoryDto>;
 }

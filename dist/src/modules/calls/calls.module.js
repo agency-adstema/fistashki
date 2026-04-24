@@ -15,6 +15,8 @@ const call_queue_processor_1 = require("./call-queue.processor");
 const call_manager_service_1 = require("./services/call-manager.service");
 const pbx_service_1 = require("./services/pbx.service");
 const audio_converter_service_1 = require("./services/audio-converter.service");
+const openai_service_1 = require("./services/openai.service");
+const realtime_call_gateway_1 = require("./realtime-call.gateway");
 const prisma_module_1 = require("../../prisma/prisma.module");
 const audit_logs_module_1 = require("../audit-logs/audit-logs.module");
 const orders_module_1 = require("../orders/orders.module");
@@ -44,6 +46,8 @@ exports.CallsModule = CallsModule = __decorate([
             call_manager_service_1.CallManagerService,
             pbx_service_1.PbxService,
             audio_converter_service_1.AudioConverterService,
+            openai_service_1.OpenAIService,
+            realtime_call_gateway_1.RealtimeCallGateway,
         ],
         controllers: [calls_controller_1.CallsController],
         exports: [calls_service_1.CallsService],

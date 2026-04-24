@@ -16,11 +16,11 @@ export declare class CustomersController {
             addresses: {
                 id: string;
                 createdAt: Date;
+                type: import(".prisma/client").$Enums.AddressType;
                 updatedAt: Date;
                 firstName: string;
                 lastName: string;
                 phone: string | null;
-                type: import(".prisma/client").$Enums.AddressType;
                 addressLine1: string;
                 addressLine2: string | null;
                 city: string;
@@ -51,11 +51,11 @@ export declare class CustomersController {
                 addresses: {
                     id: string;
                     createdAt: Date;
+                    type: import(".prisma/client").$Enums.AddressType;
                     updatedAt: Date;
                     firstName: string;
                     lastName: string;
                     phone: string | null;
-                    type: import(".prisma/client").$Enums.AddressType;
                     addressLine1: string;
                     addressLine2: string | null;
                     city: string;
@@ -86,9 +86,9 @@ export declare class CustomersController {
         data: {
             orders: {
                 grandTotal: number;
+                status: import(".prisma/client").$Enums.OrderStatus;
                 id: string;
                 createdAt: Date;
-                status: import(".prisma/client").$Enums.OrderStatus;
                 currency: string;
                 orderNumber: string;
                 paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
@@ -100,11 +100,11 @@ export declare class CustomersController {
             addresses: {
                 id: string;
                 createdAt: Date;
+                type: import(".prisma/client").$Enums.AddressType;
                 updatedAt: Date;
                 firstName: string;
                 lastName: string;
                 phone: string | null;
-                type: import(".prisma/client").$Enums.AddressType;
                 addressLine1: string;
                 addressLine2: string | null;
                 city: string;
@@ -133,11 +133,11 @@ export declare class CustomersController {
             addresses: {
                 id: string;
                 createdAt: Date;
+                type: import(".prisma/client").$Enums.AddressType;
                 updatedAt: Date;
                 firstName: string;
                 lastName: string;
                 phone: string | null;
-                type: import(".prisma/client").$Enums.AddressType;
                 addressLine1: string;
                 addressLine2: string | null;
                 city: string;
@@ -163,11 +163,11 @@ export declare class CustomersController {
         data: {
             id: string;
             createdAt: Date;
+            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
             phone: string | null;
-            type: import(".prisma/client").$Enums.AddressType;
             addressLine1: string;
             addressLine2: string | null;
             city: string;
@@ -182,11 +182,11 @@ export declare class CustomersController {
         data: {
             id: string;
             createdAt: Date;
+            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
             phone: string | null;
-            type: import(".prisma/client").$Enums.AddressType;
             addressLine1: string;
             addressLine2: string | null;
             city: string;
@@ -201,11 +201,11 @@ export declare class CustomersController {
         data: {
             id: string;
             createdAt: Date;
+            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
             phone: string | null;
-            type: import(".prisma/client").$Enums.AddressType;
             addressLine1: string;
             addressLine2: string | null;
             city: string;

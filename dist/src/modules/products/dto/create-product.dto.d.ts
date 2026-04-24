@@ -16,6 +16,7 @@ export declare class CreateProductDto {
     composition?: string;
     bestSeason?: string;
     suitablePlants?: string;
+    aiCallScript?: string;
     status?: ProductStatus;
     isActive?: boolean;
     featuredImage?: string;

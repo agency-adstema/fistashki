@@ -20,7 +20,8 @@ import { ReturnsModule } from './modules/returns/returns.module';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module';
 import { HealthModule } from './health/health.module';
 import { UploadModule } from './modules/upload/upload.module';
-import { NetworkOrdersModule } from './modules/network-orders/network-orders.module';
+import { SettingsModule } from './modules/settings/settings.module';
+// import { NetworkOrdersModule } from './modules/network-orders/network-orders.module';
 import { CallsModule } from './modules/calls/calls.module';
 
 @Module({
@@ -54,7 +55,8 @@ import { CallsModule } from './modules/calls/calls.module';
     ReturnsModule,
     AdminOpsModule,
     UploadModule,
-    NetworkOrdersModule,
+    SettingsModule,
+    // NetworkOrdersModule,
     CallsModule,
   ],
 })

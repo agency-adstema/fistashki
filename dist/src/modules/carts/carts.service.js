@@ -20,7 +20,21 @@ const orders_utils_1 = require("../orders/orders.utils");
 const CART_INCLUDE = {
     items: {
         include: {
-            product: { select: { id: true, name: true, sku: true, slug: true, status: true, isActive: true } },
+            product: {
+                select: {
+                    id: true,
+                    name: true,
+                    sku: true,
+                    slug: true,
+                    status: true,
+                    isActive: true,
+                    featuredImage: true,
+                    images: {
+                        select: { url: true, altText: true, sortOrder: true, isPrimary: true },
+                        orderBy: { sortOrder: 'asc' },
+                    },
+                },
+            },
         },
         orderBy: { createdAt: 'asc' },
     },
@@ -37,6 +51,59 @@ let CartsService = class CartsService {
         this.auditLogsService = auditLogsService;
         this.couponsService = couponsService;
     }
+    resolvePublicAssetUrl(url) {
+        if (url == null || url === '')
+            return url;
+        if (url.startsWith('data:'))
+            return url;
+        const base = (process.env.PUBLIC_ASSET_BASE_URL || '').replace(/\/$/, '');
+        if (!base)
+            return url;
+        if (url.startsWith('/uploads/')) {
+            return `${base}${url}`;
+        }
+        if (url.includes('localhost') || url.includes('127.0.0.1')) {
+            try {
+                const u = new URL(url);
+                return `${base}${u.pathname}${u.search}${u.hash}`;
+            }
+            catch {
+                return url;
+            }
+        }
+        return url;
+    }
+    formatProductForCart(product) {
+        if (!product)
+            return product;
+        const featured = this.resolvePublicAssetUrl(product.featuredImage) ?? product.featuredImage ?? null;
+        let images = (product.images ?? []).map((img) => ({
+            ...img,
+            url: this.resolvePublicAssetUrl(img.url) ?? img.url,
+        }));
+        if (images.length === 0 && featured) {
+            images = [
+                {
+                    url: featured,
+                    altText: product.name ?? null,
+                    sortOrder: 0,
+                    isPrimary: true,
+                },
+            ];
+        }
+        const primary = images.find((i) => i.isPrimary) ?? images[0];
+        const thumbnailUrl = featured || primary?.url || null;
+        return {
+            ...product,
+            featuredImage: featured,
+            images,
+            thumbnailUrl,
+            image: thumbnailUrl,
+            thumbnail: thumbnailUrl,
+            primaryImage: thumbnailUrl,
+            imageUrl: thumbnailUrl,
+        };
+    }
     formatCart(cart) {
         return {
             ...cart,
@@ -48,6 +115,7 @@ let CartsService = class CartsService {
                 ...item,
                 unitPrice: Number(item.unitPrice),
                 totalPrice: Number(item.totalPrice),
+                product: this.formatProductForCart(item.product),
             })),
         };
     }

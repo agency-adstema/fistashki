@@ -105,6 +105,7 @@ export class OrdersService {
           const itemSnapshots: Array<{
             productId: string;
             productName: string;
+            productImage?: string;
             sku: string;
             unitPrice: Prisma.Decimal;
             totalPrice: Prisma.Decimal;

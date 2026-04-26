@@ -134,6 +134,7 @@ export class OrdersService {
             itemSnapshots.push({
               productId: product.id,
               productName: product.name,
+              productImage: product.featuredImage || undefined,
               sku: product.sku,
               unitPrice,
               totalPrice,
@@ -184,6 +185,7 @@ export class OrdersService {
                 create: itemSnapshots.map((snap) => ({
                   productId: snap.productId,
                   productName: snap.productName,
+                  productImage: snap.productImage,
                   sku: snap.sku,
                   quantity: snap.quantity,
                   unitPrice: snap.unitPrice,

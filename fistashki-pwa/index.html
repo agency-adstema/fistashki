@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fistashki — Sveže pistaće direktno od proizvođača</title>
+    <meta name="description" content="Fistashki.org — Najbolji pistaći direktno od proizvođača. Organski uzgoj, ručno branje, dostava na vrata." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container header-inner">
+        <a href="#" class="logo">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="17" fill="#d4a853" stroke="#4a7c3f" stroke-width="2"/>
+            <ellipse cx="18" cy="17" rx="7" ry="9" fill="#8B6914"/>
+            <path d="M18 8 C15 10, 10 16, 10 20 C10 24, 14 28, 18 28 C22 28, 26 24, 26 20 C26 16, 21 10, 18 8Z" fill="#C4A44A" opacity="0.8"/>
+          </svg>
+          <span>Fistashki</span>
+        </a>
+        <nav class="nav">
+          <a href="#hero">Početna</a>
+          <a href="#about">O nama</a>
+          <a href="#products">Proizvodi</a>
+          <a href="#contact">Kontakt</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="container">
+        <h1>Fistashki.org</h1>
+        <p class="hero-subtitle">Sveže pistaće direktno od proizvođača — organski uzgoj, ručno branje, vrhunski ukus.</p>
+        <p class="hero-cta-text">Naručite sad i osetite razliku!</p>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about">
+      <div class="container">
+        <h2>O nama</h2>
+        <div class="about-grid">
+          <div class="about-card">
+            <div class="about-icon">🌱</div>
+            <h3>Organski uzgoj</h3>
+            <p>Naši pistaći se gaje bez pesticida i veštačkih đubriva, na porodičnoj farmi sa tradicijom dugom preko 50 godina.</p>
+          </div>
+          <div class="about-card">
+            <div class="about-icon">✋</div>
+            <h3>Ručno branje</h3>
+            <p>Svaki pistać je ručno ubran u optimalnom trenutku zrelosti, što garantuje maksimalan ukus i nutritivnu vrednost.</p>
+          </div>
+          <div class="about-card">
+            <div class="about-icon">🚚</div>
+            <h3>Brza dostava</h3>
+            <p>Dostavljamo na vašu adresu u roku od 24-48 sati. Besplatna dostava za porudžbine preko 3.000 RSD.</p>
+          </div>
+          <div class="about-card">
+            <div class="about-icon">💚</div>
+            <h3>100% prirodno</h3>
+            <p>Bez aditiva, bez konzervansa, bez prženja na lošim uljima. Samo čist, prirodan ukus pistaća.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products" class="products">
+      <div class="container">
+        <h2>Naši proizvodi</h2>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-badge">Najprodavaniji</div>
+            <div class="product-icon">🥜</div>
+            <h3>Soljeni pistaći</h3>
+            <p class="product-desc">Klasični, blago soljeni pistaći — savršen balans ukusa. Pakovanje 250g.</p>
+            <p class="product-price">890 RSD</p>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">🌿</div>
+            <h3>Neslani pistaći</h3>
+            <p class="product-desc">Prirodni, neslani pistaći za one koji paze na unos soli. Pakovanje 250g.</p>
+            <p class="product-price">850 RSD</p>
+          </div>
+          <div class="product-card">
+            <div class="product-badge">Novo</div>
+            <div class="product-icon">🍯</div>
+            <h3>Pistaći sa medom</h3>
+            <p class="product-desc">Pistaći obloženi bagremovim medom i cimetom — zdrava poslastica. Pakovanje 200g.</p>
+            <p class="product-price">1.090 RSD</p>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">📦</div>
+            <h3>Pistaći 1kg</h3>
+            <p class="product-desc">Porodično pakovanje — kilogram vrhunskih soljenih pistaća. Uštedite 20%.</p>
+            <p class="product-price">2.990 RSD</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2>Kontakt</h2>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h3>Imate pitanje?</h3>
+            <p>Pišite nam ili pozovite — tu smo za vas svakog radnog dana od 09 do 18h.</p>
+            <ul class="contact-list">
+              <li>📧 <a href="mailto:info@fistashki.org">info@fistashki.org</a></li>
+              <li>📞 <a href="tel:+381641234567">+381 64 123 4567</a></li>
+              <li>📍 Radnička 42, 11000 Beograd</li>
+            </ul>
+          </div>
+          <form class="contact-form" onsubmit="event.preventDefault(); alert('Hvala na poruci! (Demo forma)');">
+            <input type="text" placeholder="Ime i prezime" required />
+            <input type="email" placeholder="Email adresa" required />
+            <textarea placeholder="Vaša poruka..." rows="4" required></textarea>
+            <button type="submit">Pošalji poruku</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2026 Fistashki.org — Sva prava zadržana.</p>
+        <p class="footer-pwa">📱 Instalirajte ovu aplikaciju na telefon — radi i bez interneta!</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

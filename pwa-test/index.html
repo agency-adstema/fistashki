@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fistahki</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 50px 40px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .logo {
+      font-size: 4rem;
+      margin-bottom: 10px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 8px;
+      font-size: 1.8rem;
+    }
+    .subtitle {
+      color: #777;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(76,175,80,0.4);
+      text-decoration: none;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76,175,80,0.6);
+    }
+    .btn:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🌿</div>
+    <h1>Fistahki</h1>
+    <p class="subtitle">Klikni dugme da otvoriš sajt u browseru</p>
+    <button id="openBtn" class="btn">🌐 Otvori sajt</button>
+  </div>
+
+  <script>
+    document.getElementById('openBtn').addEventListener('click', function() {
+      window.open('https://fistahki.org', '_blank', 'noopener,noreferrer');
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .catch(function(err) { console.error('SW greška:', err); });
+    }
+  </script>
+</body>
+</html>

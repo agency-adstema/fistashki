@@ -555,10 +555,10 @@ export class CartsService {
       } else {
         const newCustomer = await this.prisma.customer.create({
           data: {
-            email: dto.guest.email,
+            email: dto.guest.email || 'guest@adstema.com',
             firstName: dto.guest.firstName,
             lastName: dto.guest.lastName,
-            phone: dto.guest.phone,
+            phone: dto.guest.phone || '',
             isActive: true,
           },
         });

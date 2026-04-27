@@ -6,8 +6,8 @@ export declare class PublicCategoriesController {
     findAll(): Promise<PublicCategoriesListResponseDto>;
     nav(): Promise<{
         items: {
-            slug: string;
             name: string;
+            slug: string;
         }[];
     }>;
     findOne(id: string): Promise<PublicCategoryDto>;

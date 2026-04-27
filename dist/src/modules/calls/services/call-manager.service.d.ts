@@ -9,9 +9,9 @@ export declare class CallManagerService {
     constructor(prisma: PrismaService, pbxService: PbxService, openaiService: OpenAIService);
     processCall(callJobId: string, orderId: string): Promise<{
         id: string;
-        summary: string | null;
         createdAt: Date;
         updatedAt: Date;
+        summary: string | null;
         orderId: string | null;
         customerId: string;
         callJobId: string | null;

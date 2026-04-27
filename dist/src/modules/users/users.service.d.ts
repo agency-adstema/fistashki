@@ -18,11 +18,11 @@ export declare class UsersService {
             role: {
                 rolePermissions: ({
                     permission: {
-                        id: string;
                         description: string | null;
-                        createdAt: Date;
+                        id: string;
                         name: string;
                         key: string;
+                        createdAt: Date;
                         updatedAt: Date;
                     };
                 } & {
@@ -32,11 +32,11 @@ export declare class UsersService {
                     permissionId: string;
                 })[];
             } & {
-                id: string;
                 description: string | null;
-                createdAt: Date;
+                id: string;
                 name: string;
                 key: string;
+                createdAt: Date;
                 updatedAt: Date;
             };
         } & {
@@ -84,11 +84,11 @@ export declare class UsersService {
         updatedAt: Date;
         userRoles: ({
             role: {
-                id: string;
                 description: string | null;
-                createdAt: Date;
+                id: string;
                 name: string;
                 key: string;
+                createdAt: Date;
                 updatedAt: Date;
             };
         } & {
@@ -108,11 +108,11 @@ export declare class UsersService {
             role: {
                 rolePermissions: ({
                     permission: {
-                        id: string;
                         description: string | null;
-                        createdAt: Date;
+                        id: string;
                         name: string;
                         key: string;
+                        createdAt: Date;
                         updatedAt: Date;
                     };
                 } & {
@@ -122,11 +122,11 @@ export declare class UsersService {
                     permissionId: string;
                 })[];
             } & {
-                id: string;
                 description: string | null;
-                createdAt: Date;
+                id: string;
                 name: string;
                 key: string;
+                createdAt: Date;
                 updatedAt: Date;
             };
         } & {

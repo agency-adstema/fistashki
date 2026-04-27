@@ -24,10 +24,10 @@ export declare class NetworkOrdersController {
         success: boolean;
         data: ({
             order: {
-                status: import(".prisma/client").$Enums.OrderStatus;
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                status: import(".prisma/client").$Enums.OrderStatus;
                 currency: string;
                 notes: string | null;
                 customerId: string;
@@ -47,11 +47,11 @@ export declare class NetworkOrdersController {
                 networkOrderId: string | null;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.NetworkOrderStatus;
+            items: string;
             id: string;
             createdAt: Date;
-            items: string;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.NetworkOrderStatus;
             currency: string;
             totalAmount: import("@prisma/client/runtime/library").Decimal;
             notes: string | null;

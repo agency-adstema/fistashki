@@ -8,193 +8,193 @@ export declare class CategoriesController {
         message: string;
         data: {
             children: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             }[];
             parent: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             } | null;
         } & {
-            slug: string;
-            id: string;
             description: string | null;
-            createdAt: Date;
-            sortOrder: number;
+            id: string;
             name: string;
             parentId: string | null;
+            sortOrder: number;
             image: string | null;
             seoTitle: string | null;
             seoDescription: string | null;
+            createdAt: Date;
             updatedAt: Date;
             isActive: boolean;
+            slug: string;
         };
     }>;
     findAll(): Promise<{
         message: string;
         data: ({
             children: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             }[];
             _count: {
                 productCategories: number;
             };
             parent: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             } | null;
         } & {
-            slug: string;
-            id: string;
             description: string | null;
-            createdAt: Date;
-            sortOrder: number;
+            id: string;
             name: string;
             parentId: string | null;
+            sortOrder: number;
             image: string | null;
             seoTitle: string | null;
             seoDescription: string | null;
+            createdAt: Date;
             updatedAt: Date;
             isActive: boolean;
+            slug: string;
         })[];
     }>;
     findOne(id: string): Promise<{
         message: string;
         data: {
             children: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             }[];
             _count: {
                 productCategories: number;
             };
             parent: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             } | null;
         } & {
-            slug: string;
-            id: string;
             description: string | null;
-            createdAt: Date;
-            sortOrder: number;
+            id: string;
             name: string;
             parentId: string | null;
+            sortOrder: number;
             image: string | null;
             seoTitle: string | null;
             seoDescription: string | null;
+            createdAt: Date;
             updatedAt: Date;
             isActive: boolean;
+            slug: string;
         };
     }>;
     update(id: string, dto: UpdateCategoryDto, user: any): Promise<{
         message: string;
         data: {
             children: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             }[];
             _count: {
                 productCategories: number;
             };
             parent: {
-                slug: string;
-                id: string;
                 description: string | null;
-                createdAt: Date;
-                sortOrder: number;
+                id: string;
                 name: string;
                 parentId: string | null;
+                sortOrder: number;
                 image: string | null;
                 seoTitle: string | null;
                 seoDescription: string | null;
+                createdAt: Date;
                 updatedAt: Date;
                 isActive: boolean;
+                slug: string;
             } | null;
         } & {
-            slug: string;
-            id: string;
             description: string | null;
-            createdAt: Date;
-            sortOrder: number;
+            id: string;
             name: string;
             parentId: string | null;
+            sortOrder: number;
             image: string | null;
             seoTitle: string | null;
             seoDescription: string | null;
+            createdAt: Date;
             updatedAt: Date;
             isActive: boolean;
+            slug: string;
         };
     }>;
     remove(id: string, user: any): Promise<{

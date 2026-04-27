@@ -31,6 +31,7 @@ const health_module_1 = require("./health/health.module");
 const upload_module_1 = require("./modules/upload/upload.module");
 const settings_module_1 = require("./modules/settings/settings.module");
 const calls_module_1 = require("./modules/calls/calls.module");
+const blog_module_1 = require("./modules/blog/blog.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -68,6 +69,7 @@ exports.AppModule = AppModule = __decorate([
             upload_module_1.UploadModule,
             settings_module_1.SettingsModule,
             calls_module_1.CallsModule,
+            blog_module_1.BlogModule,
         ],
     })
 ], AppModule);

@@ -14,9 +14,9 @@ export declare class CustomersController {
                 orders: number;
             };
             addresses: {
+                type: import(".prisma/client").$Enums.AddressType;
                 id: string;
                 createdAt: Date;
-                type: import(".prisma/client").$Enums.AddressType;
                 updatedAt: Date;
                 firstName: string;
                 lastName: string;
@@ -49,9 +49,9 @@ export declare class CustomersController {
                     orders: number;
                 };
                 addresses: {
+                    type: import(".prisma/client").$Enums.AddressType;
                     id: string;
                     createdAt: Date;
-                    type: import(".prisma/client").$Enums.AddressType;
                     updatedAt: Date;
                     firstName: string;
                     lastName: string;
@@ -86,9 +86,9 @@ export declare class CustomersController {
         data: {
             orders: {
                 grandTotal: number;
-                status: import(".prisma/client").$Enums.OrderStatus;
                 id: string;
                 createdAt: Date;
+                status: import(".prisma/client").$Enums.OrderStatus;
                 currency: string;
                 orderNumber: string;
                 paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
@@ -98,9 +98,9 @@ export declare class CustomersController {
                 orders: number;
             };
             addresses: {
+                type: import(".prisma/client").$Enums.AddressType;
                 id: string;
                 createdAt: Date;
-                type: import(".prisma/client").$Enums.AddressType;
                 updatedAt: Date;
                 firstName: string;
                 lastName: string;
@@ -131,9 +131,9 @@ export declare class CustomersController {
                 orders: number;
             };
             addresses: {
+                type: import(".prisma/client").$Enums.AddressType;
                 id: string;
                 createdAt: Date;
-                type: import(".prisma/client").$Enums.AddressType;
                 updatedAt: Date;
                 firstName: string;
                 lastName: string;
@@ -161,9 +161,9 @@ export declare class CustomersController {
     addAddress(customerId: string, dto: CreateAddressDto, user: any): Promise<{
         message: string;
         data: {
+            type: import(".prisma/client").$Enums.AddressType;
             id: string;
             createdAt: Date;
-            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
@@ -180,9 +180,9 @@ export declare class CustomersController {
     getAddresses(customerId: string): Promise<{
         message: string;
         data: {
+            type: import(".prisma/client").$Enums.AddressType;
             id: string;
             createdAt: Date;
-            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
@@ -199,9 +199,9 @@ export declare class CustomersController {
     updateAddress(customerId: string, addressId: string, dto: UpdateAddressDto, user: any): Promise<{
         message: string;
         data: {
+            type: import(".prisma/client").$Enums.AddressType;
             id: string;
             createdAt: Date;
-            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;

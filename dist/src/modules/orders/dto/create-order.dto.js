@@ -80,7 +80,7 @@ __decorate([
     __metadata("design:type", Number)
 ], CreateOrderDto.prototype, "discountTotal", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'Currency code (default USD)', default: 'USD' }),
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Currency code (default RSD)', default: 'RSD' }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MaxLength)(10),

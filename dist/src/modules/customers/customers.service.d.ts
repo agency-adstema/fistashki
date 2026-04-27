@@ -14,9 +14,9 @@ export declare class CustomersService {
             orders: number;
         };
         addresses: {
+            type: import(".prisma/client").$Enums.AddressType;
             id: string;
             createdAt: Date;
-            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
@@ -46,9 +46,9 @@ export declare class CustomersService {
                 orders: number;
             };
             addresses: {
+                type: import(".prisma/client").$Enums.AddressType;
                 id: string;
                 createdAt: Date;
-                type: import(".prisma/client").$Enums.AddressType;
                 updatedAt: Date;
                 firstName: string;
                 lastName: string;
@@ -80,9 +80,9 @@ export declare class CustomersService {
     findOne(id: string): Promise<{
         orders: {
             grandTotal: number;
-            status: import(".prisma/client").$Enums.OrderStatus;
             id: string;
             createdAt: Date;
+            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
             orderNumber: string;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
@@ -92,9 +92,9 @@ export declare class CustomersService {
             orders: number;
         };
         addresses: {
+            type: import(".prisma/client").$Enums.AddressType;
             id: string;
             createdAt: Date;
-            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
@@ -122,9 +122,9 @@ export declare class CustomersService {
             orders: number;
         };
         addresses: {
+            type: import(".prisma/client").$Enums.AddressType;
             id: string;
             createdAt: Date;
-            type: import(".prisma/client").$Enums.AddressType;
             updatedAt: Date;
             firstName: string;
             lastName: string;
@@ -149,9 +149,9 @@ export declare class CustomersService {
         notes: string | null;
     }>;
     addAddress(customerId: string, dto: CreateAddressDto, actorUserId?: string): Promise<{
+        type: import(".prisma/client").$Enums.AddressType;
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.AddressType;
         updatedAt: Date;
         firstName: string;
         lastName: string;
@@ -165,9 +165,9 @@ export declare class CustomersService {
         customerId: string;
     }>;
     getAddresses(customerId: string): Promise<{
+        type: import(".prisma/client").$Enums.AddressType;
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.AddressType;
         updatedAt: Date;
         firstName: string;
         lastName: string;
@@ -181,9 +181,9 @@ export declare class CustomersService {
         customerId: string;
     }[]>;
     updateAddress(customerId: string, addressId: string, dto: UpdateAddressDto, actorUserId?: string): Promise<{
+        type: import(".prisma/client").$Enums.AddressType;
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.AddressType;
         updatedAt: Date;
         firstName: string;
         lastName: string;

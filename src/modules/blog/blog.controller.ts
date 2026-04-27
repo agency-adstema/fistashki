@@ -24,9 +24,9 @@ import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 import { UpdateBlogPostDto } from './dto/update-blog-post.dto';
 import { BlogPostQueryDto } from './dto/blog-post-query.dto';
 import { BlogPostResponseDto, BlogPostListResponseDto } from './dto/blog-post-response.dto';
-import { JwtAuthGuard } from '@/modules/auth/guards/jwt.guard';
-import { PermissionsGuard } from '@/common/guards/permissions.guard';
-import { RequirePermission } from '@/common/decorators/require-permission.decorator';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { PermissionsGuard } from '../../common/guards/permissions.guard';
+import { Permissions } from '../../common/decorators/permissions.decorator';
 
 @ApiTags('Blog')
 @Controller('api/v1/blog')
@@ -145,7 +145,7 @@ export class BlogController {
    */
   @Post()
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @RequirePermission('blog.manage')
+  @Permissions('blog.manage')
   @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
@@ -182,7 +182,7 @@ export class BlogController {
    */
   @Get()
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @RequirePermission('blog.read')
+  @Permissions('blog.read')
   @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Get all blog posts',
@@ -210,7 +210,7 @@ export class BlogController {
    */
   @Get(':id')
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @RequirePermission('blog.read')
+  @Permissions('blog.read')
   @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Get a blog post by ID',
@@ -246,7 +246,7 @@ export class BlogController {
    */
   @Patch(':id')
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @RequirePermission('blog.manage')
+  @Permissions('blog.manage')
   @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Update a blog post',
@@ -293,7 +293,7 @@ export class BlogController {
    */
   @Delete(':id')
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @RequirePermission('blog.manage')
+  @Permissions('blog.manage')
   @ApiBearerAuth('access-token')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({

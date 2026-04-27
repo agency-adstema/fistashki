@@ -7,9 +7,9 @@ export declare class OrderTagsController {
     create(dto: CreateTagDto, req: any): Promise<{
         data: {
             id: string;
-            createdAt: Date;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
             color: string | null;
         };
@@ -17,9 +17,9 @@ export declare class OrderTagsController {
     findAll(): Promise<{
         data: {
             id: string;
-            createdAt: Date;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
             color: string | null;
         }[];
@@ -27,9 +27,9 @@ export declare class OrderTagsController {
     update(id: string, dto: UpdateTagDto, req: any): Promise<{
         data: {
             id: string;
-            createdAt: Date;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
             color: string | null;
         };

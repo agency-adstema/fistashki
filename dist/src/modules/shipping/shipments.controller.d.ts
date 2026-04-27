@@ -20,11 +20,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;
@@ -51,11 +51,11 @@ export declare class ShipmentsController {
                     key: string;
                 } | null;
             } & {
-                status: import(".prisma/client").$Enums.ShipmentStatus;
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
                 metadata: import("@prisma/client/runtime/library").JsonValue | null;
+                status: import(".prisma/client").$Enums.ShipmentStatus;
                 orderId: string;
                 notes: string | null;
                 shippingMethodId: string | null;
@@ -86,11 +86,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;
@@ -116,11 +116,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;
@@ -146,11 +146,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;
@@ -176,11 +176,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;
@@ -206,11 +206,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;
@@ -236,11 +236,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;
@@ -266,11 +266,11 @@ export declare class ShipmentsController {
                 key: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.ShipmentStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;
+            status: import(".prisma/client").$Enums.ShipmentStatus;
             orderId: string;
             notes: string | null;
             shippingMethodId: string | null;

@@ -42,6 +42,7 @@ let OrdersService = OrdersService_1 = class OrdersService {
                     ...item,
                     unitPrice: item.unitPrice != null ? Number(item.unitPrice) : item.unitPrice,
                     totalPrice: item.totalPrice != null ? Number(item.totalPrice) : item.totalPrice,
+                    productImage: item.productImage || item.product?.featuredImage || null,
                 }))
                 : undefined,
         };
@@ -126,7 +127,7 @@ let OrdersService = OrdersService_1 = class OrdersService {
                             discountTotal: totals.discountTotal,
                             shippingTotal: totals.shippingTotal,
                             grandTotal: totals.grandTotal,
-                            currency: dto.currency ?? 'USD',
+                            currency: dto.currency ?? 'RSD',
                             items: {
                                 create: itemSnapshots.map((snap) => ({
                                     productId: snap.productId,
@@ -234,7 +235,11 @@ let OrdersService = OrdersService_1 = class OrdersService {
                         select: { id: true, firstName: true, lastName: true, email: true },
                     },
                     shippingAddress: true,
-                    items: true,
+                    items: {
+                        include: {
+                            product: { select: { id: true, featuredImage: true } },
+                        },
+                    },
                     tagAssignments: { include: { tag: true } },
                 },
             }),

@@ -5,22 +5,22 @@ export declare class PermissionsController {
     findAll(): Promise<{
         message: string;
         data: {
-            id: string;
             description: string | null;
-            createdAt: Date;
+            id: string;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
         }[];
     }>;
     findOne(id: string): Promise<{
         message: string;
         data: {
-            id: string;
             description: string | null;
-            createdAt: Date;
+            id: string;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
         };
     }>;

@@ -9,11 +9,11 @@ export declare class RolesController {
         data: ({
             rolePermissions: ({
                 permission: {
-                    id: string;
                     description: string | null;
-                    createdAt: Date;
+                    id: string;
                     name: string;
                     key: string;
+                    createdAt: Date;
                     updatedAt: Date;
                 };
             } & {
@@ -26,11 +26,11 @@ export declare class RolesController {
                 userRoles: number;
             };
         } & {
-            id: string;
             description: string | null;
-            createdAt: Date;
+            id: string;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
         })[];
     }>;
@@ -39,11 +39,11 @@ export declare class RolesController {
         data: {
             rolePermissions: ({
                 permission: {
-                    id: string;
                     description: string | null;
-                    createdAt: Date;
+                    id: string;
                     name: string;
                     key: string;
+                    createdAt: Date;
                     updatedAt: Date;
                 };
             } & {
@@ -53,22 +53,22 @@ export declare class RolesController {
                 permissionId: string;
             })[];
         } & {
-            id: string;
             description: string | null;
-            createdAt: Date;
+            id: string;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
         };
     }>;
     create(dto: CreateRoleDto): Promise<{
         message: string;
         data: {
-            id: string;
             description: string | null;
-            createdAt: Date;
+            id: string;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
         };
     }>;
@@ -77,11 +77,11 @@ export declare class RolesController {
         data: {
             rolePermissions: ({
                 permission: {
-                    id: string;
                     description: string | null;
-                    createdAt: Date;
+                    id: string;
                     name: string;
                     key: string;
+                    createdAt: Date;
                     updatedAt: Date;
                 };
             } & {
@@ -91,11 +91,11 @@ export declare class RolesController {
                 permissionId: string;
             })[];
         } & {
-            id: string;
             description: string | null;
-            createdAt: Date;
+            id: string;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
         };
     }>;

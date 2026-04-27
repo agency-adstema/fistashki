@@ -3,19 +3,19 @@ export declare class PermissionsService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     findAll(): Promise<{
-        id: string;
         description: string | null;
-        createdAt: Date;
+        id: string;
         name: string;
         key: string;
+        createdAt: Date;
         updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
-        id: string;
         description: string | null;
-        createdAt: Date;
+        id: string;
         name: string;
         key: string;
+        createdAt: Date;
         updatedAt: Date;
     }>;
 }

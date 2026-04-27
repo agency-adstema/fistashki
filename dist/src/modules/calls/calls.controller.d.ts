@@ -20,11 +20,11 @@ export declare class CallsController {
                     grandTotal: import("@prisma/client/runtime/library").Decimal;
                 } | null;
                 callJob: {
-                    error: string | null;
-                    status: import(".prisma/client").$Enums.CallStatus;
                     id: string;
+                    error: string | null;
                     createdAt: Date;
                     updatedAt: Date;
+                    status: import(".prisma/client").$Enums.CallStatus;
                     orderId: string;
                     attempt: number;
                     maxAttempts: number;
@@ -34,9 +34,9 @@ export declare class CallsController {
                 } | null;
             } & {
                 id: string;
-                summary: string | null;
                 createdAt: Date;
                 updatedAt: Date;
+                summary: string | null;
                 orderId: string | null;
                 customerId: string;
                 callJobId: string | null;
@@ -94,11 +94,11 @@ export declare class CallsController {
                 grandTotal: import("@prisma/client/runtime/library").Decimal;
             } | null;
             callJob: {
-                error: string | null;
-                status: import(".prisma/client").$Enums.CallStatus;
                 id: string;
+                error: string | null;
                 createdAt: Date;
                 updatedAt: Date;
+                status: import(".prisma/client").$Enums.CallStatus;
                 orderId: string;
                 attempt: number;
                 maxAttempts: number;
@@ -108,9 +108,9 @@ export declare class CallsController {
             } | null;
         } & {
             id: string;
-            summary: string | null;
             createdAt: Date;
             updatedAt: Date;
+            summary: string | null;
             orderId: string | null;
             customerId: string;
             callJobId: string | null;
@@ -124,11 +124,11 @@ export declare class CallsController {
     scheduleCall(orderId: string, delaySeconds?: number): Promise<{
         message: string;
         data: {
-            error: string | null;
-            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
+            error: string | null;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;
@@ -143,11 +143,11 @@ export declare class CallsController {
     } | {
         message: string;
         data: {
-            error: string | null;
-            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
+            error: string | null;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;

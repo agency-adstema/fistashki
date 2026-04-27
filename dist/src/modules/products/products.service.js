@@ -161,7 +161,7 @@ let ProductsService = class ProductsService {
                 price: new client_1.Prisma.Decimal(dto.price),
                 compareAtPrice: dto.compareAtPrice != null ? new client_1.Prisma.Decimal(dto.compareAtPrice) : undefined,
                 costPrice: dto.costPrice != null ? new client_1.Prisma.Decimal(dto.costPrice) : undefined,
-                currency: dto.currency ?? 'USD',
+                currency: dto.currency ?? 'RSD',
                 trackQuantity: dto.trackQuantity ?? false,
                 stockQuantity: dto.stockQuantity ?? 0,
                 lowStockThreshold: dto.lowStockThreshold ?? 5,

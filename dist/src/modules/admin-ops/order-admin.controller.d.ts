@@ -10,9 +10,9 @@ export declare class OrderAdminController {
     getOrderTags(id: string): Promise<{
         data: {
             id: string;
-            createdAt: Date;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
             color: string | null;
         }[];
@@ -20,9 +20,9 @@ export declare class OrderAdminController {
     assignTag(id: string, tagId: string, req: any): Promise<{
         data: {
             id: string;
-            createdAt: Date;
             name: string;
             key: string;
+            createdAt: Date;
             updatedAt: Date;
             color: string | null;
         };
@@ -41,10 +41,10 @@ export declare class OrderAdminController {
                 lastName: string;
             } | null;
         } & {
-            status: import(".prisma/client").$Enums.OrderStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
             notes: string | null;
             customerId: string;
@@ -66,10 +66,10 @@ export declare class OrderAdminController {
     }>;
     unassign(id: string, req: any): Promise<{
         data: {
-            status: import(".prisma/client").$Enums.OrderStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
             notes: string | null;
             customerId: string;
@@ -91,10 +91,10 @@ export declare class OrderAdminController {
     }>;
     setPriority(id: string, dto: SetPriorityDto, req: any): Promise<{
         data: {
-            status: import(".prisma/client").$Enums.OrderStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
             notes: string | null;
             customerId: string;

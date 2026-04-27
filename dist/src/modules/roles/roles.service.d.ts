@@ -6,11 +6,11 @@ export declare class RolesService {
     findAll(): Promise<({
         rolePermissions: ({
             permission: {
-                id: string;
                 description: string | null;
-                createdAt: Date;
+                id: string;
                 name: string;
                 key: string;
+                createdAt: Date;
                 updatedAt: Date;
             };
         } & {
@@ -23,21 +23,21 @@ export declare class RolesService {
             userRoles: number;
         };
     } & {
-        id: string;
         description: string | null;
-        createdAt: Date;
+        id: string;
         name: string;
         key: string;
+        createdAt: Date;
         updatedAt: Date;
     })[]>;
     findOne(id: string): Promise<{
         rolePermissions: ({
             permission: {
-                id: string;
                 description: string | null;
-                createdAt: Date;
+                id: string;
                 name: string;
                 key: string;
+                createdAt: Date;
                 updatedAt: Date;
             };
         } & {
@@ -47,29 +47,29 @@ export declare class RolesService {
             permissionId: string;
         })[];
     } & {
-        id: string;
         description: string | null;
-        createdAt: Date;
+        id: string;
         name: string;
         key: string;
+        createdAt: Date;
         updatedAt: Date;
     }>;
     create(dto: CreateRoleDto): Promise<{
-        id: string;
         description: string | null;
-        createdAt: Date;
+        id: string;
         name: string;
         key: string;
+        createdAt: Date;
         updatedAt: Date;
     }>;
     assignPermissions(roleId: string, permissionIds: string[]): Promise<{
         rolePermissions: ({
             permission: {
-                id: string;
                 description: string | null;
-                createdAt: Date;
+                id: string;
                 name: string;
                 key: string;
+                createdAt: Date;
                 updatedAt: Date;
             };
         } & {
@@ -79,11 +79,11 @@ export declare class RolesService {
             permissionId: string;
         })[];
     } & {
-        id: string;
         description: string | null;
-        createdAt: Date;
+        id: string;
         name: string;
         key: string;
+        createdAt: Date;
         updatedAt: Date;
     }>;
 }

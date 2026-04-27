@@ -116,6 +116,8 @@ const PERMISSIONS = [
     { key: 'settings.manage', name: 'Manage Settings', description: 'Can create, update, delete store settings' },
     { key: 'network_orders.read', name: 'Read Network Orders', description: 'Can view network orders' },
     { key: 'network_orders.manage', name: 'Manage Network Orders', description: 'Can confirm/reject network orders' },
+    { key: 'blog.read', name: 'Read Blog Posts', description: 'Can view blog posts' },
+    { key: 'blog.manage', name: 'Manage Blog Posts', description: 'Can create, update, delete blog posts' },
 ];
 async function main() {
     console.log('Starting seed...');

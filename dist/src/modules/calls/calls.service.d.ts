@@ -8,11 +8,11 @@ export declare class CallsService {
     private readonly logger;
     constructor(callsQueue: Queue, prisma: PrismaService, auditLogsService: AuditLogsService);
     scheduleCall(orderId: string, delaySeconds?: number): Promise<{
-        error: string | null;
-        status: import(".prisma/client").$Enums.CallStatus;
         id: string;
+        error: string | null;
         createdAt: Date;
         updatedAt: Date;
+        status: import(".prisma/client").$Enums.CallStatus;
         orderId: string;
         attempt: number;
         maxAttempts: number;
@@ -35,11 +35,11 @@ export declare class CallsService {
             grandTotal: import("@prisma/client/runtime/library").Decimal;
         } | null;
         callJob: {
-            error: string | null;
-            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
+            error: string | null;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;
@@ -49,9 +49,9 @@ export declare class CallsService {
         } | null;
     } & {
         id: string;
-        summary: string | null;
         createdAt: Date;
         updatedAt: Date;
+        summary: string | null;
         orderId: string | null;
         customerId: string;
         callJobId: string | null;
@@ -63,10 +63,10 @@ export declare class CallsService {
     }) | null>;
     getCallsByCustomer(customerId: string): Promise<({
         order: {
-            status: import(".prisma/client").$Enums.OrderStatus;
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.OrderStatus;
             currency: string;
             notes: string | null;
             customerId: string;
@@ -86,11 +86,11 @@ export declare class CallsService {
             networkOrderId: string | null;
         } | null;
         callJob: {
-            error: string | null;
-            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
+            error: string | null;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;
@@ -100,9 +100,9 @@ export declare class CallsService {
         } | null;
     } & {
         id: string;
-        summary: string | null;
         createdAt: Date;
         updatedAt: Date;
+        summary: string | null;
         orderId: string | null;
         customerId: string;
         callJobId: string | null;
@@ -125,11 +125,11 @@ export declare class CallsService {
             notes: string | null;
         };
         callJob: {
-            error: string | null;
-            status: import(".prisma/client").$Enums.CallStatus;
             id: string;
+            error: string | null;
             createdAt: Date;
             updatedAt: Date;
+            status: import(".prisma/client").$Enums.CallStatus;
             orderId: string;
             attempt: number;
             maxAttempts: number;
@@ -139,9 +139,9 @@ export declare class CallsService {
         } | null;
     } & {
         id: string;
-        summary: string | null;
         createdAt: Date;
         updatedAt: Date;
+        summary: string | null;
         orderId: string | null;
         customerId: string;
         callJobId: string | null;
@@ -167,11 +167,11 @@ export declare class CallsService {
                 grandTotal: import("@prisma/client/runtime/library").Decimal;
             } | null;
             callJob: {
-                error: string | null;
-                status: import(".prisma/client").$Enums.CallStatus;
                 id: string;
+                error: string | null;
                 createdAt: Date;
                 updatedAt: Date;
+                status: import(".prisma/client").$Enums.CallStatus;
                 orderId: string;
                 attempt: number;
                 maxAttempts: number;
@@ -181,9 +181,9 @@ export declare class CallsService {
             } | null;
         } & {
             id: string;
-            summary: string | null;
             createdAt: Date;
             updatedAt: Date;
+            summary: string | null;
             orderId: string | null;
             customerId: string;
             callJobId: string | null;
@@ -218,11 +218,11 @@ export declare class CallsService {
         };
     }>;
     retryCall(callJobId: string, actorUserId?: string): Promise<{
-        error: string | null;
-        status: import(".prisma/client").$Enums.CallStatus;
         id: string;
+        error: string | null;
         createdAt: Date;
         updatedAt: Date;
+        status: import(".prisma/client").$Enums.CallStatus;
         orderId: string;
         attempt: number;
         maxAttempts: number;

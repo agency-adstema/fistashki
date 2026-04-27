@@ -23,6 +23,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { SettingsModule } from './modules/settings/settings.module';
 // import { NetworkOrdersModule } from './modules/network-orders/network-orders.module';
 import { CallsModule } from './modules/calls/calls.module';
+import { BlogModule } from './modules/blog/blog.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { CallsModule } from './modules/calls/calls.module';
     SettingsModule,
     // NetworkOrdersModule,
     CallsModule,
+    BlogModule,
   ],
 })
 export class AppModule {}

@@ -7,6 +7,11 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
   root: __dirname,
+  base: "/fistashki/",
+  build: {
+    outDir: "docs",
+    emptyOutDir: true,
+  },
   server: {
     port: 9090,
     strictPort: true,
@@ -29,7 +34,7 @@ export default defineConfig({
         background_color: "#4a7c3f",
         display: "standalone",
         scope: "/",
-        start_url: "/",
+        start_url: "/fistashki/",
         icons: [
           {
             src: "icon-512.png",

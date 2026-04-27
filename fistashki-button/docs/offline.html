@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fistashki — Нет сети</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        height: 100%;
+      }
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(160deg, #4a7c3f 0%, #355c2d 100%);
+        color: #fff;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px;
+      }
+      .offline-icon {
+        font-size: 5rem;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+      }
+      p {
+        font-size: 1rem;
+        opacity: 0.85;
+        margin-bottom: 28px;
+        line-height: 1.5;
+        max-width: 300px;
+      }
+      .btn-retry {
+        display: inline-block;
+        padding: 16px 36px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #2d2418;
+        background: #d4a853;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .btn-retry:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+      .btn-retry:active {
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="offline-icon">📡</div>
+    <h1>Нет интернет-соединения</h1>
+    <p>
+      Вы не подключены к интернету. Проверьте соединение и попробуйте снова.
+    </p>
+    <a href="." class="btn-retry">🔄 Попробовать снова</a>
+  </body>
+</html>

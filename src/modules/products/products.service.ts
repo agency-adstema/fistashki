@@ -167,7 +167,7 @@ export class ProductsService {
         compareAtPrice: dto.compareAtPrice != null ? new Prisma.Decimal(dto.compareAtPrice) : undefined,
         // costPrice is stored for admin use only
         costPrice: dto.costPrice != null ? new Prisma.Decimal(dto.costPrice) : undefined,
-        currency: dto.currency ?? 'USD',
+        currency: dto.currency ?? 'RSD',
         trackQuantity: dto.trackQuantity ?? false,
         stockQuantity: dto.stockQuantity ?? 0,
         lowStockThreshold: dto.lowStockThreshold ?? 5,

@@ -58,7 +58,7 @@ export class CreateOrderDto {
   @Min(0)
   discountTotal?: number;
 
-  @ApiPropertyOptional({ description: 'Currency code (default USD)', default: 'USD' })
+  @ApiPropertyOptional({ description: 'Currency code (default RSD)', default: 'RSD' })
   @IsOptional()
   @IsString()
   @MaxLength(10)

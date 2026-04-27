@@ -167,7 +167,7 @@ export class CartsService {
       data: {
         customerId: dto.customerId,
         sessionId: dto.sessionId,
-        currency: dto.currency ?? 'USD',
+        currency: dto.currency ?? 'RSD',
         notes: dto.notes,
       },
       include: CART_INCLUDE,

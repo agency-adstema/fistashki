@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 import { UpdateBlogPostDto } from './dto/update-blog-post.dto';
@@ -10,20 +11,34 @@ export class BlogService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateBlogPostDto): Promise<BlogPostResponseDto> {
+    const slug = dto.slug?.trim() || dto.title.trim().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+    // Public list only shows published; default true so admin-created posts appear unless explicitly draft.
+    const published = dto.published ?? true;
+
     // Check if slug already exists
     const existing = await this.prisma.blogPost.findUnique({
-      where: { slug: dto.slug },
+      where: { slug },
     });
 
     if (existing) {
-      throw new ConflictException(`Blog post with slug "${dto.slug}" already exists`);
+      throw new ConflictException(`Blog post with slug "${slug}" already exists`);
     }
 
     const blogPost = await this.prisma.blogPost.create({
       data: {
         ...dto,
+        slug,
+        published,
+        excerpt: dto.excerpt?.trim() || dto.content.slice(0, 160) || dto.title,
+        featuredImage: dto.featuredImage?.trim() || null,
+        seoTitle: dto.seoTitle?.trim() || null,
+        seoDescription: dto.seoDescription?.trim() || null,
+        seoKeywords: dto.seoKeywords?.trim() || null,
+        ogImage: dto.ogImage?.trim() || null,
+        ogTitle: dto.ogTitle?.trim() || null,
+        ogDescription: dto.ogDescription?.trim() || null,
         readTime: dto.readTime || 5,
-        publishedAt: dto.published ? new Date() : null,
+        publishedAt: published ? new Date() : null,
       },
     });
 
@@ -98,26 +113,33 @@ export class BlogService {
   }
 
   async update(id: string, dto: UpdateBlogPostDto): Promise<BlogPostResponseDto> {
-    // Check if post exists
-    await this.findOne(id);
+    const existing = await this.prisma.blogPost.findUnique({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`Blog post with id "${id}" not found`);
+    }
 
     // If slug is being changed, check for conflicts
     if (dto.slug) {
-      const existing = await this.prisma.blogPost.findUnique({
+      const slugOwner = await this.prisma.blogPost.findUnique({
         where: { slug: dto.slug },
       });
 
-      if (existing && existing.id !== id) {
+      if (slugOwner && slugOwner.id !== id) {
         throw new ConflictException(`Blog post with slug "${dto.slug}" already exists`);
       }
     }
 
+    const data: Record<string, unknown> = { ...dto };
+
+    if (dto.published === true && !existing.published) {
+      data.publishedAt = new Date();
+    } else if (dto.published === false) {
+      data.publishedAt = null;
+    }
+
     const blogPost = await this.prisma.blogPost.update({
       where: { id },
-      data: {
-        ...dto,
-        publishedAt: dto.published === true && !dto.published ? new Date() : undefined,
-      },
+      data: data as Prisma.BlogPostUpdateInput,
     });
 
     return this.formatResponse(blogPost);
@@ -131,8 +153,9 @@ export class BlogService {
     });
   }
 
-  async getCategories(): Promise<string[]> {
+  async getCategories(onlyPublished = false): Promise<string[]> {
     const results = await this.prisma.blogPost.findMany({
+      where: onlyPublished ? { published: true } : undefined,
       distinct: ['category'],
       select: { category: true },
     });

@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -29,7 +30,7 @@ import { PermissionsGuard } from '../../common/guards/permissions.guard';
 import { Permissions } from '../../common/decorators/permissions.decorator';
 
 @ApiTags('Blog')
-@Controller('api/v1/blog')
+@Controller('blog')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
@@ -82,7 +83,7 @@ export class BlogController {
 
     // Only return published posts to public
     if (!post.published) {
-      throw new Error('Blog post not found');
+      throw new NotFoundException(`Blog post with slug "${slug}" not found`);
     }
 
     return post;
@@ -105,7 +106,7 @@ export class BlogController {
     },
   })
   async getCategories(): Promise<string[]> {
-    return this.blogService.getCategories();
+    return this.blogService.getCategories(true);
   }
 
   /**

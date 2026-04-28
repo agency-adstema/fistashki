@@ -15,7 +15,7 @@ export class CreateBlogPostDto {
     example: 'Introduction to Organic Gardening',
   })
   @IsString()
-  @MinLength(5)
+  @MinLength(1)
   @MaxLength(200)
   title: string;
 
@@ -24,7 +24,7 @@ export class CreateBlogPostDto {
     example: 'intro-organic-gardening',
   })
   @IsString()
-  @MinLength(3)
+  @MinLength(1)
   @MaxLength(200)
   slug: string;
 
@@ -33,7 +33,7 @@ export class CreateBlogPostDto {
     example: 'Learn the basics of sustainable gardening without chemicals',
   })
   @IsString()
-  @MinLength(10)
+  @MinLength(1)
   @MaxLength(500)
   excerpt: string;
 
@@ -42,7 +42,7 @@ export class CreateBlogPostDto {
     example: '# Title\n\nContent here...',
   })
   @IsString()
-  @MinLength(50)
+  @MinLength(1)
   content: string;
 
   @ApiPropertyOptional({
@@ -58,7 +58,7 @@ export class CreateBlogPostDto {
     example: 'Gardening Tips',
   })
   @IsString()
-  @MinLength(2)
+  @MinLength(1)
   @MaxLength(100)
   category: string;
 
@@ -67,7 +67,7 @@ export class CreateBlogPostDto {
     example: 'John Doe',
   })
   @IsString()
-  @MinLength(2)
+  @MinLength(1)
   @MaxLength(100)
   author: string;
 

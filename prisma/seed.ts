@@ -154,6 +154,28 @@ async function main() {
   });
   console.log('✓ super_admin role assigned to admin@example.com');
 
+  const promptCount = await prisma.seoPromptVersion.count();
+  if (promptCount === 0) {
+    await prisma.seoPromptVersion.create({
+      data: {
+        label: 'Default v1',
+        isActive: true,
+        systemPrompt: `You write long-form blog posts for an e-commerce site. Output must be a single JSON object with keys: title, slug (optional), seoTitle, seoDescription (max 160 chars), excerpt (max 500), content (Markdown), faq (array of {question, answer}), internalLinks (array of full URLs), readTime (minutes, number). No HTML in content; use Markdown. Be factual and helpful.`,
+        userTemplate: `Target keyword: "{{targetKeyword}}"
+Search intent: {{keywordIntent}}
+Category: {{category}}
+Related products (mention naturally, do not invent prices):
+{{relatedProducts}}
+Approximate length: {{articleLength}} words
+Internal links to include if relevant:
+{{internalLinksHint}}
+
+Write the JSON object only.`,
+      },
+    });
+    console.log('✓ Default SEO prompt version (active) seeded');
+  }
+
   console.log('\nSeed complete.');
 }
 

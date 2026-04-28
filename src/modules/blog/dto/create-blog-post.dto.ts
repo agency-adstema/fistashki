@@ -7,7 +7,12 @@ import {
   IsBoolean,
   IsNumber,
   Min,
+  IsInt,
+  Max,
+  IsEnum,
+  IsArray,
 } from 'class-validator';
+import { KeywordIntent } from '@prisma/client';
 
 export class CreateBlogPostDto {
   @ApiProperty({
@@ -140,4 +145,42 @@ export class CreateBlogPostDto {
   @IsOptional()
   @IsBoolean()
   published?: boolean;
+
+  @ApiPropertyOptional({ description: 'Primary keyword for SEO / AI' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  targetKeyword?: string;
+
+  @ApiPropertyOptional({ enum: KeywordIntent })
+  @IsOptional()
+  @IsEnum(KeywordIntent)
+  keywordIntent?: KeywordIntent;
+
+  @ApiPropertyOptional({ description: 'SEO score 0–100 (optional; can be computed)', minimum: 0, maximum: 100 })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(100)
+  seoScore?: number;
+
+  @ApiPropertyOptional({
+    type: 'array',
+    items: { type: 'object', properties: { question: { type: 'string' }, answer: { type: 'string' } } },
+  })
+  @IsOptional()
+  @IsArray()
+  faq?: Array<{ question: string; answer: string }>;
+
+  @ApiPropertyOptional({ type: [String], description: 'Internal URLs (same site)' })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  internalLinks?: string[];
+
+  @ApiPropertyOptional({ type: [String], description: 'Product IDs to highlight' })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  recommendedProductIds?: string[];
 }

@@ -1,4 +1,4 @@
-import { IsOptional, IsInt, Min } from 'class-validator';
+import { IsOptional, IsInt, Min, IsString, IsIn } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
@@ -39,6 +39,16 @@ export class BlogPostQueryDto {
   published?: boolean;
 
   @ApiPropertyOptional({
+    description: 'Filter archived posts (admin list). true = only archived, false = hide archived',
+  })
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value === undefined || value === '') return undefined;
+    return value === 'true' || value === true;
+  })
+  archived?: boolean;
+
+  @ApiPropertyOptional({
     description: 'Search in title and excerpt',
     example: 'organic',
   })
@@ -46,10 +56,12 @@ export class BlogPostQueryDto {
   search?: string;
 
   @ApiPropertyOptional({
-    description: 'Sort field (createdAt, publishedAt, title)',
+    description:
+      'Sort field (createdAt, publishedAt, title, updatedAt, seoScore, viewCount, productClickCount)',
     example: 'createdAt',
   })
   @IsOptional()
+  @IsString()
   sortBy?: string = 'createdAt';
 
   @ApiPropertyOptional({
@@ -57,5 +69,6 @@ export class BlogPostQueryDto {
     example: 'desc',
   })
   @IsOptional()
+  @IsIn(['asc', 'desc'])
   sortOrder?: 'asc' | 'desc' = 'desc';
 }

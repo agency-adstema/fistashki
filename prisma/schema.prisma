@@ -788,6 +788,20 @@ model Setting {
   @@map("settings")
 }
 
+enum KeywordIntent {
+  MONEY
+  PROBLEM
+  GUIDE
+  QUICK
+  PROGRAMMATIC
+}
+
+enum SeoKeywordStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model BlogPost {
   id              String   @id @default(cuid())
   title           String
@@ -798,7 +812,24 @@ model BlogPost {
   category        String
   author          String
   readTime        Int      @default(5)
-  
+
+  // SEO / analytics
+  targetKeyword         String?
+  keywordIntent        KeywordIntent?
+  seoScore              Int?
+  viewCount             Int      @default(0)
+  productClickCount      Int      @default(0)
+  archived              Boolean  @default(false)
+  aiGenerated           Boolean  @default(false)
+  promptVersionId       String?
+  lastGenerationError   String?  @db.Text
+
+  faq                   Json?
+  internalLinks        Json?
+  recommendedProductIds Json?
+
+  seoKeywordsFrom SeoKeyword[]
+
   // SEO fields
   seoTitle        String?
   seoDescription  String?
@@ -806,16 +837,68 @@ model BlogPost {
   ogImage         String?  @db.Text
   ogTitle         String?
   ogDescription   String?
-  
+
   published       Boolean  @default(false)
   publishedAt     DateTime?
-  
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  promptVersion SeoPromptVersion? @relation(fields: [promptVersionId], references: [id], onDelete: SetNull)
 
   @@index([slug])
   @@index([published])
   @@index([publishedAt])
   @@index([category])
+  @@index([archived])
+  @@index([aiGenerated])
+  @@index([targetKeyword])
   @@map("blog_posts")
+}
+
+model SeoKeyword {
+  id         String           @id @default(cuid())
+  keyword    String           @unique
+  intent     KeywordIntent?
+  status     SeoKeywordStatus @default(PENDING)
+  notes      String?          @db.Text
+  blogPostId String?
+  blogPost   BlogPost?        @relation(fields: [blogPostId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([blogPostId])
+  @@map("seo_keywords")
+}
+
+model SeoPromptVersion {
+  id           String @id @default(cuid())
+  label        String
+  systemPrompt String @db.Text
+  userTemplate String @db.Text
+  isActive     Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  blogPosts BlogPost[]
+
+  @@index([isActive])
+  @@map("seo_prompt_versions")
+}
+
+model SeoGenerationLog {
+  id          String  @id @default(cuid())
+  blogPostId  String?
+  keywordRef  String?
+  status      String
+  error       String? @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("seo_generation_logs")
 }

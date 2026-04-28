@@ -10,7 +10,6 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
-  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -21,6 +20,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { BlogService } from './blog.service';
+import { SeoAiService } from '../seo/services/seo-ai.service';
 import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 import { UpdateBlogPostDto } from './dto/update-blog-post.dto';
 import { BlogPostQueryDto } from './dto/blog-post-query.dto';
@@ -32,7 +32,10 @@ import { Permissions } from '../../common/decorators/permissions.decorator';
 @ApiTags('Blog')
 @Controller('blog')
 export class BlogController {
-  constructor(private readonly blogService: BlogService) {}
+  constructor(
+    private readonly blogService: BlogService,
+    private readonly seoAiService: SeoAiService,
+  ) {}
 
   // ========== PUBLIC ENDPOINTS ==========
 
@@ -53,6 +56,7 @@ export class BlogController {
     return this.blogService.findAll({
       ...query,
       published: true,
+      archived: false,
     });
   }
 
@@ -79,14 +83,30 @@ export class BlogController {
     description: 'Blog post not found',
   })
   async findBySlug(@Param('slug') slug: string): Promise<BlogPostResponseDto> {
-    const post = await this.blogService.findBySlug(slug);
+    return this.blogService.findBySlug(slug);
+  }
 
-    // Only return published posts to public
-    if (!post.published) {
-      throw new NotFoundException(`Blog post with slug "${slug}" not found`);
-    }
+  /**
+   * Record a page view for analytics (call from public site; GET post does not increment).
+   */
+  @Post('posts/:slug/track-view')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Increment public view counter for a published post' })
+  @ApiParam({ name: 'slug', description: 'Post slug' })
+  async trackView(@Param('slug') slug: string) {
+    const data = await this.blogService.recordView(slug);
+    return { message: 'View recorded', data };
+  }
 
-    return post;
+  /**
+   * Record an outbound product click from the article (conversion tracking).
+   */
+  @Post('posts/:slug/track-product-click')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Increment product-click counter for analytics' })
+  async trackProductClick(@Param('slug') slug: string) {
+    const data = await this.blogService.incrementProductClickBySlug(slug);
+    return { message: 'Product click recorded', data };
   }
 
   /**
@@ -204,6 +224,49 @@ export class BlogController {
   })
   async findAll(@Query() query: BlogPostQueryDto): Promise<BlogPostListResponseDto> {
     return this.blogService.findAll(query);
+  }
+
+  @Post(':id/publish')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('blog.manage')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary: 'Publish blog post',
+    description: 'Sets published=true, clears archive, stamps publishedAt',
+  })
+  async publish(@Param('id') id: string): Promise<{ message: string; data: BlogPostResponseDto }> {
+    const data = await this.blogService.publish(id);
+    return { message: 'Blog post published', data };
+  }
+
+  @Post(':id/archive')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('blog.manage')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Archive blog post', description: 'Hides from public list; unpublished' })
+  async archive(@Param('id') id: string): Promise<{ message: string; data: BlogPostResponseDto }> {
+    const data = await this.blogService.archive(id);
+    return { message: 'Blog post archived', data };
+  }
+
+  @Post(':id/regenerate-ai')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('blog.manage')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Regenerate draft body with SEO AI using stored keyword/metadata' })
+  async regenerateAi(@Param('id') id: string) {
+    const data = await this.seoAiService.regeneratePost(id);
+    return { message: data.message, data };
+  }
+
+  @Post(':id/score-seo')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('blog.manage')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Recompute heuristic SEO score' })
+  async scoreSeo(@Param('id') id: string): Promise<{ message: string; data: BlogPostResponseDto }> {
+    const data = await this.blogService.scoreSeo(id);
+    return { message: 'SEO score updated', data };
   }
 
   /**

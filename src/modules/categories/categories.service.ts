@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import {
   expandPublicCategorySlugVariants,
-  isUuidLike,
+  isPublicCategoryIdParam,
 } from '../../common/utils/category-slug.util';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
@@ -226,7 +226,7 @@ export class CategoriesService {
     if (!key) throw new NotFoundException('Category not found');
 
     const slugVariants = expandPublicCategorySlugVariants(key);
-    const whereClause = isUuidLike(key)
+    const whereClause = isPublicCategoryIdParam(key)
       ? { id: key, isActive: true }
       : {
           isActive: true,

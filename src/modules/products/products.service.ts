@@ -7,7 +7,7 @@ import {
 import { Prisma, ProductStatus } from '@prisma/client';
 import {
   expandPublicCategorySlugVariants,
-  isUuidLike,
+  isPublicCategoryIdParam,
 } from '../../common/utils/category-slug.util';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
@@ -396,7 +396,7 @@ export class ProductsService {
     if (categoryId && categoryId.trim()) {
       const key = categoryId.trim();
       const slugVariants = expandPublicCategorySlugVariants(key);
-      const whereClause = isUuidLike(key)
+      const whereClause = isPublicCategoryIdParam(key)
         ? { id: key, isActive: true }
         : {
             isActive: true,

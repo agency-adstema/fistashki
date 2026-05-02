@@ -10,6 +10,9 @@ export class PublicCategoryDto {
   @ApiPropertyOptional({ example: 'All electronic items' })
   description?: string;
 
+  @ApiPropertyOptional({ example: 'https://api.example.com/uploads/categories/cat.jpg' })
+  image?: string | null;
+
   @ApiPropertyOptional({ example: 'clc0987654321abcdefghijklmn' })
   parentId?: string;
 

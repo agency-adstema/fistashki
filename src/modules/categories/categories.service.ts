@@ -20,6 +20,26 @@ export class CategoriesService {
     private readonly auditLogsService: AuditLogsService,
   ) {}
 
+  /** Isto kao ProductsService — apsolutan URL za /uploads u shopu. */
+  private resolvePublicAssetUrl(url: string | null | undefined): string | null | undefined {
+    if (url == null || url === '') return url;
+    if (url.startsWith('data:')) return url;
+    const base = (process.env.PUBLIC_ASSET_BASE_URL || '').replace(/\/$/, '');
+    if (!base) return url;
+    if (url.startsWith('/uploads/')) {
+      return `${base}${url}`;
+    }
+    if (url.includes('localhost') || url.includes('127.0.0.1')) {
+      try {
+        const u = new URL(url);
+        return `${base}${u.pathname}${u.search}${u.hash}`;
+      } catch {
+        return url;
+      }
+    }
+    return url;
+  }
+
   async create(dto: CreateCategoryDto, actorUserId?: string) {
     const existing = await this.prisma.category.findUnique({
       where: { slug: dto.slug },
@@ -234,11 +254,13 @@ export class CategoriesService {
   }
 
   private formatPublicCategory(category: any): any {
+    const image = this.resolvePublicAssetUrl(category.image) ?? category.image ?? null;
     return {
       id: category.id,
       name: category.name,
       slug: category.slug,
       description: category.description,
+      image,
       parentId: category.parentId,
       sortOrder: category.sortOrder,
       seoTitle: category.seoTitle ?? null,

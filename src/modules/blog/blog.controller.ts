@@ -20,7 +20,9 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { BlogService } from './blog.service';
+import { BlogImageService } from './services/blog-image.service';
 import { SeoAiService } from '../seo/services/seo-ai.service';
+import { GenerateBlogImagesDto } from './dto/generate-blog-images.dto';
 import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 import { UpdateBlogPostDto } from './dto/update-blog-post.dto';
 import { BlogPostQueryDto } from './dto/blog-post-query.dto';
@@ -35,6 +37,7 @@ export class BlogController {
   constructor(
     private readonly blogService: BlogService,
     private readonly seoAiService: SeoAiService,
+    private readonly blogImageService: BlogImageService,
   ) {}
 
   // ========== PUBLIC ENDPOINTS ==========
@@ -257,6 +260,23 @@ export class BlogController {
   async regenerateAi(@Param('id') id: string) {
     const data = await this.seoAiService.regeneratePost(id);
     return { message: data.message, data };
+  }
+
+  @Post(':id/generate-images')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('blog.manage')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary: 'Generate featured + OG images with OpenAI (DALL·E)',
+    description:
+      'Creates images from title/excerpt, saves under /uploads/blog/, sets featuredImage and ogImage. Requires OPENAI_API_KEY; optional OPENAI_IMAGE_MODEL (default dall-e-3).',
+  })
+  async generateImages(@Param('id') id: string, @Body() body: GenerateBlogImagesDto) {
+    const data = await this.blogImageService.generateAndAttachImages(id, {
+      refinePrompt: body.refinePrompt,
+      separateFeatured: body.separateFeatured,
+    });
+    return { message: 'Images generated and attached', data };
   }
 
   @Post(':id/score-seo')

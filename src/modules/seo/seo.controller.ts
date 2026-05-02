@@ -18,7 +18,9 @@ import { CreateSeoKeywordDto, UpdateSeoKeywordDto } from './dto/seo-keyword.dto'
 import { SeoKeywordQueryDto } from './dto/seo-keyword-query.dto';
 import { CreateSeoPromptVersionDto, UpdateSeoPromptVersionDto } from './dto/seo-prompt.dto';
 import { GenerateFromKeywordBodyDto } from './dto/generate-from-keyword.dto';
+import { GenerateCommerceSeoDto } from './dto/generate-commerce-seo.dto';
 import { SeoAiService } from './services/seo-ai.service';
+import { SeoCommerceContentService } from './services/seo-commerce-content.service';
 import { SeoKeywordsService } from './services/seo-keywords.service';
 import { SeoDashboardService } from './services/seo-dashboard.service';
 import { SeoPromptService } from './services/seo-prompt.service';
@@ -31,6 +33,7 @@ import { SeoKeywordStatus } from '@prisma/client';
 export class SeoController {
   constructor(
     private readonly ai: SeoAiService,
+    private readonly commerce: SeoCommerceContentService,
     private readonly keywords: SeoKeywordsService,
     private readonly dashboard: SeoDashboardService,
     private readonly prompts: SeoPromptService,
@@ -50,10 +53,37 @@ export class SeoController {
 
   @Post('generate-draft')
   @Permissions('blog.manage')
-  @ApiOperation({ summary: 'Generate a blog post draft with AI (not published)' })
+  @ApiOperation({
+    summary: 'Generate a blog post draft with AI (not published)',
+    description:
+      'Uses DB prompt versions (SeoPromptVersion). For category / money pages and structured commerce copy, use POST /seo/generate-commerce-seo instead.',
+  })
   async generateDraft(@Body() dto: GenerateBlogDraftDto) {
     const data = await this.ai.generateDraft(dto);
     return { message: data.message, data };
+  }
+
+  @Post('generate-commerce-seo')
+  @Permissions('blog.manage')
+  @ApiOperation({
+    summary: 'Generate ecommerce SEO + sales copy (category, product, blog, FAQ, meta)',
+    description:
+      'Dedicated prompts per contentType (not the blog prompt DB). Returns JSON: title, metaTitle, metaDescription, contentHtml, faq[], internalLinks[]. ' +
+      'Category/money pages default ~1600 words, min 1200, with QC + up to 3 auto-retries. Pass products[] or categoryId.',
+  })
+  async generateCommerceSeo(@Body() dto: GenerateCommerceSeoDto) {
+    const result = await this.commerce.generate(dto);
+    return {
+      message: result.quality.passed
+        ? 'Commerce SEO generated and passed quality checks'
+        : 'Commerce SEO generated but some quality checks failed after retries — review before publish',
+      data: {
+        ...result.data,
+        quality: result.quality,
+        attempts: result.attempts,
+        productsUsed: result.productsUsed,
+      },
+    };
   }
 
   // ---- Keywords ----

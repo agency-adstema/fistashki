@@ -14,4 +14,7 @@ TS="$(date +%Y%m%d%H%M%S)"
 echo "=== rsync $LOCAL_DIST → $SERVER:$REMOTE_DIST ==="
 rsync -avz --delete "$LOCAL_DIST/" "$SERVER:$REMOTE_DIST/"
 
-echo "=== Done. Nginx root should be $REMOTE_DIST (see /etc/nginx/sites-enabled/kucabasta.rs) ==="
+echo "=== chmod (scp/rsync često ostave 700 na dist → nginx 403) ==="
+ssh "$SERVER" "chmod -R a+rX '$REMOTE_DIST'"
+
+echo "=== Done. Nginx root: $REMOTE_DIST ==="

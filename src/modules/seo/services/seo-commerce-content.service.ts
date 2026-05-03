@@ -158,7 +158,7 @@ export class SeoCommerceContentService {
         `1) <h1> with main keyword (once, at top)\n` +
         `2) Strong intro paragraphs (hook): doubt, symptoms, frustration in the garden\n` +
         `3) <h2> Zašto biljke ne napreduju / koji problem rešavamo</h2>\n` +
-        `4) <h2> Šta je [category] (kratko, konkretno, bez školskog definišenja)</h2>\n` +
+        `4) <h2> Šta je [category] u praksi</h2> — najviše 2 kratka pasusa: šta tačno kupac dobija i kada; bez uvodne rečenice „X je prirodni preparat koji…“.\n` +
         `5) <h2> Kako ovo pomaže biljkama</h2> (benefits tied to real use)\n` +
         `6) <h2> Kako koristiti tečno / organsko đubrivo (praktičan vodič)</h2>\n` +
         `7) <h2> Koje proizvode izabrati iz naše ponude</h2> — MANDATORY buyer section: map EACH listed product to a clear use case; mention prices if given.\n` +
@@ -239,6 +239,13 @@ export class SeoCommerceContentService {
     }
 
     lines.push(`TARGET_WORD_COUNT_FOR_contentHtml: ${wordTarget}`);
+
+    lines.push(
+      'ANTI_SLOP (obavezno): Prvi odlomak teksta posle <h1> NE sme početi definicijom tipa „X je …“, „X predstavlja …“, „X je prirodni preparat koji …“. ' +
+        'Počni pitanjem čitaocu, opisom tipične greške u bašti, ili posledicom lošeg đubrenja. ' +
+        'Izbegavaj floskule („u današnje vreme“, „važno je napomenuti“, „sve više ljudi“). ' +
+        'U svakom većem odeljku uvedi bar jednu konkretnu stvar: sezonu, tip tla, dozu/razblazivanje kao opseg (bez lažnih medicinskih tvrdnji), ili poređenje dva načina primene.',
+    );
 
     if (products.length) {
       lines.push('PRODUCTS_TO_FEATURE (each must appear in buyer section / body where relevant):');

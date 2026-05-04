@@ -1,0 +1,12 @@
+# api.adstema.com — /uploads mora pokazivati ISTI disk gde Nest (PM2) piše fajlove.
+# PM2 backend radi iz /var/www/adstema-admin/server → uploads su u:
+#   /var/www/adstema-admin/server/uploads/products/
+# STARO (pogrešno za blog upload): alias /var/www/adstema-backend/uploads/;
+# Posle izmene: nginx -t && systemctl reload nginx
+
+    location /uploads/ {
+        alias /var/www/adstema-admin/server/uploads/;
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+        add_header Access-Control-Allow-Origin "*";
+    }

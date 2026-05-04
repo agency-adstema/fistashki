@@ -339,8 +339,19 @@ export class BlogService {
 
   private parseStringArray(raw: unknown): string[] | null {
     if (raw == null) return null;
+    if (typeof raw === 'string') {
+      const lines = raw
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      return lines.length ? lines : null;
+    }
     if (!Array.isArray(raw)) return null;
-    return raw.every((x) => typeof x === 'string') ? (raw as string[]) : null;
+    const strings = (raw as unknown[])
+      .filter((x): x is string => typeof x === 'string')
+      .map((s) => s.trim())
+      .filter(Boolean);
+    return strings.length ? strings : null;
   }
 
   private parseFaq(raw: unknown): Array<{ question: string; answer: string }> | null {

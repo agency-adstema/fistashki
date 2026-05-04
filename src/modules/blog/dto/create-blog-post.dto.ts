@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import {
   IsString,
   IsOptional,
@@ -13,6 +14,39 @@ import {
   IsArray,
 } from 'class-validator';
 import { KeywordIntent } from '@prisma/client';
+import { IsBlogFaqList } from '../validators/is-blog-faq-list.validator';
+
+function transformBlogFaqInput(value: unknown): Array<{ question: string; answer: string }> | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (Array.isArray(value)) return value as Array<{ question: string; answer: string }>;
+  if (typeof value === 'string') {
+    let t = value.trim();
+    if (!t) return undefined;
+    try {
+      let parsed = JSON.parse(t) as unknown;
+      if (typeof parsed === 'string') {
+        t = parsed.trim();
+        parsed = t ? JSON.parse(t) : [];
+      }
+      return Array.isArray(parsed) ? (parsed as Array<{ question: string; answer: string }>) : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  return undefined;
+}
+
+function transformInternalLinksInput(value: unknown): string[] | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (Array.isArray(value)) {
+    return (value as unknown[]).filter((x): x is string => typeof x === 'string');
+  }
+  if (typeof value === 'string') {
+    const lines = value.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+    return lines.length ? lines : undefined;
+  }
+  return undefined;
+}
 
 export class CreateBlogPostDto {
   @ApiProperty({
@@ -167,13 +201,20 @@ export class CreateBlogPostDto {
   @ApiPropertyOptional({
     type: 'array',
     items: { type: 'object', properties: { question: { type: 'string' }, answer: { type: 'string' } } },
+    description:
+      'Array of { question, answer }. Admin may send a JSON string (textarea); it is parsed before validation.',
   })
   @IsOptional()
-  @IsArray()
+  @Transform(({ value }) => transformBlogFaqInput(value))
+  @IsBlogFaqList()
   faq?: Array<{ question: string; answer: string }>;
 
-  @ApiPropertyOptional({ type: [String], description: 'Internal URLs (same site)' })
+  @ApiPropertyOptional({
+    type: [String],
+    description: 'Internal URLs (same site). Send string[] or one URL per line in a string.',
+  })
   @IsOptional()
+  @Transform(({ value }) => transformInternalLinksInput(value))
   @IsArray()
   @IsString({ each: true })
   internalLinks?: string[];

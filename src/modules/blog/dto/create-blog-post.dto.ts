@@ -16,16 +16,28 @@ import {
 import { KeywordIntent } from '@prisma/client';
 import { IsBlogFaqList } from '../validators/is-blog-faq-list.validator';
 
+/** Same as admin CMS: Word/Chat „smart quotes“ and ```json fences break JSON.parse. */
+function normalizeFaqJsonString(s: string): string {
+  return s
+    .replace(/^\uFEFF/, '')
+    .replace(/\u00A0/g, ' ')
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim()
+    .replace(/[\u201C\u201D\u00AB\u00BB]/g, '"')
+    .replace(/[\u2018\u2019]/g, "'");
+}
+
 function transformBlogFaqInput(value: unknown): Array<{ question: string; answer: string }> | undefined {
   if (value === undefined || value === null) return undefined;
   if (Array.isArray(value)) return value as Array<{ question: string; answer: string }>;
   if (typeof value === 'string') {
-    let t = value.trim();
+    let t = normalizeFaqJsonString(value);
     if (!t) return undefined;
     try {
       let parsed = JSON.parse(t) as unknown;
       if (typeof parsed === 'string') {
-        t = parsed.trim();
+        t = normalizeFaqJsonString(parsed);
         parsed = t ? JSON.parse(t) : [];
       }
       return Array.isArray(parsed) ? (parsed as Array<{ question: string; answer: string }>) : undefined;

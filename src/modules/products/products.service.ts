@@ -326,6 +326,9 @@ export class ProductsService {
           isPrimary: img.isPrimary ?? false,
         })),
       };
+      if (dto.images.length === 0 && dto.featuredImage === undefined) {
+        updateData.featuredImage = null;
+      }
     }
 
     if (dto.categoryIds !== undefined) {

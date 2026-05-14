@@ -1,4 +1,19 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "green-roots-emporium", "admin-temp", "admin-patch", "src/pages/**", "src/components/**", "src/lib/**"]
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist",
+    "**/*spec.ts",
+    "green-roots-emporium",
+    "green-roots-emporium-src",
+    "ecommerce-admin-src",
+    "easycash-android",
+    "admin-temp",
+    "admin-patch",
+    "src/pages/**",
+    "src/components/**",
+    "src/lib/**",
+    "deploy/**"
+  ]
 }

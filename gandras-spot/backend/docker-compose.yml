@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gandras
+      POSTGRES_PASSWORD: gandras
+      POSTGRES_DB: gandras_spot
+    ports:
+      - '5433:5432'
+    volumes:
+      - gandras_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U gandras -d gandras_spot']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '4100:4100'
+    environment:
+      DATABASE_URL: postgresql://gandras:gandras@postgres:5432/gandras_spot
+      JWT_SECRET: change-me-in-production
+      PORT: 4100
+      CORS_ORIGIN: http://localhost:3000
+      RESTAURANT_SLUG: gandras-spot
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  gandras_pg_data:
